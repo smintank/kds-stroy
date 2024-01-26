@@ -16,12 +16,17 @@ ALLOWED_HOSTS = str(os.getenv('ALLOWED_HOSTS')).split()
 
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "users.apps.UsersConfig",
+    "news.apps.NewsConfig",
+    "orders.apps.OrdersConfig",
+    "django_bootstrap5",
+    "phonenumber_field",
 ]
 
 MIDDLEWARE = [
