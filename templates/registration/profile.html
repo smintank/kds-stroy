@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}
+  Страница пользователя {{ profile }}
+{% endblock %}
+{% block content %}
+  <h1 class="mb-5 text-center ">Страница пользователя {{ profile }}</h1>
+  <small>
+    <ul class="list-group list-group-vertical justify-content-center">
+      <li class="list-group-item text-muted">Имя пользователя: {{ profile.username }}</li>
+      <li class="list-group-item {% if profile.is_email_verified %}text-muted{% else %}text-warning{% endif %}">Email: {{ profile.email }} {% if profile.is_email_verified %}{% else %}(Не подтвержден){% endif %}</li>
+      <li class="list-group-item {% if profile.is_phone_verified %}text-muted{% else %}text-warning{% endif %}">Телефон: {{ profile.phone_number }} {% if profile.is_phone_verified %}{% else %}(Не подтвержден){% endif %}</li>
+      <li class="list-group-item text-muted">Имя: {% if profile.first_name %}{{ profile.first_name }}{% else %}не указано{% endif %}</li>
+      <li class="list-group-item text-muted">Фамилия: {% if profile.last_name %}{{ profile.last_name }}{% else %}не указано{% endif %}</li>
+      <li class="list-group-item text-muted">Отчество: {% if profile.middle_name %}{{ profile.middle_name }}{% else %}не указано{% endif %}</li>
+      <li class="list-group-item text-muted">Регион: {% if profile.region %}{{ profile.region }}{% else %}не указано{% endif %}</li>
+      <li class="list-group-item text-muted">Город: {% if profile.city %}{{ profile.city }}{% else %}не указано{% endif %}</li>
+      <li class="list-group-item text-muted">Адрес: {% if profile.address %}{{ profile.address }}{% else %}не указано{% endif %}</li>
+      <li class="list-group-item text-muted">Регистрация: {{ profile.date_joined }}</li>
+      <li class="list-group-item text-muted">Роль: {% if profile.is_staff %}Админ{% else %}Пользователь{% endif %}</li>
+    </ul>
+    <ul class="list-group list-group-horizontal justify-content-center">
+      <a class="btn btn-sm text-muted" href="{% url 'users:profile_edit' %}">Редактировать профиль</a>
+      <a class="btn btn-sm text-muted" href="{% url 'password_change' %}">Изменить пароль</a>
+    </ul>
+  </small>
+  <br>
+{% endblock %}
