@@ -6,8 +6,12 @@ from users.models import User
 class UserRegistrationForm(forms.ModelForm):
     """Форма для создания нового пользователя."""
 
-    password = forms.CharField(label="Пароль", widget=forms.PasswordInput(attrs={'placeholder': '********'}))
-    password2 = forms.CharField(label="Повторите пароль", widget=forms.PasswordInput(attrs={'placeholder': '********'}))
+    password = forms.CharField(
+        label="Пароль",
+        widget=forms.PasswordInput(attrs={'placeholder': '********'}))
+    password2 = forms.CharField(
+        label="Повторите пароль",
+        widget=forms.PasswordInput(attrs={'placeholder': '********'}))
 
     class Meta:
         model = User
@@ -57,7 +61,8 @@ class UserEditForm(forms.ModelForm):
         self.fields["first_name"].widget.attrs.update({"class": "form-control"})
         self.fields["last_name"].widget.attrs.update({"class": "form-control"})
         self.fields["email"].widget.attrs.update({"class": "form-control"})
-        self.fields["phone_number"].widget.attrs.update({"class": "form-control"})
+        self.fields["phone_number"].widget.attrs.update(
+            {"class": "form-control"})
 
 
 class ChangeEmailForm(forms.ModelForm):
@@ -81,4 +86,5 @@ class ChangePhoneNumberForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["phone_number"].label = "Новый номер телефона"
 
-        self.fields["phone_number"].widget.attrs.update({"class": "form-control"})
+        self.fields["phone_number"].widget.attrs.update(
+            {"class": "form-control"})

@@ -5,7 +5,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class User(AbstractUser):
 
-    middle_name = models.CharField("Отчество", max_length=50, blank=True)
+    middle_name = models.CharField("Отчество", max_length=150, blank=True)
     avatar = models.ImageField("Фото профиля", upload_to="avatars/",
                                default="avatars/default.png")
     email = models.EmailField("Электронная почта", unique=True)
@@ -16,7 +16,7 @@ class User(AbstractUser):
         "orders.Address",
         on_delete=models.SET_NULL,
         null=True,
-        verbose_name="Адрес",
+        verbose_name="Адрес проживания",
     )
 
     date_joined = models.DateTimeField(auto_now_add=True)
