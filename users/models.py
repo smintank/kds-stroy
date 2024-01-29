@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
 
 
 class User(AbstractUser):
@@ -9,9 +8,9 @@ class User(AbstractUser):
     avatar = models.ImageField("Фото профиля", upload_to="avatars/",
                                default="avatars/default.png")
     email = models.EmailField("Электронная почта", unique=True)
-    is_email_verified = models.BooleanField(default=False)
-    phone_number = PhoneNumberField("Номер телефона", unique=True)
-    is_phone_verified = models.BooleanField(default=False)
+    is_email_verified = models.BooleanField("Email подтвержден", default=False)
+    phone_number = models.CharField("Номер телефона", max_length=18, unique=True)
+    is_phone_verified = models.BooleanField("Телефон подтвержден", default=False)
     address = models.ForeignKey(
         "orders.Address",
         on_delete=models.SET_NULL,

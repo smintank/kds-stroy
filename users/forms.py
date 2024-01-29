@@ -21,7 +21,8 @@ class UserRegistrationForm(forms.ModelForm):
             'username': forms.TextInput(
                 attrs={'placeholder': 'Username'}),
             'phone_number': forms.TextInput(
-                attrs={'placeholder': '+7-999-999-99-99'}),
+                attrs={'type': "tel", 'data-tel-input': "",
+                       'placeholder': '+7 (999) 999-99-99'}),
             'email': forms.TextInput(
                 attrs={'placeholder': 'username@mail.ru'}),
             'last_name': forms.TextInput(
