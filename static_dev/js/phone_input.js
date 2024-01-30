@@ -3,7 +3,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var getInputNumbersValue = function (input) {
         // Return stripped input value — just numbers
-        return input.value.replace(/[^0-9+]/g, '');
+        return input.value.replace(/[^0-9+]+|(?!^)\+/g, '');
+    }
+
+    var  inputFormat = function(input) {
+        var formattedOutput = "+7 ";
+        if (input.length > 1) formattedOutput += '(' + input.substring(1, 4);
+        if (input.length >= 5) formattedOutput += ') ' + input.substring(4, 7);
+        if (input.length >= 8) formattedOutput += '-' + input.substring(7, 9);
+        if (input.length >= 10) formattedOutput += '-' + input.substring(9, 11);
+        return formattedOutput
     }
 
     var onPhonePaste = function (e) {
@@ -12,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var pasted = e.clipboardData || window.clipboardData;
         if (pasted) {
             var pastedText = pasted.getData('Text');
-            if (/\D/g.test(pastedText)) {
+            if (/[^0-9+]+|(?!^)\+/g.test(pastedText)) {
                 // Attempt to paste non-numeric symbol — remove all non-numeric symbols,
                 // formatting will be in onPhoneInput handler
                 input.value = inputNumbersValue;
@@ -21,14 +30,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    var  inputFormat = function(input, formattedOutput) {
-        formattedOutput = input.value = "+7 ";
-        if (input.length > 1) formattedOutput += '(' + input.substring(1, 4);
-        if (input.length >= 5) formattedOutput += ') ' + input.substring(4, 7);
-        if (input.length >= 8) formattedOutput += '-' + input.substring(7, 9);
-        if (input.length >= 10) formattedOutput += '-' + input.substring(9, 11);
-        return formattedOutput
-    }
 
     var onPhoneInput = function (e) {
         var input = e.target,
@@ -49,32 +50,28 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-
-        console.log("First input value: " + inputNumbersValue[0])
-        if (inputNumbersValue[0] === "+") {
-            // If first symbol is "+", then remove it and show it in input field
-            inputNumbersValue = inputNumbersValue.substring(1);
-            formattedInputValue = input.value = "+";
-        }
+        let originalInputValue = inputNumbersValue;
 
         if (inputNumbersValue.includes("+")) {
-            // If input value contains "+" more, then remove it
-            inputNumbersValue = inputNumbersValue.replace("+", '')
+            // If input value contains "+", then remove it
+            inputNumbersValue = inputNumbersValue.replaceAll("+", '')
         }
 
         if (inputNumbersValue[0] === "7") {
-            formattedInputValue = inputFormat(inputNumbersValue, formattedInputValue);
-        } else if (inputNumbersValue[0] === "8") {
-            inputNumbersValue = "7" + inputNumbersValue.substring(1);
-            formattedInputValue = inputFormat(inputNumbersValue, formattedInputValue);
-        } else if (inputNumbersValue[0] === "9") {
+            formattedInputValue = inputFormat(inputNumbersValue);
+
+        } else if (["8", "9"].indexOf(inputNumbersValue[0]) > -1 &&
+            (originalInputValue.length < 2 || originalInputValue.length > 9)) {
+
+            if (inputNumbersValue[0] === "8") inputNumbersValue = inputNumbersValue.substring(1);
+
             inputNumbersValue = "7" + inputNumbersValue;
-            formattedInputValue = inputFormat(inputNumbersValue, formattedInputValue);
+            formattedInputValue = inputFormat(inputNumbersValue);
+
         } else {
             formattedInputValue = "+" + inputNumbersValue.substring(0, 16);
         }
 
-        console.log("Full input value: " + inputNumbersValue)
         input.value = formattedInputValue;
     }
 
