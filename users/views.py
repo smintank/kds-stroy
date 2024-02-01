@@ -12,6 +12,7 @@ from users.forms import (
     ChangeEmailForm,
     ChangePhoneNumberForm,
     UserRegistrationForm,
+    EmailPhoneLoginForm,
 )
 from django.contrib.auth import get_user_model
 
@@ -26,7 +27,7 @@ class RegisterView(CreateView):
 
 
 class MyLoginView(LoginView):
-
+    form_class = EmailPhoneLoginForm
     template_name = "registration/login.html"
     success_url = reverse_lazy("home:home")
 

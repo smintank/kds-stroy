@@ -1,4 +1,7 @@
+import re
+
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm, UsernameField
 
 from users.models import User
 
@@ -45,6 +48,15 @@ class UserRegistrationForm(forms.ModelForm):
             raise forms.ValidationError("Пароли не совпадают")
         return cd["password2"]
 
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data['phone_number']
+        cleared_phone_number = re.sub(r'\D', '', phone_number)
+        if len(cleared_phone_number) < 11:
+            raise forms.ValidationError(
+                'Номер телефона должен содержать не меньше 11 цифр'
+            )
+        return cleared_phone_number
+
 
 class UserEditForm(forms.ModelForm):
     class Meta:
@@ -63,6 +75,13 @@ class UserEditForm(forms.ModelForm):
         self.fields["email"].widget.attrs.update({"class": "form-control"})
         self.fields["phone_number"].widget.attrs.update(
             {"class": "form-control"})
+
+
+class EmailPhoneLoginForm(AuthenticationForm):
+    username = UsernameField(
+        label='Email/Телефон',
+        widget=forms.TextInput(attrs={"autofocus": True, 'data-tel-input': ""})
+    )
 
 
 class ChangeEmailForm(forms.ModelForm):
