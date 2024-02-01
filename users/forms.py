@@ -18,8 +18,6 @@ class UserRegistrationForm(forms.ModelForm):
         fields = ('avatar', "email", "last_name", "first_name", 'middle_name',
                   'phone_number')
         widgets = {
-            'username': forms.TextInput(
-                attrs={'placeholder': 'Username'}),
             'phone_number': forms.TextInput(
                 attrs={'type': "tel", 'data-tel-input': "",
                        'placeholder': '+7 (999) 999-99-99'}),
@@ -44,7 +42,7 @@ class UserRegistrationForm(forms.ModelForm):
     def clean_password2(self):
         cd = self.cleaned_data
         if cd["password"] != cd["password2"]:
-            raise forms.ValidationError("Passwords don't match.")
+            raise forms.ValidationError("Пароли не совпадают")
         return cd["password2"]
 
 

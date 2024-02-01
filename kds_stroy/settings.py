@@ -26,7 +26,6 @@ INSTALLED_APPS = [
     "news.apps.NewsConfig",
     "orders.apps.OrdersConfig",
     "django_bootstrap5",
-    "phonenumber_field",
 ]
 
 MIDDLEWARE = [
@@ -121,7 +120,3 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = "home"
 
 LOGIN_URL = "login"
-
-PHONENUMBER_DEFAULT_FORMAT = "INTERNATIONAL"
-
-PHONENUMBER_DEFAULT_REGION = "RU"

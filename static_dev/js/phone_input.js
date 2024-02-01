@@ -2,11 +2,11 @@ document.addEventListener("DOMContentLoaded", function () {
     var phoneInputs = document.querySelectorAll('input[data-tel-input]');
 
     var getInputNumbersValue = function (input) {
-        // Return stripped input value — just numbers
+        // Return stripped input value — just numbers and "+" sign
         return input.value.replace(/[^0-9+]+|(?!^)\+/g, '');
     }
 
-    var  inputFormat = function(input) {
+    var  formatInput = function(input) {
         var formattedOutput = "+7 ";
         if (input.length > 1) formattedOutput += '(' + input.substring(1, 4);
         if (input.length >= 5) formattedOutput += ') ' + input.substring(4, 7);
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (inputNumbersValue[0] === "7") {
-            formattedInputValue = inputFormat(inputNumbersValue);
+            formattedInputValue = formatInput(inputNumbersValue);
 
         } else if (["8", "9"].indexOf(inputNumbersValue[0]) > -1 &&
             (originalInputValue.length < 2 || originalInputValue.length > 9)) {
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (inputNumbersValue[0] === "8") inputNumbersValue = inputNumbersValue.substring(1);
 
             inputNumbersValue = "7" + inputNumbersValue;
-            formattedInputValue = inputFormat(inputNumbersValue);
+            formattedInputValue = formatInput(inputNumbersValue);
 
         } else {
             formattedInputValue = "+" + inputNumbersValue.substring(0, 16);

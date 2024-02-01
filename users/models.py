@@ -7,9 +7,9 @@ class User(AbstractUser):
     middle_name = models.CharField("Отчество", max_length=150, blank=True)
     avatar = models.ImageField("Фото профиля", upload_to="avatars/",
                                default="avatars/default.png")
-    email = models.EmailField("Электронная почта", unique=True)
+    email = models.EmailField("Электронная почта", unique=True, help_text="Обязательное поле")
     is_email_verified = models.BooleanField("Email подтвержден", default=False)
-    phone_number = models.CharField("Номер телефона", max_length=18, unique=True)
+    phone_number = models.CharField("Номер телефона", max_length=18, unique=True, help_text="Обязательное поле")
     is_phone_verified = models.BooleanField("Телефон подтвержден", default=False)
     address = models.ForeignKey(
         "orders.Address",
@@ -25,7 +25,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ["first_name"]
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.email}"
 
     class Meta:
         verbose_name = "пользователь"
