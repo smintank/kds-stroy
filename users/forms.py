@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 
 from users.models import User
@@ -44,6 +46,15 @@ class UserRegistrationForm(forms.ModelForm):
         if cd["password"] != cd["password2"]:
             raise forms.ValidationError("Пароли не совпадают")
         return cd["password2"]
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data['phone_number']
+        cleared_phone_number = re.sub(r'\D', '', phone_number)
+        if len(cleared_phone_number) < 11:
+            raise forms.ValidationError(
+                'Номер телефона должен содержать не меньше 11 цифр'
+            )
+        return cleared_phone_number
 
 
 class UserEditForm(forms.ModelForm):
