@@ -14,7 +14,6 @@ DEBUG = bool(int(os.getenv("DEBUG", default=0)))
 
 ALLOWED_HOSTS = str(os.getenv("ALLOWED_HOSTS")).split()
 
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -26,6 +25,7 @@ INSTALLED_APPS = [
     "news.apps.NewsConfig",
     "orders.apps.OrdersConfig",
     "django_bootstrap5",
+    "verify_email.apps.VerifyEmailConfig",
 ]
 
 MIDDLEWARE = [
@@ -40,10 +40,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "kds_stroy.urls"
 
+TEMPLATES_DIR = BASE_DIR / "templates"
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [TEMPLATES_DIR],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -57,7 +59,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "kds_stroy.wsgi.application"
-
 
 if DEBUG:
     DATABASES = {
@@ -120,3 +121,28 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = "home"
 
 LOGIN_URL = "login"
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_PORT = 587
+
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = os.environ.get('EMAIL_ID')
+
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PW')
+
+DEFAULT_FROM_EMAIL = 'noreply@dkdsstroy.ru'
+
+VERIFICATION_SUCCESS_TEMPLATE = TEMPLATES_DIR / 'registration/varification_done.html'
+
+VERIFICATION_FAILED_TEMPLATE = TEMPLATES_DIR / 'registration/varification_fail.html'
+
+EXPIRE_AFTER = "10m"
+
+MAX_RETRIES = 3

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 40rem;">
+      <div class="card-header">
+        Вы зарегистрированы, {{ new_user.first_name }}!
+        <br>
+        {{ msg }}
+      </div>
+      <div class="card-body">
+        <p><a href="{{ link }}">Войти</a></p>
+        <p><a href="{% url 'home' %}">На главную</a></p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

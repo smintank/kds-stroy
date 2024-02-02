@@ -9,8 +9,9 @@ from users.views import register
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
     path("admin/", admin.site.urls),
-    path("auth/", include("django.contrib.auth.urls")),
+    path('verification/', include('verify_email.urls')),
     path("auth/registration/", register, name="registration"),
+    path("auth/", include("django.contrib.auth.urls")),
     path("users/", include("users.urls")),
     path("orders/", include("orders.urls")),
     path("news/", include("news.urls")),
