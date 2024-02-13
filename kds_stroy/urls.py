@@ -16,7 +16,9 @@ urlpatterns = [
     path("orders/", include("orders.urls")),
     path("news/", include("news.urls")),
     path(
-        "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
+        "about/",
+        TemplateView.as_view(template_name="pages/about.html"),
+        name="about"
     ),
 ]
 
