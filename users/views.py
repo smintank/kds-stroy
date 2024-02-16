@@ -6,6 +6,7 @@ from django.views.generic import (
     UpdateView,
     DetailView,
 )
+from verify_email.email_handler import send_verification_email
 
 from users.forms import (
     UserEditForm,
@@ -80,16 +81,18 @@ class ChangePhoneNumberView(UpdateView):
 
 def register(request):
     if request.method == "POST":
-        user_form = UserRegistrationForm(request.POST, request.FILES)
+        user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
-            new_user = user_form.save(commit=False)
-            new_user.set_password(user_form.cleaned_data["password"])
-            new_user.save()
+            new_user = send_verification_email(request, user_form)
             return render(
-                request, "registration/registration_done.html", {"new_user": new_user}
+                request,
+                "registration/registration_done.html",
+                {"new_user": new_user}
             )
     else:
         user_form = UserRegistrationForm()
     return render(
-        request, "registration/registration_form.html", {"user_form": user_form}
+        request,
+        "registration/registration_form.html",
+        {"user_form": user_form}
     )

@@ -3,12 +3,9 @@
   <div class="col d-flex justify-content-center">
     <div class="card" style="width: 40rem;">
       <div class="card-header">
-        Вы зарегистрированы, {{ new_user.first_name }}!
+        {{ new_user.first_name }}, вам на почту отправлено письмо для подтверждения регистрации!
       </div>
-      <div class="card-body">
-        <p><a href="{% url 'login' %}">Войти</a></p>
-        <p><a href="{% url 'home' %}">На главную</a></p>
-      </div>
+      <div class="card-body"><p><a href="{% url 'home' %}">На главную</a></p></div>
     </div>
   </div>
 {% endblock %}

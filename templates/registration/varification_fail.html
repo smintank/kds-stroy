@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 40rem;">
+      <div class="card-header">
+        Эта ссылка не действительна или уже была использована, мы не можем верифицировать вас используя эту ссылку.
+      </div>
+      <div class="card-body">
+        <p><a href="{% url 'home' %}">На главную</a></p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
