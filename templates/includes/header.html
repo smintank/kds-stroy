@@ -1,42 +1,83 @@
 {% load static %}
-<header>
-  <nav class="navbar navbar-light" style="background-color: #adb5bd">
+<header class="header">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'home' %}">
-        <span class="text-danger"><b>КДС</b></span>-Строй
-      </a>
-      <ul class="nav nav-pills">
-        {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'home' %}">Главная</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'order:create' %}">Заказать</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'news:list' %}">Новости</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'about' %}">О нас</a>
-          </li>
-          <li>
-            <a class="nav-link" href="{% url 'users:profile' %}">{{ user.first_name }}</a>
-          </li>
-          <li class="nav-item">
-            <form method="post" action="{% url 'logout' %}">
-              {% csrf_token %}
-                <button type="submit" class="btn btn-outline-primary">Выйти</button>
-            </form>
-          </li>
-        {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">Войти</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'registration' %}">Регистрация</a>
-          </li>
-        {% endif %}
-      </ul>
+        <div class="header_line">
+            <div class="header_logo">
+                <a href="{% url 'home' %}"><img src="{% static 'img/logo.png' %}" alt="kds-stroy"></a>
+            </div>
+            <div class="spacer"></div>
+            <nav class="header_nav">
+                <a href="#services">Услуги</a>
+                <a href="#">Порядок работы</a>
+                <a href="#">Новости</a>
+            </nav>
+            <div class="spacer"></div>
+            <div class="header_phone">
+                <a href="tel:+7(495) 123-45-67">+7(495) 123-45-67</a>
+            </div>
+            <div class="header_social">
+                <a href="/"><img src="{% static 'img/whatsapp.png' %}" alt="whatsapp_logo"></a>
+                <a href="/"><img src="{% static 'img/telegram.png' %}" alt="telegram_logo"></a>
+            </div>
+            <div class="header_button">
+                <button>Вызвать мастера</button>
+            </div>
+            <div class="header_account">
+            {% if user.is_authenticated %}
+                <a href="{% url 'users:profile' %}">
+                    <a>{{ user.first_name }}</a>
+                    <img src="{{ user.userpic }}">
+            {% else %}
+                <a href="{% url 'login' %}">
+                    <a>Войти</a>
+                    <img src="{% static 'img/default_userpic.png' %}">
+            {% endif %}
+                </a>
+            </div>
+            <div class="header_menu">
+                <a href="#" id="menu" class="burger_icon">&#9776;</a>
+            </div>
+        </div>
     </div>
-  </nav>
 </header>
+{#<header>#}
+{#  <nav class="navbar navbar-light" style="background-color: #adb5bd">#}
+{#    <div class="container">#}
+{#      <a class="navbar-brand" href="{% url 'home' %}">#}
+{#        <span class="text-danger"><b>КДС</b></span>-Строй#}
+{#      </a>#}
+{#      <ul class="nav nav-pills">#}
+{#        {% if user.is_authenticated %}#}
+{#          <li class="nav-item">#}
+{#            <a class="nav-link" href="{% url 'home' %}">Главная</a>#}
+{#          </li>#}
+{#          <li class="nav-item">#}
+{#            <a class="nav-link" href="{% url 'order:create' %}">Заказать</a>#}
+{#          </li>#}
+{#          <li class="nav-item">#}
+{#            <a class="nav-link" href="{% url 'news:list' %}">Новости</a>#}
+{#          </li>#}
+{#          <li class="nav-item">#}
+{#            <a class="nav-link" href="{% url 'about' %}">О нас</a>#}
+{#          </li>#}
+{#          <li>#}
+{#            <a class="nav-link" href="{% url 'users:profile' %}">{{ user.first_name }}</a>#}
+{#          </li>#}
+{#          <li class="nav-item">#}
+{#            <form method="post" action="{% url 'logout' %}">#}
+{#              {% csrf_token %}#}
+{#                <button type="submit" class="btn btn-outline-primary">Выйти</button>#}
+{#            </form>#}
+{#          </li>#}
+{#        {% else %}#}
+{#          <li class="nav-item">#}
+{#            <a class="nav-link" href="{% url 'login' %}">Войти</a>#}
+{#          </li>#}
+{#          <li class="nav-item">#}
+{#            <a class="nav-link" href="{% url 'registration' %}">Регистрация</a>#}
+{#          </li>#}
+{#        {% endif %}#}
+{#      </ul>#}
+{#    </div>#}
+{#  </nav>#}
+{#</header>#}
