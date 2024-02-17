@@ -24,7 +24,6 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "news.apps.NewsConfig",
     "orders.apps.OrdersConfig",
-    "django_bootstrap5",
     "verify_email.apps.VerifyEmailConfig",
 ]
 
