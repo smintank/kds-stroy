@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -41,20 +43,50 @@ class Address(models.Model):
 
 
 class Order(models.Model):
-    order_id = models.IntegerField()
-    name = models.CharField(max_length=255)
-    phone = models.CharField(max_length=11)
-    comment = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    is_processed = models.BooleanField(default=False)
-    authorized_user = models.ForeignKey(
-        User, on_delete=models.SET_NULL, blank=True, null=True
+    ORDER_STATUS = (
+        ('REGISTERED', 'Зарегистрирована'),
+        ('PROCESSED', 'В работе'),
+        ('COMPLETED', 'Завершена'),
+        ('CANCELED', 'Отменена'),
     )
-    address = models.ForeignKey(Address, on_delete=models.PROTECT)
+
+    order_id = models.IntegerField()
+    first_name = models.CharField("Имя", max_length=150,
+                                  blank=False, null=False)
+    phone_number = models.CharField("Номер телефона", max_length=18,
+                                    blank=False, null=False)
+    comment = models.TextField("Комментарий", blank=True, null=True)
+    created_at = models.DateTimeField(
+        verbose_name="Дата создания", auto_now_add=True
+    )
+    status = models.CharField(
+        "Статус", choices=ORDER_STATUS, default='REGISTERED', max_length=20
+    )
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL,
+        verbose_name="Авторизованный пользователь",
+        blank=True, null=True
+    )
+    address = models.TextField(verbose_name="Адрес", blank=True, null=True)
+    # address = models.ForeignKey(
+    #     Address, on_delete=models.SET_NULL, blank=True, null=True
+    # )
+    photo = models.ImageField('Фото', upload_to='post_images', blank=True)
 
     def __str__(self):
-        return self.order_id, self.name, self.phone
+        return self.order_id, self.first_name, self.phone_number
+
+    def save(self, *args, **kwargs):
+        is_unique = False
+        while not is_unique:
+            unique_order_number = str(uuid.uuid1())[:8].upper()
+            unique_order_number = f"№{unique_order_number}"
+            if not Order.objects.filter(order_id=unique_order_number).exists():
+                is_unique = True
+                self.order_id = unique_order_number
+                super().save(*args, **kwargs)
 
     class Meta:
-        verbose_name = 'заказ'
-        verbose_name_plural = 'Заказы'
+        verbose_name = 'заявка'
+        verbose_name_plural = 'Заявки'
+
