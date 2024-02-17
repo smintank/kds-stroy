@@ -7,7 +7,7 @@ from kds_stroy import settings
 from users.views import register
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
+    path("", TemplateView.as_view(template_name="pages/main.html"), name="home"),
     path("admin/", admin.site.urls),
     path('verification/', include('verify_email.urls')),
     path("auth/registration/", register, name="registration"),

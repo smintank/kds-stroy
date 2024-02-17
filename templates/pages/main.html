@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <main class="main_screen" id="main" style="background-image: url('{% static 'img/main/main_bg.png' %}')">
+        <div class="container">
+            <div class="main_info">
+                <div class="location">
+                    <a>Краснодарский край</a>
+                    <a class="location_icon"><img src="{% static 'img/main/location_icon.png' %}" alt=""></a>
+                </div>
+                <div class="work_time">
+                    <a>Ежедневно: 9-22:00</a>
+                </div>
+            </div>
+            <div class="main_title">
+                <h1>Мастер на все случаи жизни</h1>
+                <h3>От замены лампочки до постройки дома</h3>
+            </div>
+            <div class="main_form">
+                <p class="form_info">Оставьте заявку и мы перезвоним в течение 15 минут</p>
+                <form action="" method="post">
+                    {% csrf_token %}
+{#                    {{ form.first_name }}#}
+{#                    {{ form.phone_number }}#}
+                    <input type="text" name="first_name" text-name-input placeholder="Ваше имя">
+                    <input type="tel" name="phone_number" data-tel-input placeholder="Ваш телефон">
+                    <button class="main_form_button" type="submit">Оставить заявку</button>
+                </form>
+            </div>
+        </div>
+        <div class="main_services">
+            <div class="container">
+                <ul class="v-list">
+                    <li><a href="#electrician">Электрика</a></li>
+                    <li><a href="#repair">Ремонтные</a></li>
+                </ul>
+                <ul class="v-list">
+                    <li><a href="#plumbing">Сантехника</a></li>
+                    <li><a href="#decoration">Отделочные</a></li>
+                </ul>
+                <ul class="v-list">
+                    <li><a href="#assemble">Монтажные работы</a></li>
+                    <li><a href="#welding">Сварочные</a></li>
+                </ul>
+                <ul class="v-list last">
+                    <li><a href="#applianse">Установка техники</a></li>
+                    <li><a href="#building">Строительство под ключ</a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    <section class="services" id="services">
+        <div class="container">
+            <div class="title">
+                <h2>Работаем по всему Краснодарскому краю</h2>
+                <p>для физических и юридических лиц.</p>
+            </div>
+            <p class="card_list_info">Выберите услугу, чтобы узнать о ней подробнее.</p>
+            <div class="card_list">
+                <div class="card" id="electrician">
+                    <div class="card_description electrical">
+                        <ul>
+                            <li>Монтаж электропроводки</li>
+                            <li>Монтаж розеток и выключателей, дверного звонка</li>
+                            <li>Монтаж электрощитка</li>
+                            <li>Монтаж освещения</li>
+                        </ul>
+                    </div>
+                    <img src="{% static 'img/main/electrical.png' %}" alt="Электрика">
+                    <div class="overlay">
+                        <div class="card_title">
+                            <h3>Электрика</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" id="plumbing">
+                    <div class="card_description plumbing">
+                        <ul>
+                            <li>Установка смесителя, душа, замена фильтра</li>
+                            <li>Установка раковины, душевой кабины, ванны, унитаза</li>
+                            <li>Монтаж и замена труб отопления, радиаторов, полотенцесушителя</li>
+                            <li>Установка водонагревателя</li>
+                            <li>Устранение засоров</li>
+                        </ul>
+                    </div>
+                    <img src="{% static 'img/main/plumbing.png' %}" alt="Сантехника">
+                    <div class="overlay">
+                        <div class="card_title">
+                            <h3>Сантехника</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" id="assemble">
+                    <div class="card_description assemble">
+                        <ul>
+                            <li>Монтаж полок зеркала, карниза, жалюзи, люстры</li>
+                            <li>Сборка и перестановка мебели</li>
+                            <li>Установка дверей и фурнитуры</li>
+                            <li>Установка и утепление окон и подоконника</li>
+                            <li>Остекление и утепление балконов</li>
+                        </ul>
+                    </div>
+                    <img src="{% static 'img/main/assemble.png' %}" alt="Монтажные работы">
+                    <div class="overlay">
+                        <div class="card_title">
+                            <h3>Монтажные работы</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" id="applianse">
+                    <div class="card_description applianse">
+                        <ul>
+                            <li>Телевизор</li>
+                            <li>Посудомоечная машина</li>
+                            <li>Кондиционер</li>
+                            <li>Кухонная вытяжка</li>
+                            <li>Электрическая плита, варочная панель, духовой шкаф</li>
+                        </ul>
+                    </div>
+                    <img src="{% static 'img/main/applianse.png' %}" alt="Установка техники">
+                    <div class="overlay">
+                        <div class="card_title">
+                            <h3>Установка техники</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" id="repair">
+                    <div class="card_description repair">
+                        <p>Отдельные работы, а также ремонт жилых и нежилых помещений
+                            под ключ</p>
+                        <ul>
+                            <li>Демонтаж отделки, стен и перегородок</li>
+                            <li>Черновая и чистовая отделка</li>
+                            <li>Монтаж всех инженерных сетей</li>
+                            <li>Финишная отделка</li>
+                            <li>Установка сантехники и мебели</li>
+                        </ul>
+                    </div>
+                    <img src="{% static 'img/main/repair.png' %}" alt="Ремонтные работы">
+                    <div class="overlay">
+                        <div class="card_title">
+                            <h3>Ремонтные работы</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" id="decoration">
+                    <div class="card_description decoration">
+                        <ul>
+                            <li>Укладка плитки на любые поверхности</li>
+                            <li>Потолки: монтаж натяжных потолков, малярные работы, побелка</li>
+                            <li>Стены: отделка (малярные работы, поклейка обоев), штробление и сверление отверстий, возведение и демонтаж</li>
+                            <li>Полы: выравнивание, плинтуса, покраска, линолеум, плитка, паркет, ламинат, ковролин</li>
+                        </ul>
+                    </div>
+                    <img src="{% static 'img/main/decoration.png' %}" alt="Отделка">
+                    <div class="overlay">
+                        <div class="card_title">
+                            <h3>Отделка</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" id="welding">
+                    <div class="card_description welding">
+                        <ul>
+                            <li>Сварка труб</li>
+                            <li>Изготовление заборов и ограждений</li>
+                            <li>Изготовление и монтаж гаражных ворот</li>
+                            <li>Сборка теплиц</li>
+                            <li>Изготовление сварных деталей любой сложности</li>
+                        </ul>
+                    </div>
+                    <img src="{% static 'img/main/welding.png' %}" alt="Сварочные работы">
+                    <div class="overlay">
+                        <div class="card_title">
+                            <h3>Сварочные работы</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" id="building">
+                    <div class="card_description building">
+                        <ul>
+                            <li>Строительство домов и нежилых построк</li>
+                            <li>Монтаж всех инженерных сетей</li>
+                            <li>Фасадные и кровельные работы</li>
+                        </ul>
+                        <ul>
+                            <li>Заливка бетона, кладка кирпича</li>
+                            <li>Земляные работы</li>
+                            <li>Монтаж дренажной системы</li>
+                            <li>Демонтаж строений</li>
+                        </ul>
+                        <p>Оставьте заявку, и мы вам перезвоним, чтобы обсудить проект
+                            и направить проектировщика для детального расчета.</p>
+                    </div>
+                    <img src="{% static 'img/main/building.png' %}" alt="Строительство">
+                    <div class="overlay">
+                        <div class="card_title">
+                            <h3>Строительство</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="call_to_action">
+            <div class="container">
+                <button class="main_form_button">Оставить заявку</button>
+                <div class="text">
+                    <h4>Бесплатная консультация и расчет стоимости работ</h4>
+                    <p>Постараемся решить вашу задачу, даже если ее нет среди указанных на сайте.</p>
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
