@@ -19,6 +19,6 @@
       {% block content %}
       {% endblock %}
     {% include "includes/footer.html" %}
-    {% include "includes/order_popup.html" %}
+    {% include "includes/order_popup.html" with form=order_form %}
   </body>
 </html>
