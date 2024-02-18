@@ -79,8 +79,7 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         is_unique = False
         while not is_unique:
-            unique_order_number = str(uuid.uuid1())[:8].upper()
-            unique_order_number = f"№{unique_order_number}"
+            unique_order_number = str(uuid.uuid1().int)[:8]
             if not Order.objects.filter(order_id=unique_order_number).exists():
                 is_unique = True
                 self.order_id = unique_order_number
