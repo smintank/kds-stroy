@@ -7,18 +7,17 @@
         <p>Заполните форму и мы свяжимся с вами в течение 15 минут.</p>
         <form action="" method="post" enctype="application/x-www-form-urlencoded">
             {% csrf_token %}
-{#            {{ form.first_name }}#}
-{#            {{ form.phone_number }}#}
-            <input type="text" name="first_name" text-name-input placeholder="Имя*">
-            <input type="tel" name="phone_number" data-tel-input placeholder="Номер телефона*">
-            <input type="text" name="address" placeholder="Адрес">
-            <input type="text" name="comment" placeholder="Опишите вашу задачу">
+            {% for field in form %}
+                {{ field }}
+            {% endfor %}
             <div class="attached_photo">
                 <img src="{% static 'img/clip.png' %}" alt="clip_img">
                 <input type="file" name="photo" id="photo">
             </div>
-            <input type="checkbox" id="checkBox" name="checkBox">
-            <label for="checkBox">Я соглашаюсь на обработку персональных данных в соответствии с политикой конфиденциальности.</label>
+            <div class="personal_info_agree">
+                <input type="checkbox" id="checkBox" name="checkBox">
+                <label for="checkBox">Я соглашаюсь на обработку персональных данных в соответствии с <a href="{% url 'personal_info_terms' %}">политикой конфиденциальности</a>.</label>
+            </div>
             <button type="submit" class="order_button">Оставить заявку</button>
         </form>
     </div>
