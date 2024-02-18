@@ -10,13 +10,14 @@ def order(request):
             order_form.save()
             return render(
                 request,
-                "registration/registration_done.html",
-                {"order_form": order_form}
+                'pages/main.html',
+                {"order": order_form}
             )
     else:
         order_form = OrderCreationForm()
     return render(
         request,
+        'pages/main.html',
         {"order_form": order_form}
     )
 
