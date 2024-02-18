@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
+    <script src="{% static 'js/main.js' %}"></script>
     <main class="main_screen" id="main" style="background-image: url('{% static 'img/main/main_bg.png' %}')">
         <div class="container">
             <div class="main_info">
@@ -18,14 +19,7 @@
             </div>
             <div class="main_form">
                 <p class="form_info">Оставьте заявку и мы перезвоним в течение 15 минут</p>
-                <form action="" method="post">
-                    {% csrf_token %}
-{#                    {{ form.first_name }}#}
-{#                    {{ form.phone_number }}#}
-                    <input type="text" name="first_name" text-name-input placeholder="Ваше имя">
-                    <input type="tel" name="phone_number" data-tel-input placeholder="Ваш телефон">
-                    <button class="main_form_button" type="submit">Оставить заявку</button>
-                </form>
+                <button class="show_order_popup">Оставить заявку</button>
             </div>
         </div>
         <div class="main_services">
@@ -203,7 +197,7 @@
         </div>
         <div class="call_to_action">
             <div class="container">
-                <button class="main_form_button">Оставить заявку</button>
+                <button class="show_order_popup">Оставить заявку</button>
                 <div class="text">
                     <h4>Бесплатная консультация и расчет стоимости работ</h4>
                     <p>Постараемся решить вашу задачу, даже если ее нет среди указанных на сайте.</p>
