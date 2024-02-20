@@ -1,9 +1,9 @@
 from django.urls import path
 
-from orders.views import order
+from orders.views import create_order
 
 # app_name = 'order'
 
 urlpatterns = [
-    path('', order, name='home'),
+    path('', create_order, name='home'),
 ]
