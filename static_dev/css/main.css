@@ -458,6 +458,10 @@ body {
     margin: 10px 0;
 }
 
+.loading_message, .result_message, .error_message {
+    display: none;
+}
+
 .overlay {
   display: none;
   position: fixed;

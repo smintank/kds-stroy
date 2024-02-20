@@ -23,3 +23,31 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+$(document).ready(function() {
+    $('#orderForm').submit(function(event) {
+        event.preventDefault();
+        $('#formContent').hide();
+        $('#loadingMessage').show();
+        var formData = $(this).serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: '',
+            data: formData,
+            success: function(response, status, xhr) {
+                if (xhr.status === 201) {
+                    $('#loadingMessage').hide();
+                    $('#resultMessage').show();
+                } else {
+                    $('#loadingMessage').hide();
+                    $('#errorMessage').show();
+                }
+            },
+            error: function(xhr, status, error) {
+                $('#loadingMessage').hide();
+                $('#errorMessage').show();
+            }
+        });
+    });
+});
+
