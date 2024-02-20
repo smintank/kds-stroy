@@ -443,7 +443,7 @@ body {
   cursor: pointer;
 }
 
-.popup-content input {
+.form_content input {
     padding: 20px 20px;
     margin: 5px 0;
     border: none;
@@ -451,7 +451,7 @@ body {
     font-size: 14px;
 }
 
-.popup-content form {
+.form_content form {
     display: flex;
     flex-direction: column;
     margin: 10px 0;

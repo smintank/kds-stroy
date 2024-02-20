@@ -14,12 +14,12 @@ document.addEventListener("DOMContentLoaded",function() {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-  var checkbox = document.getElementById("checkbox");
-  var button = document.getElementById("order_button");
+    var checkbox = document.getElementById("checkBox");
+    var button = document.getElementById("orderButton");
 
-  checkbox.addEventListener("change", function() {
-    button.disabled = !this.checked;
-    button.style.backgroundColor = this.checked ? "#C82027" : "#c89fa1";
-  });
+    checkbox.addEventListener("change", function() {
+        button.disabled = !this.checked;
+        button.style.backgroundColor = this.checked ? "#C82027" : "#c89fa1";
+    });
 });
 

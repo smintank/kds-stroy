@@ -3,7 +3,6 @@ import uuid
 from django.contrib.auth import get_user_model
 from django.db import models
 
-
 User = get_user_model()
 
 
@@ -50,11 +49,9 @@ class Order(models.Model):
         ('CANCELED', 'Отменена'),
     )
 
-    order_id = models.IntegerField()
-    first_name = models.CharField("Имя", max_length=150,
-                                  blank=False, null=False)
-    phone_number = models.CharField("Номер телефона", max_length=18,
-                                    blank=False, null=False)
+    order_id = models.IntegerField('Номер заказа')
+    first_name = models.CharField("Имя", max_length=150)
+    phone_number = models.CharField("Номер телефона", max_length=18)
     comment = models.TextField("Комментарий", blank=True, null=True)
     created_at = models.DateTimeField(
         verbose_name="Дата создания", auto_now_add=True
@@ -88,4 +85,3 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'заявка'
         verbose_name_plural = 'Заявки'
-
