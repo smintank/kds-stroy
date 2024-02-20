@@ -64,16 +64,13 @@ class Order(models.Model):
         verbose_name="Авторизованный пользователь",
         blank=True, null=True
     )
+    cost = models.IntegerField('Итоговая стоимость', blank=True, null=True)
+    discount = models.IntegerField('Скидка', default=0)
+    is_discount = models.BooleanField('Скидка', default=False)
+
     address = models.TextField(verbose_name="Адрес", blank=True, null=True)
     # address = models.ForeignKey(
     #     Address, on_delete=models.SET_NULL, blank=True, null=True
-    # )
-    photo = models.ImageField('Фото', upload_to='order_photos',
-                              blank=True)
-    cost = models.IntegerField('Итоговая стоимость', blank=True, null=True)
-
-    # is_discount = models.BooleanField('Скидка', default=False)
-    # discount_amount = models.IntegerField('Размер скидки')
 
     def __str__(self):
         return self.order_id, self.first_name, self.phone_number
@@ -90,3 +87,12 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'заявка'
         verbose_name_plural = 'Заявки'
+
+
+class OrderPhoto(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    photo = models.ImageField('Фото', upload_to='order_photos')
+
+    class Meta:
+        verbose_name = 'фото заявки'
+        verbose_name_plural = 'Фото заявок'
