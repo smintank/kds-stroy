@@ -8,17 +8,24 @@
         <form action="" id="orderForm" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in form %}
-                {{ field }}
+                {% if field.name == "photo" %}
+                    <input type="file" name="{{ field.name }}" id="fileInput" accept="image/*" multiple hidden>
+                {% else %}
+                    {{ field }}
+                {% endif %}
             {% endfor %}
             <div id="imagePreviewRow" class="image-preview-row">
                 <div id="imagePreviews" class="image-previews"></div>
-                <label for="id_photo" class="add-image-button" id='addImage'>+</label>
-                <label for="id_photo" class="add-image-text" id='addImageText'>Добавьте фото</label>
-{#                <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">#}
+                <label for="fileInput" class="add-image-button" id='addImage'>+</label>
+                <label for="fileInput" class="add-image-text" id='addImageText'>Добавьте фото</label>
             </div>
             <div class="personal_info_agree">
-                <input type="checkbox" id="checkBox" name="checkbox">
-                <label for="checkBox">Я соглашаюсь на обработку персональных данных в соответствии с <a href="{% url 'personal_info_terms' %}">политикой конфиденциальности</a>.</label>
+                <div class="checkbox">
+                    <input type="checkbox" id="checkBox" name="checkbox">
+                </div>
+                <label for="checkBox" class="checkbox_label">
+                    Я соглашаюсь на обработку персональных данных в соответствии с <a href="{% url 'personal_info_terms' %}">политикой конфиденциальности</a>.
+                </label>
             </div>
             <button type="submit" class="order_button" id="orderButton" disabled>Оставить заявку</button>
         </form>
