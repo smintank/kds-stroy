@@ -14,9 +14,10 @@ class OrderCreationForm(forms.ModelForm):
                 attrs={'type': "tel", 'data-tel-input': "",
                        'placeholder': 'Номер телефона*'}),
             'first_name': forms.TextInput(
-                attrs={'placeholder': 'Имя*'}),
+                attrs={'placeholder': 'Имя*', 'autocomplete': 'given-name'}),
             'address': forms.TextInput(
-                attrs={'placeholder': 'Адрес'}),
+                attrs={'placeholder': 'Адрес',
+                       'autocomplete': 'street-address'}),
             'comment': forms.TextInput(
                 attrs={'placeholder': 'Опишите вашу задачу'}),
         }
