@@ -68,7 +68,12 @@ class Order(models.Model):
     # address = models.ForeignKey(
     #     Address, on_delete=models.SET_NULL, blank=True, null=True
     # )
-    photo = models.ImageField('Фото', upload_to='post_images', blank=True)
+    photo = models.ImageField('Фото', upload_to='order_photos',
+                              blank=True)
+    cost = models.IntegerField('Итоговая стоимость', blank=True, null=True)
+
+    # is_discount = models.BooleanField('Скидка', default=False)
+    # discount_amount = models.IntegerField('Размер скидки')
 
     def __str__(self):
         return self.order_id, self.first_name, self.phone_number
