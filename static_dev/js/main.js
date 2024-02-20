@@ -28,12 +28,16 @@ $(document).ready(function() {
         event.preventDefault();
         $('#formContent').hide();
         $('#loadingMessage').show();
-        var formData = $(this).serialize();
+
+        var formData = new FormData(this);
+        console.log(formData.get('photo'));
 
         $.ajax({
             type: 'POST',
-            url: '',
+            url: '/',
             data: formData,
+            processData: false,
+            contentType: false,
             success: function(response, status, xhr) {
                 if (xhr.status === 201) {
                     $('#loadingMessage').hide();
