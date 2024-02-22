@@ -63,6 +63,7 @@ $(document).ready(function() {
 
 
     const originFormData = new FormData(this);
+    originFormData.delete('photo');
     for (let [key, value] of formData.entries()) {
       originFormData.append(key, value);
     }
