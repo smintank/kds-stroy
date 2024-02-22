@@ -22,36 +22,3 @@ document.addEventListener("DOMContentLoaded", function() {
         button.style.backgroundColor = this.checked ? "#C82027" : "#c89fa1";
     });
 });
-
-$(document).ready(function() {
-    $('#orderForm').submit(function(event) {
-        event.preventDefault();
-        $('#formContent').hide();
-        $('#loadingMessage').show();
-
-        var formData = new FormData(this);
-        console.log(formData.get('photo'));
-
-        $.ajax({
-            type: 'POST',
-            url: '/',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response, status, xhr) {
-                if (xhr.status === 201) {
-                    $('#loadingMessage').hide();
-                    $('#resultMessage').show();
-                } else {
-                    $('#loadingMessage').hide();
-                    $('#errorMessage').show();
-                }
-            },
-            error: function(xhr, status, error) {
-                $('#loadingMessage').hide();
-                $('#errorMessage').show();
-            }
-        });
-    });
-});
-

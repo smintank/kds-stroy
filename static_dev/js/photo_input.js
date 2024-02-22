@@ -29,15 +29,33 @@ $(document).ready(function() {
     }
   });
 
-  $(document).on('click', '.preview-image', function() {
-    $(this).remove();
-    var imageCount = $('#imagePreviews').children().length;
-    console.log(imageCount);
-    if (imageCount < 5) {
-      $('#addImage').show();
-    }
-    if (imageCount === 0) {
-      $('#addImageText').show();
-    }
+  $('#orderForm').submit(function(event) {
+    event.preventDefault();
+    $('#formContent').hide();
+    $('#loadingMessage').show();
+
+    var formData = new FormData(this);
+    console.log(formData.get('photo'));
+
+    $.ajax({
+        type: 'POST',
+        url: '/',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response, status, xhr) {
+            if (xhr.status === 201) {
+                $('#loadingMessage').hide();
+                $('#resultMessage').show();
+            } else {
+                $('#loadingMessage').hide();
+                $('#errorMessage').show();
+            }
+        },
+        error: function(xhr, status, error) {
+            $('#loadingMessage').hide();
+            $('#errorMessage').show();
+        }
+    });
   });
 });
