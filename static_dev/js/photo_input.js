@@ -1,26 +1,33 @@
 $(document).ready(function() {
+  const formData = new FormData();
+
+  function get_image_count() {
+    return $('#imagePreviews').children().length;
+  }
+
   $('#fileInput').change(function() {
-    console.log('Start script');
-    var files = this.files;
-    var previewsContainer = $('#imagePreviews');
-    var imageCount = previewsContainer.children().length;
-    console.log(imageCount);
-    for (var i = 0; i < files.length; i++) {
-      var reader = new FileReader();
+    const files = this.files;
+    const previewsContainer = $('#imagePreviews');
+
+    for (let i = 0; i < files.length; i++) {
+      const reader = new FileReader();
       reader.onload = function(event) {
-        var preview = $('<div class="preview-image"></div>');
-        var image = $('<img alt="uploaded_image">');
-        image.attr('src', event.target.result);
+        const preview = $('<div class="preview-image"></div>');
+        const image = $('<img alt="uploaded_image" src=\"' + event.target.result + '\">');
         preview.append(image);
 
-        var removeButton = $('<div class="remove-button">&times</div>');
+        const removeButton = $('<div class="remove-button">&times</div>');
         preview.append(removeButton);
 
         previewsContainer.append(preview);
       };
+
       reader.readAsDataURL(files[i]);
+      formData.append('photo', files[i]);
+      console.log('formData length: ' + formData.getAll('photo').length);
+      console.log(formData.getAll('photo'));
     }
-    console.log(imageCount);
+    let imageCount = get_image_count();
     if (imageCount >= 4) {
       $('#addImage').hide();
     }
@@ -29,33 +36,53 @@ $(document).ready(function() {
     }
   });
 
+
+  $(document).on('click', '.preview-image', function() {
+
+    formData.delete($(this).find('img').attr('src').split('/').pop());
+    $(this).remove();
+
+    console.log(this);
+    console.log('formData length: ' + formData.getAll('photo').length);
+    console.log(formData.getAll('photo'));
+
+    const imageCount = get_image_count();
+
+    if (imageCount < 5) {
+      $('#addImage').show();
+    }
+    if (imageCount === 0) {
+      $('#addImageText').show();
+    }
+  });
+
   $('#orderForm').submit(function(event) {
     event.preventDefault();
     $('#formContent').hide();
     $('#loadingMessage').show();
 
-    var formData = new FormData(this);
-    console.log(formData.get('photo'));
+
+    const originFormData = new FormData(this);
+    for (let [key, value] of formData.entries()) {
+      originFormData.append(key, value);
+    }
 
     $.ajax({
-        type: 'POST',
-        url: '/',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response, status, xhr) {
-            if (xhr.status === 201) {
-                $('#loadingMessage').hide();
-                $('#resultMessage').show();
-            } else {
-                $('#loadingMessage').hide();
-                $('#errorMessage').show();
-            }
-        },
-        error: function(xhr, status, error) {
-            $('#loadingMessage').hide();
-            $('#errorMessage').show();
+      type: 'POST',
+      url: '/',
+      data: originFormData,
+      processData: false,
+      contentType: false,
+      success: function(response, status, xhr) {
+        if (xhr.status === 201) {
+          $('#loadingMessage').hide();
+          $('#resultMessage').show();
         }
+      },
+      error: function(xhr, status, error) {
+        $('#loadingMessage').hide();
+        $('#errorMessage').show();
+      }
     });
   });
 });
