@@ -10,7 +10,14 @@ $(document).ready(function() {
     const files = this.files;
     const previewsContainer = $('#imagePreviews');
 
+    let imageCount = get_image_count();
+    console.log('imageCount: ' + imageCount);
     for (let i = 0; i < files.length; i++) {
+      if ((imageCount + i + 1) === 5) {
+        $('#addImage').hide();
+      } else if ((imageCount + i + 1) > 5) {
+        break;
+      }
       const currentImageId = 'photo-' + imageNumbers;
       const reader = new FileReader();
       reader.onload = function(event) {
@@ -30,13 +37,10 @@ $(document).ready(function() {
       files[i].id = currentImageId;
       formData.append('photo-' + imageNumbers, files[i]);
       console.log('formData length: ' + formData.getAll('photo').length);
-      console.log(formData.getAll('photo'));
+      formData.forEach((value, key) => console.log(key, value));
+      imageNumbers++;
     }
-    let imageCount = get_image_count();
-    if (imageCount >= 4) {
-      $('#addImage').hide();
-    }
-    if (imageCount <= 1) {
+    if (imageCount < 1) {
       $('#addImageText').hide();
     }
   });

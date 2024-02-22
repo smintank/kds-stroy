@@ -91,14 +91,9 @@ class Order(models.Model):
 
 
 def get_upload_path(instance, filename):
-    folder_name = str(instance.order.order_id)
     _, file_extension = os.path.splitext(filename)
-    path = os.path.join('order_photos', folder_name)
-    index = 1
-    while os.path.exists(os.path.join(path, f'photo_{index}{file_extension}')):
-        index += 1
-    new_filename = f'photo_{index}{file_extension}'
-    return os.path.join(path, new_filename)
+    path = os.path.join('order_photos', str(instance.order.order_id))
+    return os.path.join(path, f'photo{file_extension}')
 
 
 class OrderPhoto(models.Model):
