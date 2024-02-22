@@ -1,5 +1,6 @@
 $(document).ready(function() {
   const formData = new FormData();
+  let imageNumbers = 0;
 
   function get_image_count() {
     return $('#imagePreviews').children().length;
@@ -10,6 +11,7 @@ $(document).ready(function() {
     const previewsContainer = $('#imagePreviews');
 
     for (let i = 0; i < files.length; i++) {
+      const currentImageId = 'photo-' + imageNumbers;
       const reader = new FileReader();
       reader.onload = function(event) {
         const preview = $('<div class="preview-image"></div>');
@@ -17,13 +19,16 @@ $(document).ready(function() {
         preview.append(image);
 
         const removeButton = $('<div class="remove-button">&times</div>');
+        removeButton.attr('image-id', currentImageId);
         preview.append(removeButton);
 
         previewsContainer.append(preview);
       };
 
       reader.readAsDataURL(files[i]);
-      formData.append('photo', files[i]);
+
+      files[i].id = currentImageId;
+      formData.append('photo-' + imageNumbers, files[i]);
       console.log('formData length: ' + formData.getAll('photo').length);
       console.log(formData.getAll('photo'));
     }
@@ -39,7 +44,16 @@ $(document).ready(function() {
 
   $(document).on('click', '.preview-image', function() {
 
-    formData.delete($(this).find('img').attr('src').split('/').pop());
+    console.log($(this).find('.remove-button').attr('image-id'));
+
+    for (let [key, value] of formData.entries()) {
+      console.log(formData.entries())
+      console.log('key: ' + key + ', value: ' + value.id);
+      if (value.id === $(this).find('.remove-button').attr('image-id')) {
+        formData.delete(key);
+        break;
+      }
+    }
     $(this).remove();
 
     console.log(this);
