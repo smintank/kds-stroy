@@ -1,3 +1,4 @@
+import os
 import uuid
 
 from django.contrib.auth import get_user_model
@@ -85,8 +86,19 @@ class Order(models.Model):
                 super().save(*args, **kwargs)
 
     class Meta:
-        verbose_name = 'заявка'
-        verbose_name_plural = 'Заявки'
+        verbose_name = 'заказ'
+        verbose_name_plural = 'Заказы'
+
+
+def get_upload_path(instance, filename):
+    folder_name = str(instance.order.order_id)
+    _, file_extension = os.path.splitext(filename)
+    path = os.path.join('order_photos', folder_name)
+    index = 1
+    while os.path.exists(os.path.join(path, f'photo_{index}{file_extension}')):
+        index += 1
+    new_filename = f'photo_{index}{file_extension}'
+    return os.path.join(path, new_filename)
 
 
 class OrderPhoto(models.Model):
