@@ -44,10 +44,10 @@ class Address(models.Model):
 
 class Order(models.Model):
     ORDER_STATUS = (
-        ('REGISTERED', 'Зарегистрирована'),
+        ('REGISTERED', 'Зарегистрирован'),
         ('PROCESSED', 'В работе'),
-        ('COMPLETED', 'Завершена'),
-        ('CANCELED', 'Отменена'),
+        ('COMPLETED', 'Завершен'),
+        ('CANCELED', 'Отменен'),
     )
 
     order_id = models.IntegerField('Номер заказа')
@@ -103,8 +103,8 @@ def get_upload_path(instance, filename):
 
 class OrderPhoto(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    photo = models.ImageField('Фото', upload_to='order_photos')
+    photo = models.ImageField('Фото', upload_to=get_upload_path)
 
     class Meta:
-        verbose_name = 'фото заявки'
-        verbose_name_plural = 'Фото заявок'
+        verbose_name = 'фото заказа'
+        verbose_name_plural = 'Фото заказов'

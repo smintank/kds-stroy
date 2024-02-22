@@ -21,8 +21,6 @@ def create_order(request):
             return HttpResponse('Form is not valid', status=400)
     else:
         order_form = OrderCreationForm()
-        return render(
-            request, 'pages/main.html', {"order_form": order_form}
-        )
+        return render(request, 'pages/main.html', {"order_form": order_form})
 
 
