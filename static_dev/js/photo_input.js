@@ -2,93 +2,63 @@ $(document).ready(function() {
   const formData = new FormData();
   let imageNumbers = 0;
 
-  function get_photo_amount() {
-    return $('#imagePreviews').children().length;
+  function containsFile(formData, photoName) {
+    return Array.from(formData.values()).some(photo => photo.name === photoName);
+}
+
+  function addPreviewItem(currentPhotoId, photo) {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      const imageSrc = event.target.result;
+      const preview = $(`
+            <div class="preview-image">
+              <img alt="uploaded_image" src="${imageSrc}">
+              <div class="remove-button" image-id="${currentPhotoId}">&times;</div>
+            </div>
+          `);
+      $('#imagePreviews').append(preview);
+    };
+    reader.readAsDataURL(photo);
   }
 
-  function containsFile(formData, photoName) {
-    for (const photo of formData.entries()) {
-      console.log('Photo in formData: ' + photo[1].name);
-      if (photo[1].name === photoName) {
-        return true;
-      }
-    }
-    return false;
-    }
+  function togglePhotoTools(formData) {
+    const formDataLength = Array.from(formData.entries()).length;
+    $('#addImage').toggle(formDataLength < 5);
+    $('#addImageText').toggle(formDataLength <= 0);
+  }
 
   $('#fileInput').change(function() {
     const photos = this.files;
-    const previewsContainer = $('#imagePreviews');
-    var photoPreviewAmount;
 
-    for (let i = 0; i < photos.length; i++) {
-      console.log('Photo in input: ' + photos[i].name);
 
-      if (!containsFile(formData, photos[i].name)) {
-
-        photoPreviewAmount = get_photo_amount();
-        console.log('photoPreviewAmount: ' + photoPreviewAmount);
-
-        if (photoPreviewAmount >= 5) {
-          $('#addImage').hide();
-          break;
-        }
+    Array.from(photos).forEach(photo => {
+      if (!containsFile(formData, photo.name) &&
+        (Array.from(formData.entries()).length) < 5) {
 
         const currentPhotoId = 'photo-' + imageNumbers;
-
-        const reader = new FileReader();
-        reader.onload = function(event) {
-          const imageSrc = event.target.result;
-          const preview = $(
-            `<div class="preview-image">
-              <img alt="uploaded_image" src="${imageSrc}">
-              <div class="remove-button" image-id="${currentPhotoId}">&times;</div>
-            </div>`);
-          previewsContainer.append(preview);
-        };
-
-        reader.readAsDataURL(photos[i]);
-        formData.append(currentPhotoId, photos[i]);
-
-        // formData.forEach((value, key) => console.log(key, value));
-
+        addPreviewItem(currentPhotoId, photo);
+        formData.append(currentPhotoId, photo);
         imageNumbers++;
-      } else {
-        console.log('File already exists: ' + photos[i].name);
       }
-    }
-    photoPreviewAmount = get_photo_amount();
-    console.log('photoPreviewAmount: ' + photoPreviewAmount);
-    if (photoPreviewAmount + 1 > 0) {
-      $('#addImageText').hide();
-    }
+    });
+    togglePhotoTools(formData);
   });
+
 
 
   $(document).on('click', '.preview-image', function() {
-
     const imageId = $(this).find('.remove-button').attr('image-id');
     formData.delete(imageId);
-
-    // formData.forEach((value, key) => console.log(key, value));
-
     $(this).remove();
-
-    const imageCount = get_photo_amount();
-
-    if (imageCount < 5) {
-      $('#addImage').show();
-    }
-    if (imageCount === 0) {
-      $('#addImageText').show();
-    }
+    togglePhotoTools(formData);
   });
+
+
 
   $('#orderForm').submit(function(event) {
     event.preventDefault();
     $('#formContent').hide();
     $('#loadingMessage').show();
-
 
     const originFormData = new FormData(this);
     originFormData.delete('photo');
