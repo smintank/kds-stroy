@@ -30,11 +30,9 @@ $(document).ready(function() {
   $('#fileInput').change(function() {
     const photos = this.files;
 
-
     Array.from(photos).forEach(photo => {
       if (!containsFile(formData, photo.name) &&
         (Array.from(formData.entries()).length) < 5) {
-
         const currentPhotoId = 'photo-' + imageNumbers;
         addPreviewItem(currentPhotoId, photo);
         formData.append(currentPhotoId, photo);
@@ -47,10 +45,9 @@ $(document).ready(function() {
 
 
   $(document).on('click', '.preview-image', function() {
-    const imageId = $(this).find('.remove-button').attr('image-id');
-    formData.delete(imageId);
-    $(this).remove();
-    togglePhotoTools(formData);
+    formData.delete($(this).find('.remove-button').attr('image-id'));  // remove photo from formData
+    $(this).remove();                                                  // remove photo from preview
+    togglePhotoTools(formData);                                        // show photo tools (add photo button and description text)
   });
 
 
