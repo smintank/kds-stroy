@@ -37,8 +37,12 @@ class OrderCreationForm(forms.ModelForm):
             'address': forms.TextInput(
                 attrs={'placeholder': 'Адрес',
                        'autocomplete': 'street-address'}),
-            'comment': forms.TextInput(
-                attrs={'placeholder': 'Опишите вашу задачу'}),
+            'comment': forms.Textarea(
+                attrs={
+                    'placeholder': 'Опишите вашу задачу',
+                    'class': 'id_comment',
+                }
+            ),
         }
 
     def clean_phone_number(self):
