@@ -2,45 +2,64 @@ $(document).ready(function() {
   const formData = new FormData();
   let imageNumbers = 0;
 
-  function get_image_count() {
+  function get_photo_amount() {
     return $('#imagePreviews').children().length;
   }
 
-  $('#fileInput').change(function() {
-    const files = this.files;
-    const previewsContainer = $('#imagePreviews');
-
-    let imageCount = get_image_count();
-    console.log('imageCount: ' + imageCount);
-    for (let i = 0; i < files.length; i++) {
-      if ((imageCount + i + 1) === 5) {
-        $('#addImage').hide();
-      } else if ((imageCount + i + 1) > 5) {
-        break;
+  function containsFile(formData, photoName) {
+    for (const photo of formData.entries()) {
+      console.log('Photo in formData: ' + photo[1].name);
+      if (photo[1].name === photoName) {
+        return true;
       }
-      const currentImageId = 'photo-' + imageNumbers;
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        const preview = $('<div class="preview-image"></div>');
-        const image = $('<img alt="uploaded_image" src=\"' + event.target.result + '\">');
-        preview.append(image);
-
-        const removeButton = $('<div class="remove-button">&times</div>');
-        removeButton.attr('image-id', currentImageId);
-        preview.append(removeButton);
-
-        previewsContainer.append(preview);
-      };
-
-      reader.readAsDataURL(files[i]);
-
-      files[i].id = currentImageId;
-      formData.append('photo-' + imageNumbers, files[i]);
-      console.log('formData length: ' + formData.getAll('photo').length);
-      formData.forEach((value, key) => console.log(key, value));
-      imageNumbers++;
     }
-    if (imageCount < 1) {
+    return false;
+    }
+
+  $('#fileInput').change(function() {
+    const photos = this.files;
+    const previewsContainer = $('#imagePreviews');
+    var photoPreviewAmount;
+
+    for (let i = 0; i < photos.length; i++) {
+      console.log('Photo in input: ' + photos[i].name);
+
+      if (!containsFile(formData, photos[i].name)) {
+
+        photoPreviewAmount = get_photo_amount();
+        console.log('photoPreviewAmount: ' + photoPreviewAmount);
+
+        if (photoPreviewAmount >= 5) {
+          $('#addImage').hide();
+          break;
+        }
+
+        const currentPhotoId = 'photo-' + imageNumbers;
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const imageSrc = event.target.result;
+          const preview = $(
+            `<div class="preview-image">
+              <img alt="uploaded_image" src="${imageSrc}">
+              <div class="remove-button" image-id="${currentPhotoId}">&times;</div>
+            </div>`);
+          previewsContainer.append(preview);
+        };
+
+        reader.readAsDataURL(photos[i]);
+        formData.append(currentPhotoId, photos[i]);
+
+        // formData.forEach((value, key) => console.log(key, value));
+
+        imageNumbers++;
+      } else {
+        console.log('File already exists: ' + photos[i].name);
+      }
+    }
+    photoPreviewAmount = get_photo_amount();
+    console.log('photoPreviewAmount: ' + photoPreviewAmount);
+    if (photoPreviewAmount + 1 > 0) {
       $('#addImageText').hide();
     }
   });
@@ -48,23 +67,14 @@ $(document).ready(function() {
 
   $(document).on('click', '.preview-image', function() {
 
-    console.log($(this).find('.remove-button').attr('image-id'));
+    const imageId = $(this).find('.remove-button').attr('image-id');
+    formData.delete(imageId);
 
-    for (let [key, value] of formData.entries()) {
-      console.log(formData.entries())
-      console.log('key: ' + key + ', value: ' + value.id);
-      if (value.id === $(this).find('.remove-button').attr('image-id')) {
-        formData.delete(key);
-        break;
-      }
-    }
+    // formData.forEach((value, key) => console.log(key, value));
+
     $(this).remove();
 
-    console.log(this);
-    console.log('formData length: ' + formData.getAll('photo').length);
-    console.log(formData.getAll('photo'));
-
-    const imageCount = get_image_count();
+    const imageCount = get_photo_amount();
 
     if (imageCount < 5) {
       $('#addImage').show();
