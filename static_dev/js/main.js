@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded",function() {
+document.addEventListener("DOMContentLoaded", function() {
     let header = $('.header');
     let headerHeight = header.height();
      
@@ -14,8 +14,8 @@ document.addEventListener("DOMContentLoaded",function() {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-    var checkbox = document.getElementById("checkBox");
-    var button = document.getElementById("orderButton");
+    const checkbox = document.getElementById("checkBox");
+    const button = document.getElementById("orderButton");
 
     checkbox.addEventListener("change", function() {
         button.disabled = !this.checked;
