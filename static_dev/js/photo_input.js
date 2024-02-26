@@ -3,10 +3,12 @@ $(document).ready(function() {
   let imageNumbers = 0;
 
   function containsFile(formData, photoName) {
+    // Check if the formData contains a file with the same name
     return Array.from(formData.values()).some(photo => photo.name === photoName);
 }
 
   function addPreviewItem(currentPhotoId, photo) {
+    // Add the photo to the preview
     const reader = new FileReader();
     reader.onload = function (event) {
       const imageSrc = event.target.result;
@@ -22,12 +24,14 @@ $(document).ready(function() {
   }
 
   function togglePhotoTools(formData) {
+    // Show or hide the photo tools based on the number of photos
     const formDataLength = Array.from(formData.entries()).length;
     $('#addImage').toggle(formDataLength < 5);
     $('#addImageText').toggle(formDataLength <= 0);
   }
 
   $('#fileInput').change(function() {
+    // Add the selected photos to the formData
     const photos = this.files;
 
     Array.from(photos).forEach(photo => {
@@ -45,14 +49,16 @@ $(document).ready(function() {
 
 
   $(document).on('click', '.preview-image', function() {
-    formData.delete($(this).find('.remove-button').attr('image-id'));  // remove photo from formData
-    $(this).remove();                                                  // remove photo from preview
-    togglePhotoTools(formData);                                        // show photo tools (add photo button and description text)
+    // Remove the image from the formData
+    formData.delete($(this).find('.remove-button').attr('image-id'));
+    $(this).remove();
+    togglePhotoTools(formData);
   });
 
 
 
   $('#orderForm').submit(function(event) {
+    // Send the formData to the server
     event.preventDefault();
     $('#formContent').hide();
     $('#loadingMessage').show();
