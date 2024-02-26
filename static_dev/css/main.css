@@ -425,7 +425,8 @@ body {
     border-radius: 5px;
 }
 
-.form_content, .loading_message, .result_message, .error_message {
+.form_content, .loading_message, .result_message, .success_message {
+    padding: 20px;
   margin: 60px;
 }
 

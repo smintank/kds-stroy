@@ -1,11 +1,7 @@
 $(document).ready(function() {
-    $('.show_order_popup').click(function() {
-        $('#overlay').addClass('active');
-        $('.order_popup').show();
-    });
-
-    $('.close').click(function() {
-        $('#overlay').removeClass('active');
-        $('.order_popup').hide();
+    $('#checkBox').change(function() {
+        const $button = $("#orderButton");
+        $button.prop("disabled", !this.checked);
+        $button.css("background-color", this.checked ? "#C82027" : "#c89fa1");
     });
 });

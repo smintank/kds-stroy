@@ -1,4 +1,5 @@
-document.addEventListener("DOMContentLoaded", function() {
+$(document).ready(function() {
+    // Hold the header at the top of the page when the user scrolls
     let header = $('.header');
     let headerHeight = header.height();
      
@@ -11,11 +12,18 @@ document.addEventListener("DOMContentLoaded", function() {
             $('body').css({'paddingTop': 0})
         }
     });
+
+    $('.close').click(function() {
+        $('#overlay').removeClass('active');
+        $('.order_popup').hide();
+    });
+
+    $('.show_order_popup').click(function() {
+        $('#overlay').addClass('active');
+        $('.order_popup').show();
+    });
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-    const checkbox = document.getElementById("checkBox");
-    const button = document.getElementById("orderButton");
 
     checkbox.addEventListener("change", function() {
         button.disabled = !this.checked;
