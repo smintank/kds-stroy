@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from .forms import OrderCreationForm
-from .models import OrderPhoto
+from .models import OrderPhoto, Order
 from kds_stroy.settings import MAX_UPLOADED_PHOTO_SIZE
 
 
@@ -40,6 +40,8 @@ def create_order(request):
 
         if order_form.is_valid():
             order = order_form.save()
+            request.session['form_submitted'] = True
+            request.session['order_id'] = order.order_id
 
             handled_photos, errors = handle_photos(request.FILES)
             if handled_photos:
@@ -56,4 +58,9 @@ def create_order(request):
                                 status=400)
     else:
         order_form = OrderCreationForm()
-        return render(request, 'pages/main.html', {"order_form": order_form})
+        context = {"order_form": order_form}
+
+        order_id = request.session.get('order_id', None)
+        if Order.objects.get(order_id=order_id).exists():
+            context = {"form_submitted": True, 'order_id': order_id}
+        return render(request, 'pages/main.html', context)
