@@ -100,6 +100,9 @@ class OrderPhoto(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     photo = models.ImageField('Фото', upload_to=get_upload_path)
 
+    def __str__(self):
+        return f'Фото заказа №{self.order.order_id}'
+
     class Meta:
         verbose_name = 'фото заказа'
         verbose_name_plural = 'Фото заказов'
