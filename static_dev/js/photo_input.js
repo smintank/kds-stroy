@@ -79,11 +79,15 @@ $(document).ready(function() {
         if (xhr.status === 201) {
           $('#loadingMessage').hide();
           $('#resultMessage').show();
+          $('#messageContainer').text(response.message);
+          $('#descriptionContainer').text(response.text);
         }
       },
       error: function(xhr, status, error) {
         $('#loadingMessage').hide();
-        $('#errorMessage').show();
+        $('#resultMessage').show();
+        $('#messageContainer').text('Ошибка при создании заказа!');
+        $('#descriptionContainer').text('Попробуйте перезагрузить страницу и заполнить её ещё раз!');
       }
     });
   });
