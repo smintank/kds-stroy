@@ -43,12 +43,11 @@ class Address(models.Model):
 
 
 class Order(models.Model):
-    ORDER_STATUS = (
-        ('REGISTERED', 'Зарегистрирован'),
-        ('PROCESSED', 'В работе'),
-        ('COMPLETED', 'Завершен'),
-        ('CANCELED', 'Отменен'),
-    )
+    class Status(models.TextChoices):
+        REGISTERED = 'Зарегистрирован'
+        PROCESSED = 'В работе'
+        COMPLETED = 'Завершен'
+        CANCELED = 'Отменен'
 
     order_id = models.IntegerField('Номер заказа')
     first_name = models.CharField("Имя", max_length=150)
@@ -58,7 +57,10 @@ class Order(models.Model):
         verbose_name="Дата создания", auto_now_add=True
     )
     status = models.CharField(
-        "Статус", choices=ORDER_STATUS, default='REGISTERED', max_length=20
+        "Статус",
+        choices=Status.choices,
+        default=Status.REGISTERED,
+        max_length=20
     )
     user = models.ForeignKey(
         User, on_delete=models.SET_NULL,
