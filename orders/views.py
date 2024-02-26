@@ -1,6 +1,6 @@
 import hashlib
 
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render
 
 from .forms import OrderCreationForm
@@ -19,14 +19,14 @@ def handle_photos(photos):
         try:
             if photo.content_type not in ['image/jpeg', 'image/png']:
                 raise ValueError(photo_name + 'не является поддерживаемым '
-                                 'типом изображения')
+                                              'типом изображения')
             if photo.size > 1024 * 1024 * MAX_UPLOADED_PHOTO_SIZE:
                 raise ValueError(photo_name + 'превышает максимальный размер в '
-                                 f'{MAX_UPLOADED_PHOTO_SIZE} Мб')
+                                              f'{MAX_UPLOADED_PHOTO_SIZE} Мб')
             file_hash = hashlib.md5(photo.read()).hexdigest()
             if proper_photos and file_hash in proper_photos:
                 raise ValueError(photo_name + 'является дубликатом другого '
-                                 'загружаемого файла')
+                                              'загружаемого файла')
         except ValueError as e:
             errors.append(str(e))
         else:
@@ -46,12 +46,14 @@ def create_order(request):
                 for photo in handled_photos:
                     OrderPhoto.objects.create(order=order, photo=photo)
             if errors:
-                return HttpResponse(
-                    f'Заявка создана, но следующие файлы не будут добавлены: ' 
-                    f'{", ".join(errors)}', status=201)
-            return HttpResponse(f'Заявка №{order.order_id} создана', status=201)
+                [print(error) for error in errors]
+            return JsonResponse({
+                'message': f'Заявка №{order.order_id} успешно создана!',
+                'text': f'Мы свяжемся с вами в ближайшее время!'
+                }, status=201)
         else:
-            return HttpResponse('Ошибка создания заявки', status=400)
+            return JsonResponse({'error': 'Не получилось создать заявку'},
+                                status=400)
     else:
         order_form = OrderCreationForm()
         return render(request, 'pages/main.html', {"order_form": order_form})
