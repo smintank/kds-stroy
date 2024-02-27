@@ -103,3 +103,30 @@ $(document).ready(function() {
         });
     });
 });
+
+$(document).ready(function() {
+    // Function to save inputted text to localStorage
+    function saveInputText(inputId) {
+        const inputValue = $('#' + inputId).val();
+        localStorage.setItem(inputId, inputValue);
+    }
+
+    function populateInputFields() {
+        $('input[type="text"], textarea').each(function() {
+            const inputId = $(this).attr('id');
+            const savedValue = localStorage.getItem(inputId);
+            if (savedValue) {
+                $(this).val(savedValue);
+            }
+        });
+    }
+
+    populateInputFields();
+
+    $('input[type="text"], textarea').on('input', function() {
+        const inputId = $(this).attr('id');
+        saveInputText(inputId);
+    });
+});
+
+
