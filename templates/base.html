@@ -1,5 +1,4 @@
 {% load static %}
-{% load django_bootstrap5 %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -10,15 +9,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="{% static 'js/phone_input.js' %}"></script>
     <script src="{% static 'js/name_input.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
   <body>
     {% include "includes/header.html" %}
       {% block content %}
       {% endblock %}
     {% include "includes/footer.html" %}
+    {% include "includes/order_popup.html" with form=order_form %}
+    <div id="cookieBanner" class="cookie-banner" style="display: none;">
+        <div class="container">
+            <p>Наш сайт использует файлы cookie, чтобы улучшить работу сайта, повысить его эффективность и удобство. Продолжая использовать сайт kdsstroy.ru, вы соглашаетесь на использование файлов cookie.</p>
+            <button id="acceptCookies">Ок</button>
+        </div>
+    </div>
   </body>
 </html>

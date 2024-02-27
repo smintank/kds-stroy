@@ -7,19 +7,19 @@ from kds_stroy import settings
 from users.views import register
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="pages/main.html"), name="home"),
+    path("", include("orders.urls")),
     path("admin/", admin.site.urls),
+    path(
+        "terms/",
+        TemplateView.as_view(template_name="pages/personal_terms.html"),
+        name="personal_info_terms"
+    ),
     path('verification/', include('verify_email.urls')),
     path("auth/registration/", register, name="registration"),
     path("auth/", include("django.contrib.auth.urls")),
     path("users/", include("users.urls")),
-    path("orders/", include("orders.urls")),
+    # path("orders/", include("orders.urls")),
     path("news/", include("news.urls")),
-    path(
-        "about/",
-        TemplateView.as_view(template_name="pages/about.html"),
-        name="about"
-    ),
 ]
 
 if settings.DEBUG:

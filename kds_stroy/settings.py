@@ -136,3 +136,5 @@ VERIFICATION_SUCCESS_TEMPLATE = TEMPLATES_DIR / 'registration/varification_done.
 VERIFICATION_FAILED_TEMPLATE = TEMPLATES_DIR / 'registration/varification_fail.html'
 EXPIRE_AFTER = "10m"
 MAX_RETRIES = 3
+
+MAX_UPLOADED_PHOTO_SIZE = 10  # in MB
