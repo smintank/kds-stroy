@@ -65,78 +65,30 @@ $(document).ready(function() {
     }
 });
 
-// $(document).ready(function() {
-//     // Function to check if the current URL hash is equal to the desired anchor
-//     function isAtAnchor(anchor) {
-//         return window.location.hash === `#${anchor}`;
-//     }
-//
-//     // Example usage
-//     if (isAtAnchor('services')) {
-//         console.log('User is at anchor #services');
-//     } else if (isAtAnchor('work_steps')) {
-//         console.log('User is not at anchor #work_steps');
-//     }
-// });
-
-// $(document).ready(function() {
-//     // Function to check if an element is in the viewport
-//     function isInViewport(elem) {
-//         const bounding = elem.getBoundingClientRect();
-//         return (
-//             bounding.top >= 0 &&
-//             bounding.left >= 0 &&
-//             bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-//             bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
-//         );
-//     }
-//
-//     // Function to get the currently visible anchor
-//     function getCurrentAnchor() {
-//         if (isInViewport($('#services')[0])) {
-//             return '#services';
-//         } else if (isInViewport($('#work_steps')[0])) {
-//             return '#work_steps';
-//         } else {
-//             return null;
-//         }
-//     }
-//
-//     // Scroll event listener to detect changes in the currently visible anchor
-//     $(window).on('scroll', function() {
-//         const currentAnchor = getCurrentAnchor();
-//         if (currentAnchor) {
-//             console.log('User is currently at anchor:', currentAnchor);
-//         }
-//     });
-// });
 
 $(document).ready(function() {
-    // Function to check if element is in viewport
     function isInViewport(element) {
         if (!element || !element.length) {
             return false;
         }
-        var elementTop = element.offset().top;
-        var elementBottom = elementTop + element.outerHeight();
-        var viewportTop = $(window).scrollTop();
-        var viewportBottom = viewportTop + $(window).height();
+        const elementTop = element.offset().top;
+        const elementBottom = elementTop + element.outerHeight();
+        const viewportTop = $(window).scrollTop();
+        const viewportBottom = viewportTop + $(window).height();
         return elementBottom > viewportTop && elementTop < viewportBottom;
     }
 
     $(window).scroll(function() {
         $('a[href="#services"], a[href="#work_steps"]').each(function() {
-            var targetId = $(this).attr('href');
-            var targetElement = $(targetId);
+            const targetId = $(this).attr('href');
+            const targetElement = $(targetId);
             if (isInViewport(targetElement)) {
-                // console.log(targetId + ' is in viewport');
                 if (targetId === '#services') {
                     $('#headerServices').attr('class', 'header-underline');
                 } else if (targetId === '#work_steps') {
                     $('#headerWorkSteps').attr('class', 'header-underline');
                 }
             } else {
-                // Remove the attribute when the target is not in viewport
                 if (targetId === '#services') {
                     $('#headerServices').removeAttr('class');
                 } else if (targetId === '#work_steps') {
