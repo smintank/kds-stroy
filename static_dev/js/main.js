@@ -18,6 +18,11 @@ $(document).ready(function() {
         $('.order_popup').hide();
     });
 
+    $('.overlay').click(function() {
+        $('#overlay').removeClass('active');
+        $('.order_popup').hide();
+    });
+
     $('.show_order_popup').click(function() {
         $('#overlay').addClass('active');
         $('.order_popup').show();
