@@ -116,7 +116,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = "home"
-
+LOGOUT_REDIRECT_URL = "home"
 LOGIN_URL = "login"
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -126,7 +126,7 @@ EMAIL_USE_TLS = bool(int(os.getenv("EMAIL_TLS", default=0)))
 EMAIL_USE_SSL = bool(int(os.getenv("EMAIL_SSL", default=0)))
 EMAIL_HOST_USER = os.environ.get('EMAIL_ID')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PW')
-DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_ID')
+DEFAULT_FROM_EMAIL = os.environ.get('FROM_EMAIL')
 
 
 VERIFICATION_SUCCESS_TEMPLATE = TEMPLATES_DIR / 'registration/varification_done.html'
