@@ -90,7 +90,11 @@ def register(request):
                 "registration/registration_done.html",
                 {"new_user": new_user}
             )
-        return HttpResponse("Ошибка валидации формы")
+        return render(
+            request,
+            "registration/registration_form.html",
+            {"user_form": user_form}
+        )
     else:
         user_form = UserRegistrationForm()
         return render(

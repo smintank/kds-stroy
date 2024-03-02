@@ -1,22 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="col d-flex justify-content-center">
-    <div class="card" style="width: 40rem;">
-      <div class="card-header">
-        Регистрация пользователя
-      </div>
-      <div class="card-body">
-        {% include "includes/errors.html" %}
+    <div class="container">
+      <h2>Регистрация пользователя</h2>
+      <div>
           <form method="post" action="{% url 'registration' %}" enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in user_form %}
               {{ field }}
+              {% if field.errors %}<p>{{ field.errors }}</p>{% endif %}
+                <br>
             {% endfor %}
               <button type="submit">
                 Зарегистрироваться
               </button>
           </form>
       </div>
+      <div class="request_new_link">
+        <a href="{% url 'request-new-link-from-email' %}">Отправить письмо верификации ещё раз</a>
+      </div>
     </div>
-  </div>
 {% endblock %}
