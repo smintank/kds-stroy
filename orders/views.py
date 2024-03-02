@@ -1,5 +1,6 @@
 import hashlib
 
+from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse
 from django.shortcuts import render
 
@@ -62,5 +63,10 @@ def create_order(request):
 
         order_id = request.session.get('order_id', None)
         if Order.objects.filter(order_id=order_id).exists():
-            context = {"form_submitted": True, 'order_id': order_id}
+            context = {
+                "form_submitted": True,
+                'order_id': order_id}
+
+        login_form = AuthenticationForm()
+        context['login_form'] = login_form
         return render(request, 'pages/main.html', context)

@@ -27,6 +27,10 @@ $(document).ready(function() {
         $('#overlay').addClass('active');
         $('.order_popup').show();
     });
+    $('.show_login_popup').click(function() {
+        $('#overlay').addClass('active');
+        $('.login_popup').show();
+    });
 });
 
 

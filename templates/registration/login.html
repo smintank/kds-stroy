@@ -6,7 +6,7 @@
         <div class="card-header">Войти на сайт</div>
         <div class="card-body">
           {% include "includes/errors.html" %}
-          <form method="post">
+          <form method="post" id="loginForm">
             {% csrf_token %}
             {% for field in form %}
               <div class="form-group row my-3 p-3">

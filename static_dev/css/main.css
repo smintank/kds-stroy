@@ -157,6 +157,10 @@ body {
     opacity: 0.5;
 }
 
+.show_login_popup {
+    display: flex;
+}
+
 .header_menu {
     display: none;
 }
@@ -225,8 +229,12 @@ body {
     border-color: #8F8F8F;
 }
 
+.main_form .show_order_popup {
+   margin-top: 10px;
+}
+
 .show_order_popup {
-    margin-top: 10px;
+
     padding: 15px 64px;
     background-color: #C82027;
     color: #fff;
@@ -413,7 +421,7 @@ body {
     padding-bottom: 50px;
 }
 
-.order_popup {
+.order_popup, .login_popup{
     display: none;
     position: fixed;
     z-index: 4;
@@ -589,6 +597,17 @@ body {
     font-size: 12px;
     cursor: pointer;
 }
+
+.login_button {
+    padding: 20px;
+    margin-top: 15px;
+    background-color: #C82027;
+    font-size: 16px;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+}
+
 
 .cookie-banner {
     position: fixed;
