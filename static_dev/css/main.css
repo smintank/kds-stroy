@@ -8,8 +8,18 @@ a {
     text-decoration: none;
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
 li  {
     list-style: none;
+}
+
+th, td {
+      border: 1px solid #333;
+      padding: 15px;
 }
 
 .container {
@@ -91,7 +101,7 @@ body {
 }
 
 .header_nav a {
-    color: #333333;
+    color: #333;
     padding: 0 20px;
 }
 
@@ -651,6 +661,15 @@ body {
 }
 
 
+footer {
+    min-width: 320px;
+    background-color: #656565;
+    width: 100vw;
+    height: auto;
+    padding: 50px 0;
+}
+
+
 
 @media screen and (max-width: 1200px) {
     .container {
@@ -670,6 +689,11 @@ body {
     .header_account {
         display: none;
     }
+}
+
+.li6 {
+    list-style-type: disc;
+    margin-left: 10px
 }
 
 
