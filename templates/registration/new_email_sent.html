@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container">
+      <h2>Ссылка успешно отправлена</h2>
+        <p>На вашу почту отправлено письмо со ссылкой для подтверждения регистрации.</p>
+      <div>
+        <p><a href="{% url 'home' %}">На главную</a></p>
+      </div>
+  </div>
+{% endblock %}

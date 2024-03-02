@@ -132,6 +132,9 @@ DEFAULT_FROM_EMAIL = os.environ.get('FROM_EMAIL')
 VERIFICATION_SUCCESS_TEMPLATE = TEMPLATES_DIR / 'registration/varification_done.html'
 VERIFICATION_FAILED_TEMPLATE = TEMPLATES_DIR / 'registration/varification_fail.html'
 HTML_MESSAGE_TEMPLATE = TEMPLATES_DIR / 'registration/verification_message.html'
+REQUEST_NEW_EMAIL_TEMPLATE = 'registration/new_email_request.html'
+LINK_EXPIRED_TEMPLATE = 'registration/expired.html'
+NEW_EMAIL_SENT_TEMPLATE = 'registration/new_email_sent.html'
 EXPIRE_AFTER = "10m"
 MAX_RETRIES = 3
 

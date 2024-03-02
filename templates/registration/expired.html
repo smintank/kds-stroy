@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container">
+      <h2>Срок действия ссылки истек</h2>
+      <p>Пожалуйста, заполните <a href="{% url 'request-new-link-from-email' %}">форму</a>, что бы мы выслали вам новую ссылку для подтверждения регистрации</p>
+      <div>
+        <p><a href="{% url 'home' %}">На главную</a></p>
+      </div>
+  </div>
+{% endblock %}
