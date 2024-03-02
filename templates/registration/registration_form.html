@@ -6,21 +6,16 @@
         Регистрация пользователя
       </div>
       <div class="card-body">
-        <form method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          {% for field in user_form %}
-            <div class="form-group row mb-3">
-              <label for="{{ field.id_for_label }}">
-                {{ field.label }}
-                {% if field.field.required %}
-                  <span class="required text-danger">*</span>
-                {% endif %}
-              </label>
+        {% include "includes/errors.html" %}
+          <form method="post" action="{% url 'registration' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in user_form %}
               {{ field }}
-            </div>
-          {% endfor %}
-{#          {% bootstrap_button button_type="submit" content="Создать" %}#}
-        </form>
+            {% endfor %}
+              <button type="submit">
+                Зарегистрироваться
+              </button>
+          </form>
       </div>
     </div>
   </div>

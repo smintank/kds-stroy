@@ -1,4 +1,5 @@
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -89,10 +90,11 @@ def register(request):
                 "registration/registration_done.html",
                 {"new_user": new_user}
             )
+        return HttpResponse("Ошибка валидации формы")
     else:
         user_form = UserRegistrationForm()
-    return render(
-        request,
-        "registration/registration_form.html",
-        {"user_form": user_form}
-    )
+        return render(
+            request,
+            "registration/registration_form.html",
+            {"user_form": user_form}
+        )
