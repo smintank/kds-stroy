@@ -21,21 +21,21 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class RegisterView(CreateView):
-    form_class = UserRegistrationForm
-    template_name = "registration/signup.html"
-    success_url = reverse_lazy("home:home")
+# class RegisterView(CreateView):
+#     form_class = UserRegistrationForm
+#     template_name = "registration/signup.html"
+#     success_url = reverse_lazy("home:home")
 
 
 class MyLoginView(LoginView):
 
     template_name = "registration/login.html"
-    success_url = reverse_lazy("home:home")
+    success_url = reverse_lazy("home")
 
 
 class MyLogoutView(LogoutView):
     template_name = "registration/logged_out.html"
-    next_page = reverse_lazy("home:home")
+    next_page = reverse_lazy("home")
 
 
 class ProfileView(DetailView):
@@ -60,24 +60,24 @@ class ProfileEditView(UpdateView):
     def get_object(self, queryset=None):
         return self.model.objects.get(pk=self.request.user.pk)
 
-
-class ChangePasswordView(PasswordChangeView):
-    template_name = "registration/change_password.html"
-    success_url = reverse_lazy("profile")
-
-
-class ChangeEmailView(UpdateView):
-    model = User
-    form_class = ChangeEmailForm
-    template_name = "registration/change_email.html"
-    success_url = reverse_lazy("profile")
+#
+# class ChangePasswordView(PasswordChangeView):
+#     template_name = "registration/change_password.html"
+#     success_url = reverse_lazy("profile")
 
 
-class ChangePhoneNumberView(UpdateView):
-    model = User
-    form_class = ChangePhoneNumberForm
-    template_name = "registration/change_phone_number.html"
-    success_url = reverse_lazy("profile")
+# class ChangeEmailView(UpdateView):
+#     model = User
+#     form_class = ChangeEmailForm
+#     template_name = "registration/change_email.html"
+#     success_url = reverse_lazy("profile")
+
+
+# class ChangePhoneNumberView(UpdateView):
+#     model = User
+#     form_class = ChangePhoneNumberForm
+#     template_name = "registration/change_phone_number.html"
+#     success_url = reverse_lazy("profile")
 
 
 def register(request):
