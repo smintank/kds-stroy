@@ -4,10 +4,6 @@
     margin: 0;
 }
 
-a {
-    text-decoration: none;
-}
-
 table {
     width: 100%;
     border-collapse: collapse;
@@ -51,6 +47,15 @@ h4 {
 p {
     font-size: 16px;
     font-weight: 400;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+a:hover {
+    opacity: 0.5;
 }
 
 
@@ -158,12 +163,32 @@ body {
     padding-left: 10px;
 }
 
+.header_account a {
+    color: #680A08;
+}
+
 .header_account img {
     height: auto;
     margin-left: 12px;
 }
 
 .header_account:hover {
+    opacity: 0.5;
+}
+
+.logout_button {
+    border: none;
+    background: none;
+    color: #680A08;
+    font-size: 16px;
+    font-weight: 400;
+    margin-left: 10px;
+    border-left: #680A08 2px solid;
+    padding: 5px 0 5px 10px;
+    cursor: pointer;
+}
+
+.logout_button:hover {
     opacity: 0.5;
 }
 
@@ -438,7 +463,7 @@ body {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: auto;
+    width: 540px;
     height: auto;
     background-color: #F5F5F3;
     border-radius: 5px;
@@ -505,6 +530,7 @@ body {
     color: #fff;
     border: none;
     border-radius: 3px;
+    cursor: not-allowed;
 }
 
 .image-preview-row {
@@ -608,16 +634,37 @@ body {
     cursor: pointer;
 }
 
+.checkbox_label a {
+    text-decoration: underline;
+}
+
+.login_submit {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
 .login_button {
-    padding: 20px;
+    padding: 20px 70px;
     margin-top: 15px;
     background-color: #C82027;
     font-size: 16px;
     color: #fff;
-    border: none;
+    border: #C82027 2px solid;
     border-radius: 3px;
+    cursor: pointer;
 }
 
+.login_button:hover {
+    background-color: #ffffff00;
+    color: #333333;
+}
+
+.login_forgot {
+    font-size: 12px;
+    margin-top: 15px;
+    cursor: pointer;
+}
 
 .cookie-banner {
     position: fixed;

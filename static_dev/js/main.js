@@ -16,19 +16,23 @@ $(document).ready(function() {
     $('.close').click(function() {
         $('#overlay').removeClass('active');
         $('.order_popup').hide();
+        $('.login_popup').hide();
     });
 
     $('.overlay').click(function() {
         $('#overlay').removeClass('active');
         $('.order_popup').hide();
+        $('.login_popup').hide();
     });
 
     $('.show_order_popup').click(function() {
         $('#overlay').addClass('active');
+        $('.login_popup').hide();
         $('.order_popup').show();
     });
     $('.show_login_popup').click(function() {
         $('#overlay').addClass('active');
+        $('.order_popup').hide();
         $('.login_popup').show();
     });
 });

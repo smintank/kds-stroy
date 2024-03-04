@@ -15,13 +15,13 @@
                 {% endif %}
             {% endfor %}
             <div class="login_submit">
-              <button type="submit" class="login_button" id="loginButton">
-                Войти
-              </button>
+              <button type="submit" class="login_button" id="loginButton" autofocus>Войти</button>
+              <a href="{% url 'registration' %}">Зарегистрироваться</a>
             </div>
           </form>
-          <a href="{% url 'registration' %}">Зарегистрироваться</a>
-          <a href="{% url 'password_reset' %}">Восстановить пароль</a>
+          <div class="login_forgot">
+            <a href="{% url 'password_reset' %}">Восстановить пароль</a>
+          </div>
         </div>
     </div>
 </div>
