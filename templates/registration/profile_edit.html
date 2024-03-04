@@ -11,22 +11,16 @@
             <button type="submit">Выйти</button>
           </form>
     </div>
-    <form method="get">
+    <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
       {% for field in form %}
         {{ field.label_tag }}
-          <label>
-              <input type="text" name="{{ field.name }}" disabled placeholder="{{ field.value }}">
-          </label>
-          {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+        {{ field }}
+        {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
         {% for error in field.errors %}<small>{{ error }}</small>{% endfor %}
         <br>
       {% endfor %}
+        <button type="submit">Сохранить</button>
     </form>
-    <ul>
-      <a href="{% url 'users:profile_edit' %}">Редактировать профиль</a>
-      <a href="{% url 'password_change' %}">Изменить пароль</a>
-    </ul>
-    <br>
   </div>
 {% endblock %}

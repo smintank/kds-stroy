@@ -57,23 +57,12 @@ class UserRegistrationForm(forms.ModelForm):
         return cleared_phone_number
 
 
-class UserEditForm(forms.ModelForm):
+class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "email", "phone_number")
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["first_name"].label = "Имя"
-        self.fields["last_name"].label = "Фамилия"
-        self.fields["email"].label = "Электронная почта"
-        self.fields["phone_number"].label = "Номер телефона"
-
-        self.fields["first_name"].widget.attrs.update({"class": "form-control"})
-        self.fields["last_name"].widget.attrs.update({"class": "form-control"})
-        self.fields["email"].widget.attrs.update({"class": "form-control"})
-        self.fields["phone_number"].widget.attrs.update(
-            {"class": "form-control"})
+        fields = (
+            "first_name", "last_name", "middle_name", "email", "phone_number",
+        )
 
 
 class ChangeEmailForm(forms.ModelForm):

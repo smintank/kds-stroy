@@ -10,7 +10,7 @@ from django.views.generic import (
 from verify_email.email_handler import send_verification_email
 
 from users.forms import (
-    UserEditForm,
+    UserForm,
     ChangeEmailForm,
     ChangePhoneNumberForm,
     UserRegistrationForm,
@@ -21,14 +21,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-# class RegisterView(CreateView):
-#     form_class = UserRegistrationForm
-#     template_name = "registration/signup.html"
-#     success_url = reverse_lazy("home:home")
-
-
 class MyLoginView(LoginView):
-
     template_name = "registration/login.html"
     success_url = reverse_lazy("home")
 
@@ -41,6 +34,7 @@ class MyLogoutView(LogoutView):
 class ProfileView(DetailView):
     model = User
     template_name = "registration/profile.html"
+    form_class = UserForm
 
     def get_object(self, queryset=None):
         return self.model.objects.get(pk=self.request.user.pk)
@@ -48,17 +42,25 @@ class ProfileView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["profile"] = get_object_or_404(self.model, pk=self.request.user.pk)
+        context["form"] = self.form_class(instance=context["profile"])
         return context
 
 
 class ProfileEditView(UpdateView):
     model = User
-    form_class = UserEditForm
+    form_class = UserForm
     template_name = "registration/profile_edit.html"
-    success_url = reverse_lazy("profile")
+    success_url = reverse_lazy("users:profile")
 
     def get_object(self, queryset=None):
         return self.model.objects.get(pk=self.request.user.pk)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["profile"] = get_object_or_404(self.model, pk=self.request.user.pk)
+        context["form"] = self.form_class(instance=context["profile"])
+        return context
+
 
 #
 # class ChangePasswordView(PasswordChangeView):
