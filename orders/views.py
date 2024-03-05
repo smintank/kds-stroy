@@ -7,7 +7,7 @@ from .models import OrderPhoto, Order
 from .utils import handle_photos
 
 
-class CreateOrderView(View):
+class OrderCreateView(View):
 
     def post(self, request):
         order_form = OrderCreationForm(request.POST, request.FILES or None)

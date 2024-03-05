@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import (
     UpdateView,
     DetailView,
+    FormView,
 )
 from verify_email.email_handler import send_verification_email
 
@@ -15,16 +16,6 @@ from users.forms import (
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
-
-
-# class MyLoginView(LoginView):
-#     template_name = "registration/login.html"
-#     success_url = reverse_lazy("home")
-
-
-# class MyLogoutView(LogoutView):
-#     template_name = "registration/logged_out.html"
-#     next_page = reverse_lazy("home")
 
 
 class ProfileView(DetailView):
@@ -73,6 +64,20 @@ class ProfileEditView(UpdateView):
             return super().form_valid(form)
 
 
+class RegistrationView(FormView):
+    template_name = 'registration/registration_form.html'
+    form_class = UserRegistrationForm
+    success_url = '/registration_done/'
+
+    def form_valid(self, form):
+        new_user = send_verification_email(self.request, form)
+        return render(
+            self.request,
+            "registration/registration_done.html",
+            {"new_user": new_user}
+        )
+
+
 # class ChangeEmailView(UpdateView):
 #     model = User
 #     form_class = ChangeEmailForm
@@ -85,27 +90,3 @@ class ProfileEditView(UpdateView):
 #     form_class = ChangePhoneNumberForm
 #     template_name = "registration/change_phone_number.html"
 #     success_url = reverse_lazy("profile")
-
-
-def register(request):
-    if request.method == "POST":
-        user_form = UserRegistrationForm(request.POST)
-        if user_form.is_valid():
-            new_user = send_verification_email(request, user_form)
-            return render(
-                request,
-                "registration/registration_done.html",
-                {"new_user": new_user}
-            )
-        return render(
-            request,
-            "registration/registration_form.html",
-            {"user_form": user_form}
-        )
-    else:
-        user_form = UserRegistrationForm()
-        return render(
-            request,
-            "registration/registration_form.html",
-            {"user_form": user_form}
-        )
