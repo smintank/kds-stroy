@@ -76,7 +76,7 @@ class Order(models.Model):
     #     Address, on_delete=models.SET_NULL, blank=True, null=True
 
     def __str__(self):
-        return self.order_id, self.first_name, self.phone_number
+        return f'Заказ №{self.order_id}'
 
     def save(self, *args, **kwargs):
         is_unique = False
