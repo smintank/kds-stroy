@@ -5,7 +5,7 @@
 {% block content %}
   <div class="container">
     <div>
-        <h3>Страница пользователя {{ profile }}</h3>
+        <h4>Страница пользователя {{ profile }}</h4>
           <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit">Выйти</button>
@@ -14,15 +14,18 @@
     <form method="get">
       {% csrf_token %}
       {% for field in form %}
-        {{ field.label_tag }}
-          <label>
+        <div class="row">
+          <div class="col-25">
+            {{ field.label_tag }}
+          </div>
+          <div class="col-75">
               <input type="text" name="{{ field.name }}" disabled placeholder="{{ field.value }}">
-          </label>
-          {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+          </div>
+        </div>
         {% for error in field.errors %}<small>{{ error }}</small>{% endfor %}
-        <br>
       {% endfor %}
     </form>
+    <br>
     <ul>
       <a href="{% url 'users:profile_edit' %}">Редактировать профиль</a>
       <a href="{% url 'password_change' %}">Изменить пароль</a>

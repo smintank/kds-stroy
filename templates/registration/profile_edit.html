@@ -5,7 +5,7 @@
 {% block content %}
   <div class="container">
     <div>
-        <h3>Страница пользователя {{ profile }}</h3>
+        <h4>Страница пользователя {{ profile }}</h4>
           <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit">Выйти</button>
@@ -14,11 +14,16 @@
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
       {% for field in form %}
-        {{ field.label_tag }}
-        {{ field }}
-        {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+        <div class="row">
+          <div class="col-25">
+            {{ field.label_tag }}
+          </div>
+          <div class="col-75">
+            {{ field }}
+            {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+          </div>
+        </div>
         {% for error in field.errors %}<small>{{ error }}</small>{% endfor %}
-        <br>
       {% endfor %}
         <button type="submit">Сохранить</button>
     </form>
