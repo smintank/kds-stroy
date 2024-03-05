@@ -18,6 +18,20 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
+class RegistrationView(FormView):
+    template_name = 'registration/registration_form.html'
+    form_class = UserRegistrationForm
+    success_url = '/registration_done/'
+
+    def form_valid(self, form):
+        new_user = send_verification_email(self.request, form)
+        return render(
+            self.request,
+            "registration/registration_done.html",
+            {"new_user": new_user}
+        )
+
+
 class ProfileView(DetailView):
     model = User
     template_name = "registration/profile.html"
@@ -62,20 +76,6 @@ class ProfileEditView(UpdateView):
             )
         else:
             return super().form_valid(form)
-
-
-class RegistrationView(FormView):
-    template_name = 'registration/registration_form.html'
-    form_class = UserRegistrationForm
-    success_url = '/registration_done/'
-
-    def form_valid(self, form):
-        new_user = send_verification_email(self.request, form)
-        return render(
-            self.request,
-            "registration/registration_done.html",
-            {"new_user": new_user}
-        )
 
 
 # class ChangeEmailView(UpdateView):
