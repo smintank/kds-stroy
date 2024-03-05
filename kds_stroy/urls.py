@@ -5,9 +5,10 @@ from django.views.generic import TemplateView
 
 from kds_stroy import settings
 from users.views import register
+from main.views import MainView
 
 urlpatterns = [
-    path("", include("orders.urls")),
+    path("", MainView.as_view(), name="home"),
     path("admin/", admin.site.urls),
     path(
         "privacy/",

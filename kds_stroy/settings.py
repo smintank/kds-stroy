@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "news.apps.NewsConfig",
     "orders.apps.OrdersConfig",
+    "main.apps.MainConfig",
     "verify_email.apps.VerifyEmailConfig",
 ]
 
