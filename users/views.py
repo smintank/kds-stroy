@@ -59,11 +59,18 @@ class ProfileEditView(UpdateView):
         context["form"] = self.form_class(instance=context["profile"])
         return context
 
-
-#
-# class ChangePasswordView(PasswordChangeView):
-#     template_name = "registration/change_password.html"
-#     success_url = reverse_lazy("profile")
+    def form_valid(self, form):
+        if 'email' in form.changed_data:
+            user = form.save(commit=False)
+            user.is_active = False
+            updated_user = send_verification_email(self.request, form)
+            return render(
+                self.request,
+                "registration/email_change_done.html",
+                {"updated_user": updated_user}
+            )
+        else:
+            return super().form_valid(form)
 
 
 # class ChangeEmailView(UpdateView):
