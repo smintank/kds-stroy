@@ -7,6 +7,7 @@ from django.views.generic import (
 )
 from verify_email.email_handler import send_verification_email
 
+from orders.models import Order
 from users.forms import (
     UserForm,
     ChangeEmailForm,
@@ -45,6 +46,7 @@ class ProfileView(DetailView):
         context["profile"] = get_object_or_404(self.model,
                                                pk=self.request.user.pk)
         context["form"] = self.form_class(instance=context["profile"])
+        context['orders'] = Order.objects.filter(phone_number=self.request.user.phone_number)
         return context
 
 
