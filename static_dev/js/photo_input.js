@@ -71,7 +71,7 @@ $(document).ready(function() {
 
     $.ajax({
       type: 'POST',
-      url: '/',
+      url: '/orders/create/',
       data: originFormData,
       processData: false,
       contentType: false,

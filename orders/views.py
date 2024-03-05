@@ -1,42 +1,15 @@
-import hashlib
-
-from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.views import View
+from django.views.generic import DetailView
 
 from .forms import OrderCreationForm
 from .models import OrderPhoto, Order
-from kds_stroy.settings import MAX_UPLOADED_PHOTO_SIZE
+from .utils import handle_photos
 
 
-def handle_photos(photos):
-    proper_photos = {}
-    errors = []
-    for photo in photos.lists():
-        photo = photo[1][0]
-        photo_name = f'Файл "{photo.name}"'
-        if len(proper_photos) >= 5:
-            break
-        try:
-            if photo.content_type not in ['image/jpeg', 'image/png']:
-                raise ValueError(photo_name + 'не является поддерживаемым '
-                                              'типом изображения')
-            if photo.size > 1024 * 1024 * MAX_UPLOADED_PHOTO_SIZE:
-                raise ValueError(photo_name + 'превышает максимальный размер в '
-                                              f'{MAX_UPLOADED_PHOTO_SIZE} Мб')
-            file_hash = hashlib.md5(photo.read()).hexdigest()
-            if proper_photos and file_hash in proper_photos:
-                raise ValueError(photo_name + 'является дубликатом другого '
-                                              'загружаемого файла')
-        except ValueError as e:
-            errors.append(str(e))
-        else:
-            proper_photos[file_hash] = photo
-    return list(proper_photos.values()), errors
+class CreateOrderView(View):
 
-
-def create_order(request):
-    if request.method == "POST":
+    def post(self, request):
         order_form = OrderCreationForm(request.POST, request.FILES or None)
 
         if order_form.is_valid():
@@ -44,29 +17,29 @@ def create_order(request):
             request.session['form_submitted'] = True
             request.session['order_id'] = order.order_id
 
-            handled_photos, errors = handle_photos(request.FILES)
+            handled_photos = handle_photos(request.FILES)
             if handled_photos:
                 for photo in handled_photos:
                     OrderPhoto.objects.create(order=order, photo=photo)
-            if errors:
-                [print(error) for error in errors]
+
             return JsonResponse({
                 'message': f'Заявка №{order.order_id} успешно создана!',
                 'text': f'Мы свяжемся с вами в ближайшее время!'
-                }, status=201)
+            }, status=201)
         else:
             return JsonResponse({'error': 'Не получилось создать заявку'},
                                 status=400)
-    else:
-        order_form = OrderCreationForm()
-        context = {"order_form": order_form}
 
-        order_id = request.session.get('order_id', None)
-        if Order.objects.filter(order_id=order_id).exists():
-            context = {
-                "form_submitted": True,
-                'order_id': order_id}
 
-        login_form = AuthenticationForm()
-        context['login_form'] = login_form
-        return render(request, 'pages/main.html', context)
+class OrderDetailView(DetailView):
+    model = Order
+    slug_field = 'order_id'
+    slug_url_kwarg = 'order_id'
+    # template_name = 'orders/order_detail.html'
+    # context_object_name = 'order'
+    # queryset = Order.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['photos'] = OrderPhoto.objects.filter(order=self.object)
+        return context

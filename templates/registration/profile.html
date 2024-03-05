@@ -32,4 +32,17 @@
     </ul>
     <br>
   </div>
+
+  <section>
+    <div class="container">
+      <h4>История заказов</h4>
+      <ul>
+        {% for order in orders %}
+          <li>
+            <a href="{% url 'orders:detail' post.id %}">№ {{ order.order_id }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
 {% endblock %}
