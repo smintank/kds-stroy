@@ -1,9 +1,6 @@
-from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
-from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import (
-    CreateView,
     UpdateView,
     DetailView,
 )
@@ -17,18 +14,17 @@ from users.forms import (
 )
 from django.contrib.auth import get_user_model
 
-
 User = get_user_model()
 
 
-class MyLoginView(LoginView):
-    template_name = "registration/login.html"
-    success_url = reverse_lazy("home")
+# class MyLoginView(LoginView):
+#     template_name = "registration/login.html"
+#     success_url = reverse_lazy("home")
 
 
-class MyLogoutView(LogoutView):
-    template_name = "registration/logged_out.html"
-    next_page = reverse_lazy("home")
+# class MyLogoutView(LogoutView):
+#     template_name = "registration/logged_out.html"
+#     next_page = reverse_lazy("home")
 
 
 class ProfileView(DetailView):
@@ -41,7 +37,8 @@ class ProfileView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["profile"] = get_object_or_404(self.model, pk=self.request.user.pk)
+        context["profile"] = get_object_or_404(self.model,
+                                               pk=self.request.user.pk)
         context["form"] = self.form_class(instance=context["profile"])
         return context
 
@@ -57,7 +54,8 @@ class ProfileEditView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["profile"] = get_object_or_404(self.model, pk=self.request.user.pk)
+        context["profile"] = get_object_or_404(self.model,
+                                               pk=self.request.user.pk)
         context["form"] = self.form_class(instance=context["profile"])
         return context
 
