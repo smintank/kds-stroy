@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
   <div class="container">
-    <h3>Войти на сайт</h3>
+    <h4>Войти на сайт</h4>
     <form method="post" id="loginForm">
       {% csrf_token %}
       {% for field in form %}
