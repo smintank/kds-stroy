@@ -63,6 +63,26 @@ class UserForm(forms.ModelForm):
         fields = (
             "first_name", "last_name", "middle_name", "email", "phone_number",
         )
+        widgets = {
+            'phone_number': forms.TextInput(
+                attrs={'type': "tel", 'autocomplete': 'tel',
+                       'placeholder': 'Номер телефона*', 'data-tel-input': ""}),
+            'email': forms.TextInput(
+                attrs={'placeholder': 'Электронная почта*', 'type': 'email',
+                       'autocomplete': 'email'}),
+            'first_name': forms.TextInput(
+                attrs={'placeholder': 'Имя*', 'autocomplete': 'given-name',
+                       'text-name-input': ''}),
+            'last_name': forms.TextInput(
+                attrs={'placeholder': 'Фамилия', 'autocomplete': 'family-name',
+                       'text-name-input': ''}),
+            'middle_name': forms.TextInput(
+                attrs={'placeholder': 'Отчество', 'text-name-input': '',
+                       'autocomplete': 'additional-name'}),
+            'address': forms.TextInput(
+                attrs={'placeholder': 'Адрес',
+                       'autocomplete': 'street-address'}),
+        }
 
 
 class ChangeEmailForm(forms.ModelForm):
