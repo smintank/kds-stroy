@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.views import View
 from django.views.generic import DetailView
 
+from kds_stroy import settings
 from .forms import OrderCreationForm
 from .models import OrderPhoto, Order
 from .utils import handle_photos
@@ -35,11 +36,12 @@ class OrderDetailView(DetailView):
     model = Order
     slug_field = 'order_id'
     slug_url_kwarg = 'order_id'
-    # template_name = 'orders/order_detail.html'
-    # context_object_name = 'order'
-    # queryset = Order.objects.all()
+    template_name = 'pages/order_detail.html'
+    context_object_name = 'order'
+    queryset = Order.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['photos'] = OrderPhoto.objects.filter(order=self.object)
+        context['MEDIA_URL'] = settings.MEDIA_URL
         return context
