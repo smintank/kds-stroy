@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}
   Страница пользователя {{ profile }}
 {% endblock %}
@@ -19,7 +20,9 @@
             {{ field.label_tag }}
           </div>
           <div class="col-75">
-              <input type="text" name="{{ field.name }}" disabled placeholder="{{ field.value }}">
+              <label>
+                  <input type="text" name="{{ field.name }}" disabled placeholder="{{ field.value }}">
+              </label>
           </div>
         </div>
         {% for error in field.errors %}<small>{{ error }}</small>{% endfor %}
@@ -36,13 +39,30 @@
   <section>
     <div class="container">
       <h4>История заказов</h4>
-      <ul>
+      <table>
+        <tr>
+          <th>Номер заказа</th>
+          <th>Дата заказа</th>
+          <th>Комментарий</th>
+          <th>Фото</th>
+          <th>Стоимость</th>
+          <th>Статус</th>
+        </tr>
         {% for order in orders %}
-          <li>
-            <a href="{% url 'orders:detail' order.order_id %}">№ {{ order.order_id }}</a>
-          </li>
+          <tr>
+            <td><a href="{% url 'orders:detail' order.order_id %}">{{ order.order_id }}</a></td>
+            <td>{{ order.created_at }}</td>
+            <td>{{ order.comment }}</td>
+            <td>
+              {% for photo in order.photos %}
+                <img src="{{ MEDIA_URL }}{{ photo.photo }}" alt="Фото заказа" width="40" height="40">
+              {% endfor %}
+            </td>
+            <td>{{ order.cost }}</td>
+            <td>{{ order.status }}</td>
+          </tr>
         {% endfor %}
-      </ul>
+      </table>
     </div>
   </section>
 {% endblock %}

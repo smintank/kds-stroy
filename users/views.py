@@ -1,3 +1,4 @@
+from django.db.models import Prefetch
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -7,7 +8,8 @@ from django.views.generic import (
 )
 from verify_email.email_handler import send_verification_email
 
-from orders.models import Order
+from kds_stroy import settings
+from orders.models import Order, OrderPhoto
 from users.forms import (
     UserForm,
     ChangeEmailForm,
@@ -35,7 +37,7 @@ class RegistrationView(FormView):
 
 class ProfileView(DetailView):
     model = User
-    template_name = "registration/profile.html"
+    template_name = "pages/profile.html"
     form_class = UserForm
 
     def get_object(self, queryset=None):
@@ -46,14 +48,22 @@ class ProfileView(DetailView):
         context["profile"] = get_object_or_404(self.model,
                                                pk=self.request.user.pk)
         context["form"] = self.form_class(instance=context["profile"])
-        context['orders'] = Order.objects.filter(phone_number=self.request.user.phone_number)
+
+        orders_with_photos = Order.objects.filter(
+            phone_number=self.request.user.phone_number
+        ).prefetch_related(
+            Prefetch('orderphoto_set', queryset=OrderPhoto.objects.all(),
+                     to_attr='photos')
+        )
+        context['orders'] = orders_with_photos
+        context['MEDIA_URL'] = settings.MEDIA_URL
         return context
 
 
 class ProfileEditView(UpdateView):
     model = User
     form_class = UserForm
-    template_name = "registration/profile_edit.html"
+    template_name = "pages/profile_edit.html"
     success_url = reverse_lazy("users:profile")
 
     def get_object(self, queryset=None):
