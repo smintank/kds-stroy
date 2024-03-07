@@ -13,23 +13,21 @@ $(document).ready(function() {
         }
     });
 
-    $('.close').click(function() {
+    $('.close, .overlay').click(function() {
         $('#overlay').removeClass('active');
         $('.order_popup').hide();
         $('.login_popup').hide();
-    });
-
-    $('.overlay').click(function() {
-        $('#overlay').removeClass('active');
-        $('.order_popup').hide();
-        $('.login_popup').hide();
+        $('.logout_popup').hide();
+        $('.photo_popup').hide();
     });
 
     $('.show_order_popup').click(function() {
         $('#overlay').addClass('active');
         $('.login_popup').hide();
+        $('.logout_popup').hide();
         $('.order_popup').show();
     });
+
     $('.show_login_popup').click(function() {
         $('#overlay').addClass('active');
         $('.order_popup').hide();
@@ -37,18 +35,15 @@ $(document).ready(function() {
     });
 
     $('#show_logout_popup').click(function() {
-        $('.logout_popup, #overlay').show();
-        console.log('Showing logout popup...');
+        $('#overlay').addClass('active');
+        $('.order_popup').hide();
+        $('.logout_popup').show();
     });
 
-    $('#cancelLogout, #overlay').click(function() {
-        $('#logoutPopup, .overlay').hide();
+    $('#cancelLogout, #confirmLogout').click(function() {
+         $('#overlay').removeClass('active');
+        $('#logoutPopup').hide();
     });
-
-    $('#confirmLogout').click(function() {
-        $('#logoutPopup, #overlay').hide();
-        console.log('Logging out...');
-    })
 });
 
 
