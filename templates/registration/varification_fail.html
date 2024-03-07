@@ -1,13 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="col d-flex justify-content-center">
-    <div class="card" style="width: 40rem;">
-      <div class="card-header">
-        Эта ссылка не действительна или уже была использована, мы не можем верифицировать вас используя эту ссылку.
-      </div>
-      <div class="card-body">
+  <div class="container">
+      <h4>Ошибка верификации</h4>
+      {% if status == 'Maxed out!' %}
+        <p>Превышен лимит запросов на верификацию аккаунта, свяжитесь с нашим администратором: <a href="mailto: support@kdsstroy.ru">support@kdsstroy.ru</a></p>
+      {% elif status == 'Invalid Link' %}
+        <p>Ссылка неверна или уже была использована, мы не можем подтвердить регистрацию по этой ссылке</p>
+      {% elif status == 'Already Verified!' %}
+        <p>Ваш аккаунт уже верифицирован</p>
+      {% else %}
+        <p>Произошла неизвестная ошибка, свяжитесь с нашим администратором: <a href="mailto: support@kdsstroy.ru">support@kdsstroy.ru</a></p>
+      {% endif %}
+      <div>
         <p><a href="{% url 'home' %}">На главную</a></p>
       </div>
-    </div>
   </div>
 {% endblock %}

@@ -1,0 +1,13 @@
+{% load static %}
+  <div id="logoutPopup" class="logout_popup">
+    <div class="popup_content">
+      <h3>Вы уверены, что хотите выйти?</h3>
+      <div class="logout_buttons">
+        <form method="post" action="{% url 'logout' %}" class="logoutForm">
+          {% csrf_token %}
+          <button id="confirmLogout" class="logout_button" type="submit">Да</button>
+        </form>
+        <button id="cancelLogout" class="logout_button">Нет</button>
+      </div>
+    </div>
+  </div>

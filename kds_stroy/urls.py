@@ -4,22 +4,21 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 
 from kds_stroy import settings
-from users.views import register
+from users.views import RegistrationView
+from main.views import MainView
 
 urlpatterns = [
-    path("", include("orders.urls")),
+    path("", MainView.as_view(), name="home"),
     path("admin/", admin.site.urls),
-    path(
-        "terms/",
-        TemplateView.as_view(template_name="pages/personal_terms.html"),
-        name="personal_info_terms"
-    ),
     path('verification/', include('verify_email.urls')),
-    path("auth/registration/", register, name="registration"),
+    path("auth/registration/", RegistrationView.as_view(), name="registration"),
     path("auth/", include("django.contrib.auth.urls")),
     path("users/", include("users.urls")),
-    # path("orders/", include("orders.urls")),
+    path("orders/", include("orders.urls")),
     path("news/", include("news.urls")),
+    path("privacy/",
+         TemplateView.as_view(template_name="pages/personal_terms.html"),
+         name="personal_info_terms"),
 ]
 
 if settings.DEBUG:

@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "news.apps.NewsConfig",
     "orders.apps.OrdersConfig",
+    "main.apps.MainConfig",
     "verify_email.apps.VerifyEmailConfig",
 ]
 
@@ -59,24 +60,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "kds_stroy.wsgi.application"
 
-if DEBUG:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.getenv("POSTGRES_DB", "django"),
-            "USER": os.getenv("POSTGRES_USER", "django"),
-            "PASSWORD": os.getenv("POSTGRES_PASSWORD", ""),
-            "HOST": os.getenv("DB_HOST", ""),
-            "PORT": os.getenv("DB_PORT", 5432),
-        }
-    }
+}
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": os.getenv("POSTGRES_DB", "django"),
+#         "USER": os.getenv("POSTGRES_USER", "django"),
+#         "PASSWORD": os.getenv("POSTGRES_PASSWORD", ""),
+#         "HOST": os.getenv("DB_HOST", ""),
+#         "PORT": os.getenv("DB_PORT", 5432),
+#     }
+# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -111,29 +112,30 @@ STATICFILES_DIRS = [BASE_DIR / "static_dev"]
 
 MEDIA_URL = "/media/"
 
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = "home"
-
+LOGOUT_REDIRECT_URL = "home"
 LOGIN_URL = "login"
 
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_PORT = 465
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT'))
+EMAIL_USE_TLS = bool(int(os.getenv("EMAIL_TLS", default=0)))
+EMAIL_USE_SSL = bool(int(os.getenv("EMAIL_SSL", default=0)))
 EMAIL_HOST_USER = os.environ.get('EMAIL_ID')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PW')
-DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_ID')
+DEFAULT_FROM_EMAIL = os.environ.get('FROM_EMAIL')
 
 
 VERIFICATION_SUCCESS_TEMPLATE = TEMPLATES_DIR / 'registration/varification_done.html'
 VERIFICATION_FAILED_TEMPLATE = TEMPLATES_DIR / 'registration/varification_fail.html'
+HTML_MESSAGE_TEMPLATE = TEMPLATES_DIR / 'registration/verification_message.html'
+REQUEST_NEW_EMAIL_TEMPLATE = 'registration/new_email_request.html'
+LINK_EXPIRED_TEMPLATE = 'registration/expired.html'
+NEW_EMAIL_SENT_TEMPLATE = 'registration/new_email_sent.html'
 EXPIRE_AFTER = "10m"
 MAX_RETRIES = 3
 

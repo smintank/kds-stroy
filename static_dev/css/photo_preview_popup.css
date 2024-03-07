@@ -1,0 +1,53 @@
+.photo_popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+}
+
+.popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#popupImage {
+    height: calc(100vh - 200px);
+    transition: opacity 0.3s ease-in-out;
+}
+
+.close {
+    position: absolute;
+    color: #ffffff;
+    right: 0;
+    padding: 0 15px;
+    border-radius: 0 0 0 3px;
+    font-size: 28px;
+    background-color: #00000066;
+    cursor: pointer;
+}
+
+.navigation span {
+    cursor: pointer;
+    font-size: 28px;
+    color: #dddddd;
+    position: absolute;
+    top: 50%;
+    background-color: #00000066;
+    padding: 0 15px;
+}
+
+.navigation span:hover, .close:hover {
+    color: #555555;
+}
+
+.left_nav {
+    left: 0;
+}
+
+.right_nav {
+    right: 0;
+}
