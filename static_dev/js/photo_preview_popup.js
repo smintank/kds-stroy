@@ -1,18 +1,17 @@
 $(document).ready(function() {
-    const $popup = $('#photoPopup');
     const $prevPhotoBtn = $('#prevPhoto');
     const $nextPhotoBtn = $('#nextPhoto');
     const $popupImage = $('#popupImage');
     let photos = [];
     let currentIndex = 0;
 
-    // Function to open the popup
     function openPopup(index, photo) {
-
         currentIndex = index;
+        toggleNavigationButtons();
         $popupImage.attr('src', photo);
         $('#overlay').addClass('active');
         $('.photo_popup').show();
+
     }
 
     function closePopup() {
@@ -23,33 +22,27 @@ $(document).ready(function() {
     $('.close').click(closePopup);
     $('.overlay').click(closePopup);
 
-    // Close the popup when pressing the "Esc" key
     $(document).on('keydown', function(event) {
         if (event.keyCode === 27) closePopup();
-        if (event.keyCode === 37) navigatePhotos('prev');
-        if (event.keyCode === 39) navigatePhotos('next');
+        if (event.keyCode === 37) navigatePhotos(-1);
+        if (event.keyCode === 39) navigatePhotos(1);
     });
 
     $nextPhotoBtn.on('click', function() {
-        navigatePhotos('next');
+        navigatePhotos(1);
     });
 
     $prevPhotoBtn.on('click', function() {
-        navigatePhotos('prev');
+        navigatePhotos(-1);
     });
 
 
-    function navigatePhotos(direction) {
-        if (direction === 'prev') {
-            if (currentIndex > 0) {
-                currentIndex--;
-                $popupImage.attr('src', photos[currentIndex]);
-            }
-        } else if (direction === 'next') {
-            if (currentIndex < photos.length - 1) {
-                currentIndex++;
-                $popupImage.attr('src', photos[currentIndex]);
-            }
+    function navigatePhotos(step) {
+        const newIndex = currentIndex + step;
+        if (newIndex >= 0 && newIndex < photos.length) {
+            currentIndex = newIndex;
+            $popupImage.attr('src', photos[currentIndex]);
+            toggleNavigationButtons();
         }
     }
 
@@ -68,4 +61,9 @@ $(document).ready(function() {
             openPopup(i, $(this).attr('src'));
         });
     });
+
+    function toggleNavigationButtons() {
+        $prevPhotoBtn.toggle(currentIndex > 0);
+        $nextPhotoBtn.toggle(currentIndex < photos.length - 1);
+    }
 });
