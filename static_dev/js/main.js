@@ -35,6 +35,20 @@ $(document).ready(function() {
         $('.order_popup').hide();
         $('.login_popup').show();
     });
+
+    $('#show_logout_popup').click(function() {
+        $('.logout_popup, #overlay').show();
+        console.log('Showing logout popup...');
+    });
+
+    $('#cancelLogout, #overlay').click(function() {
+        $('#logoutPopup, .overlay').hide();
+    });
+
+    $('#confirmLogout').click(function() {
+        $('#logoutPopup, #overlay').hide();
+        console.log('Logging out...');
+    })
 });
 
 

@@ -24,14 +24,9 @@
                     <button class="show_order_popup">Вызвать мастера</button>
                 </div>
                 {% if user.is_authenticated %}
-                  <div class="header_account">
-                    {% if view_name == 'users:profile' %}<div class="header_underline">{% endif %}
+                  <div class="header_account {% if view_name == 'users:profile' %}header_underline{% endif %}">
                       <a href="{% url 'users:profile' %}">{{ user.first_name }}</a>
-                        <form method="post" action="{% url 'logout' %}" class="logoutForm">
-                          {% csrf_token %}
-                          <button class="logout_button" type="submit"><img class="exit_img" alt="Exit" src="{% static 'img/exit.png' %}"></button>
-                        </form>
-                    {% if view_name == 'users:profile' %}</div>{% endif %}
+                      <img id="show_logout_popup" class="exit_img" alt="Exit" src="{% static 'img/exit.png' %}">
                   </div>
                 {% else %}
                   <div class="header_account">

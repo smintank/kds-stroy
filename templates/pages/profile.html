@@ -5,12 +5,8 @@
 {% endblock %}
 {% block content %}
   <div class="container">
-    <div>
+    <div class="profile_title">
         <h4>Страница пользователя {{ profile }}</h4>
-          <form method="post" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit">Выйти</button>
-          </form>
     </div>
     <form method="get">
       {% csrf_token %}
