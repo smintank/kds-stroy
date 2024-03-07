@@ -1,10 +1,9 @@
 {% load static %}
-<div id="overlay" class="overlay"></div>
+<script src="{% static 'js/order_popup.js' %}"></script>
+<script src="{% static 'js/photo_input.js' %}"></script>
 <div class="order_popup">
     <span class="close">&times;</span>
     {% if not form_submitted %}
-        <script src="{% static 'js/order_popup.js' %}"></script>
-        <script src="{% static 'js/photo_input.js' %}"></script>
         <div class="form_content" id="formContent">
             <h3>Заявка на вызов мастера</h3>
             <p>Заполните форму и мы свяжемся с вами в течение 15 минут.</p>
@@ -18,10 +17,10 @@
                     {% endif %}
                 {% endfor %}
                 <div id="imagePreviewRow" class="image-preview-row">
-                                                                       <div id="imagePreviews" class="image-previews"></div>
-                                                                       <label for="fileInput" class="add-image-button" id='addImage'>+</label>
-                                                                       <label for="fileInput" class="add-image-text" id='addImageText'>Добавьте фото</label>
-                                                                       </div>
+                  <div id="imagePreviews" class="image-previews"></div>
+                  <label for="fileInput" class="add-image-button" id='addImage'>+</label>
+                  <label for="fileInput" class="add-image-text" id='addImageText'>Добавьте фото</label>
+                </div>
                 <div class="personal_info_agree">
                     <div class="checkbox">
                         <input type="checkbox" id="checkBox" name="checkbox">

@@ -1,6 +1,5 @@
 {% load static %}
-<div id="overlay" class="overlay"></div>
-<div class="login_popup">
+  <div class="login_popup">
     <span class="close">&times;</span>
         <div class="form_content" id="formContent">
           <h3>Вход в личный кабинет</h3>
@@ -9,9 +8,11 @@
             {% csrf_token %}
             {% for field in form %}
               {% if field.name == 'username' %}
-                <input type="{{ field.type }}" name="username" autocomplete="username" required id="id_username" placeholder="E-mail/Логин*">
+                  <label for="id_username"></label>
+                  <input type="{{ field.type }}" name="username" autocomplete="username" required id="id_username" placeholder="E-mail/Логин*">
               {% else %}
-                <input type="password" name="password" autocomplete="current-password" required id="id_password" placeholder="Пароль*">
+                  <label for="id_password"></label>
+                  <input type="password" name="password" autocomplete="current-password" required id="id_password" placeholder="Пароль*">
                 {% endif %}
             {% endfor %}
             <div class="login_submit">
@@ -23,5 +24,4 @@
             <a href="{% url 'password_reset' %}">Восстановить пароль</a>
           </div>
         </div>
-    </div>
-</div>
+  </div>

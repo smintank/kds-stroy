@@ -55,7 +55,7 @@
             <td>{{ order.comment }}</td>
             <td>
               {% for photo in order.photos %}
-                <img src="{{ MEDIA_URL }}{{ photo.photo }}" alt="Фото заказа" width="40" height="40">
+                <img src="{{ MEDIA_URL }}{{ photo.photo }}" class='photo_miniature' alt="Фото заказа">
               {% endfor %}
             </td>
             <td>{{ order.cost }}</td>

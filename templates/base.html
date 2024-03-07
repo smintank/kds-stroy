@@ -14,17 +14,16 @@
     <script src="{% static 'js/name_input.js' %}"></script>
   </head>
   <body>
+    <div id="overlay" class="overlay"></div>
     {% include "includes/header.html" %}
-      {% block content %}
-      {% endblock %}
+    {% block content %}
+    {% endblock %}
     {% include "includes/footer.html" %}
+    {% if not user.is_authenticated %}
+      {% include "includes/login_popup.html" with form=login_form  %}
+    {% endif %}
     {% include "includes/order_popup.html" with form=order_form %}
-    {% include "includes/login_popup.html" with form=login_form %}
-    <div id="cookieBanner" class="cookie-banner" style="display: none;">
-        <div class="container">
-            <p>Наш сайт использует файлы cookie, чтобы улучшить работу сайта, повысить его эффективность и удобство. Продолжая использовать сайт kdsstroy.ru, вы соглашаетесь на использование файлов cookie.</p>
-            <button id="acceptCookies">Ок</button>
-        </div>
-    </div>
+    {% include "includes/photo_popup.html" %}
+    {% include "includes/cookie_banner.html" %}
   </body>
 </html>

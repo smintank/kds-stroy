@@ -1,0 +1,13 @@
+{% load static %}
+  <script src="{% static 'js/photo_preview_popup.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'css/photo_preview_popup.css' %}">
+  <div id="photoPopup" class="photo_popup">
+    <div class="popup-content">
+      <span class="close">&times;</span>
+      <img id="popupImage" alt="PhotoPreview">
+      <div class="navigation">
+        <span id="prevPhoto" class="left_nav"><</span>
+        <span id="nextPhoto" class="right_nav">></span>
+      </div>
+    </div>
+  </div>
