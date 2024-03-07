@@ -97,9 +97,9 @@ $(document).ready(function() {
             const targetElement = $(targetId);
             if (isInViewport(targetElement)) {
                 if (targetId === '#services') {
-                    $('#headerServices').attr('class', 'header-underline');
+                    $('#headerServices').attr('class', 'header_underline');
                 } else if (targetId === '#work_steps') {
-                    $('#headerWorkSteps').attr('class', 'header-underline');
+                    $('#headerWorkSteps').attr('class', 'header_underline');
                 }
             } else {
                 if (targetId === '#services') {

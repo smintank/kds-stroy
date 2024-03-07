@@ -167,7 +167,7 @@ body {
     color: #680A08;
 }
 
-.header_account img {
+.enter_img {
     height: auto;
     margin-left: 12px;
 }
@@ -176,16 +176,18 @@ body {
     opacity: 0.5;
 }
 
+.exit_img {
+    width: 20px;
+    padding-top: 2px;
+    margin: 0;
+}
+
 .logout_button {
     border: none;
     background: none;
-    color: #680A08;
-    font-size: 16px;
-    font-weight: 400;
-    margin-left: 10px;
-    border-left: #680A08 2px solid;
-    padding: 5px 0 5px 10px;
+    padding-left: 10px;
     cursor: pointer;
+    display: table;
 }
 
 .logout_button:hover {
@@ -207,6 +209,10 @@ body {
 
 .header_menu a:hover {
     color: #8F8F8F;
+}
+
+.header_underline {
+    box-shadow: inset 0 -5px 0 #606060;
 }
 
 .main_screen {
@@ -702,11 +708,6 @@ body {
     color: #656565;
     border: #656565 2px solid;
 }
-
-.header-underline {
-    box-shadow: inset 0 -5px 0 #606060;
-}
-
 
 footer {
     min-width: 320px;
