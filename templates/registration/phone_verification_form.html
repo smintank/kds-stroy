@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container">
+    <h4>Подтверждение телефонного номера</h4>
+    <p>
+      Для завершения регистрации вам нужно подтвердить ваш номер телефона.
+      В течение нескольких секунд на указанный вами номер поступит звонок.
+      Введите последние 4 цифры номера с которого поступит звонок.
+    </p>
+    <div>
+      <form method="post" action="{% url 'users:phone_verification' %}">
+        {% csrf_token %}
+        <label for="pin">Пин-код</label>
+        <input type="text" id="pin" name="pincode" class="ds_input">
+        {% if error %}
+          <p>{{ error }}</p>
+          <div><p><a href="{% url 'users:phone_verification' %}">Повторный звонок</a></p></div>
+        {% endif %}
+        <button type="submit">Подтвердить</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

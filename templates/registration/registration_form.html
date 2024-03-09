@@ -10,13 +10,14 @@
               {% if field.errors %}<p>{{ field.errors }}</p>{% endif %}
                 <br>
             {% endfor %}
+            {% if error %}<p>{{ error }}</p>{% endif %}
               <button type="submit">
                 Зарегистрироваться
               </button>
           </form>
       </div>
-      <div class="request_new_link">
-        <a href="{% url 'request-new-link-from-email' %}">Отправить письмо верификации ещё раз</a>
-      </div>
+{#      <div class="request_new_link">#}
+{#        <a href="{% url 'request-new-link-from-email' %}">Отправить письмо верификации ещё раз</a>#}
+{#      </div>#}
     </div>
 {% endblock %}

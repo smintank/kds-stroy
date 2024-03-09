@@ -1,6 +1,6 @@
 import logging
 from django.db.models import Prefetch
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
     UpdateView,
@@ -11,6 +11,7 @@ from verify_email.email_handler import send_verification_email
 
 from kds_stroy import settings
 from orders.models import Order, OrderPhoto
+from .utils import call_and_get_pin
 from users.forms import (
     UserForm,
     ChangeEmailForm,
@@ -30,12 +31,36 @@ class RegistrationView(FormView):
     success_url = '/registration_done/'
 
     def form_valid(self, form):
-        new_user = send_verification_email(self.request, form)
-        return render(
-            self.request,
-            "registration/registration_done.html",
-            {"new_user": new_user}
-        )
+        user = form.save(commit=False)
+        user.is_active = False
+        user.save()
+
+        self.request.session['phone_number'] = form.cleaned_data['phone_number']
+        return redirect('users:phone_verification')
+
+
+def phone_verification(request):
+    phone_number = request.session['phone_number']
+
+    if request.method == 'POST':
+        pincode = request.session['pincode']
+        print(request.POST.get('pincode'))
+        print(pincode)
+        if pincode and pincode == request.POST.get('pincode'):
+            new_user = User.objects.get(phone_number=phone_number)
+            new_user.is_active = True
+            new_user.is_phone_verified = True
+            new_user.save()
+
+            # send_verification_email(request, form)
+            return render(request, "registration/registration_done.html",
+                          {"new_user": new_user})
+        else:
+            return render(request, 'registration/phone_verification_form.html',
+                          {'error': 'Не верный пин-код! Попробуйте еще раз!'})
+    else:
+        request.session['pincode'] = call_and_get_pin(phone_number)
+        return render(request, 'registration/phone_verification_form.html')
 
 
 class ProfileView(DetailView):
