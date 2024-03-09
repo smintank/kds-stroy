@@ -1,3 +1,4 @@
+import logging
 from django.db.models import Prefetch
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
@@ -19,6 +20,8 @@ from users.forms import (
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
+logger = logging.getLogger(__name__)
 
 
 class RegistrationView(FormView):
@@ -88,7 +91,6 @@ class ProfileEditView(UpdateView):
             )
         else:
             return super().form_valid(form)
-
 
 # class ChangeEmailView(UpdateView):
 #     model = User
