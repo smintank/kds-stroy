@@ -14,12 +14,14 @@
     <div>
       <form method="post" action="{% url 'users:phone_verification' %}">
         {% csrf_token %}
-        <label for="pin">Пин-код</label>
-        <input type="text" id="pin" name="pincode" class="ds_input">
-        {% if error %}
-          <p>{{ error }}</p>
-          <div><p><a href="{% url 'users:phone_verification' %}">Повторный звонок</a></p></div>
-        {% endif %}
+        {% for field in form %}
+          {{ field }}
+          {% if field.errors %}
+              <p>{{ field.errors }}</p>
+              <a href="{% url 'users:phone_verification' %}">Отправить код повторно</a>
+          {% endif %}
+
+        {% endfor %}
         <button type="submit">Подтвердить</button>
       </form>
     </div>

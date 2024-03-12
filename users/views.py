@@ -2,7 +2,6 @@ import logging
 from django.db.models import Prefetch
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views import View
 from django.views.generic import (
     UpdateView,
     DetailView,
@@ -17,6 +16,7 @@ from users.forms import (
     UserForm,
     ChangePhoneNumberForm,
     UserRegistrationForm,
+    PhoneVerificationForm
 )
 from django.contrib.auth import get_user_model
 
@@ -54,41 +54,45 @@ class ChangePhoneNumberView(FormView):
         return redirect('users:phone_verification')
 
 
-class PhoneVerificationView(View):
-    def post(self, request):
+class PhoneVerificationView(FormView):
+    template_name = 'registration/phone_verification_form.html'
+    form_class = PhoneVerificationForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['phone_number'] = self.request.session.get('phone_number')
+        return context
+
+    def get(self, request, *args, **kwargs):
+        phone_number = self.request.session.get('phone_number')
+        pincode = call_and_get_pin(phone_number)
+        self.request.session['pincode'] = pincode
+        return super().get(request, *args, **kwargs)
+
+    def form_valid(self, form):
         new_phone_number = self.request.session.get('phone_number')
         pincode = self.request.session.get('pincode')
 
-        if pincode and pincode == self.request.POST.get('pincode'):
+        if pincode and pincode == form.cleaned_data['pincode']:
             old_phone_number = self.request.session.get('old_phone_number')
             if old_phone_number:
-                user_orders = Order.objects.filter(
-                    phone_number=old_phone_number
-                )
-                for order in user_orders:
-                    order.phone_number = new_phone_number
-                    order.save()
-
                 user = get_object_or_404(User, phone_number=old_phone_number)
                 user.phone_number = new_phone_number
-                user.save()
+                Order.objects.filter(phone_number=old_phone_number).update(
+                    phone_number=new_phone_number
+                )
                 del self.request.session['old_phone_number']
-
-            user = get_object_or_404(User, phone_number=new_phone_number)
+            else:
+                user = get_object_or_404(User, phone_number=new_phone_number)
             user.is_active = True
             user.is_phone_verified = True
             user.save()
 
-            return render(request, "registration/registration_done.html",
+            return render(self.request, "registration/registration_done.html",
                           {"new_user": user})
         else:
-            return render(request, 'registration/phone_verification_form.html',
-                          {'error': 'Неверный пин-код! Попробуйте еще раз!'})
-
-    def get(self, request):
-        phone_number = self.request.session.get('phone_number')
-        self.request.session['pincode'] = call_and_get_pin(phone_number)
-        return render(request, 'registration/phone_verification_form.html')
+            form.add_error('pincode', 'Неверный пин-код! Попробуйте еще раз!')
+            return self.form_invalid(form)
 
 
 class ProfileView(DetailView):

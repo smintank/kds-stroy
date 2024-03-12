@@ -108,3 +108,12 @@ class ChangePhoneNumberForm(forms.ModelForm):
 
         self.fields["phone_number"].widget.attrs.update(
             {"class": "form-control"})
+
+
+class PhoneVerificationForm(forms.Form):
+    pincode = forms.CharField(
+        label="Код подтверждения", max_length=4, min_length=4, required=True,
+        widget=forms.TextInput(
+            attrs={'class': "ds_input"}
+        )
+    )
