@@ -13,7 +13,7 @@ urlpatterns = [
     path('verification/', include('verify_email.urls')),
     path("auth/registration/", RegistrationView.as_view(), name="registration"),
     path("auth/", include("django.contrib.auth.urls")),
-    path("users/", include("users.urls")),
+    path("profile/", include("users.urls")),
     path("orders/", include("orders.urls")),
     path("news/", include("news.urls")),
     path("privacy/",
