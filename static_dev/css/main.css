@@ -766,6 +766,15 @@ footer {
   margin-top: 6px;
 }
 
+.col-75 input {
+    border: #dddddd 1px solid;
+    background-color: #eeeeee;
+    padding: 2px;
+    width: 30%;
+    font-family: 'Rubik';
+    font-size: 16px;
+}
+
 /* Clear floats after the columns */
 .row::after {
   content: "";

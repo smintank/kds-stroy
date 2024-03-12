@@ -2,6 +2,7 @@ import logging
 from django.db.models import Prefetch
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import (
     UpdateView,
     DetailView,
@@ -14,7 +15,6 @@ from orders.models import Order, OrderPhoto
 from .utils import call_and_get_pin
 from users.forms import (
     UserForm,
-    ChangeEmailForm,
     ChangePhoneNumberForm,
     UserRegistrationForm,
 )
@@ -39,27 +39,55 @@ class RegistrationView(FormView):
         return redirect('users:phone_verification')
 
 
-def phone_verification(request):
-    phone_number = request.session['phone_number']
+class ChangePhoneNumberView(FormView):
+    model = User
+    form_class = ChangePhoneNumberForm
+    template_name = "pages/change_phone_number.html"
 
-    if request.method == 'POST':
-        pincode = request.session['pincode']
-        print(request.POST.get('pincode'))
-        print(pincode)
-        if pincode and pincode == request.POST.get('pincode'):
-            new_user = User.objects.get(phone_number=phone_number)
-            new_user.is_active = True
-            new_user.is_phone_verified = True
-            new_user.save()
+    def get_queryset(self):
+        return self.model.objects.get(pk=self.request.user.pk)
 
-            # send_verification_email(request, form)
+    def form_valid(self, form):
+        old_phone_number = self.request.user.phone_number
+        self.request.session['old_phone_number'] = old_phone_number
+        self.request.session['phone_number'] = form.cleaned_data['phone_number']
+        return redirect('users:phone_verification')
+
+
+class PhoneVerificationView(View):
+    def post(self, request):
+        new_phone_number = self.request.session.get('phone_number')
+        pincode = self.request.session.get('pincode')
+
+        if pincode and pincode == self.request.POST.get('pincode'):
+            old_phone_number = self.request.session.get('old_phone_number')
+            if old_phone_number:
+                user_orders = Order.objects.filter(
+                    phone_number=old_phone_number
+                )
+                for order in user_orders:
+                    order.phone_number = new_phone_number
+                    order.save()
+
+                user = get_object_or_404(User, phone_number=old_phone_number)
+                user.phone_number = new_phone_number
+                user.save()
+                del self.request.session['old_phone_number']
+
+            user = get_object_or_404(User, phone_number=new_phone_number)
+            user.is_active = True
+            user.is_phone_verified = True
+            user.save()
+
             return render(request, "registration/registration_done.html",
-                          {"new_user": new_user})
+                          {"new_user": user})
         else:
             return render(request, 'registration/phone_verification_form.html',
-                          {'error': 'Не верный пин-код! Попробуйте еще раз!'})
-    else:
-        request.session['pincode'] = call_and_get_pin(phone_number)
+                          {'error': 'Неверный пин-код! Попробуйте еще раз!'})
+
+    def get(self, request):
+        phone_number = self.request.session.get('phone_number')
+        self.request.session['pincode'] = call_and_get_pin(phone_number)
         return render(request, 'registration/phone_verification_form.html')
 
 
@@ -105,6 +133,8 @@ class ProfileEditView(UpdateView):
         return context
 
     def form_valid(self, form):
+        if 'phone_number' in form.changed_data:
+            form.changed_data.remove('phone_number')
         if 'email' in form.changed_data:
             user = form.save(commit=False)
             user.is_active = False
@@ -116,16 +146,3 @@ class ProfileEditView(UpdateView):
             )
         else:
             return super().form_valid(form)
-
-# class ChangeEmailView(UpdateView):
-#     model = User
-#     form_class = ChangeEmailForm
-#     template_name = "registration/change_email.html"
-#     success_url = reverse_lazy("profile")
-
-
-# class ChangePhoneNumberView(UpdateView):
-#     model = User
-#     form_class = ChangePhoneNumberForm
-#     template_name = "registration/change_phone_number.html"
-#     success_url = reverse_lazy("profile")
