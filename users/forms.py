@@ -2,7 +2,7 @@ import re
 
 from django import forms
 
-from users.models import User
+from users.models import User, PhoneVerification
 
 
 class UserRegistrationForm(forms.ModelForm):
@@ -110,10 +110,30 @@ class ChangePhoneNumberForm(forms.ModelForm):
             {"class": "form-control"})
 
 
-class PhoneVerificationForm(forms.Form):
-    pincode = forms.CharField(
-        label="Код подтверждения", max_length=4, min_length=4, required=True,
-        widget=forms.TextInput(
-            attrs={'class': "ds_input"}
-        )
-    )
+class PhoneVerificationForm(forms.ModelForm):
+
+    class Meta:
+        model = PhoneVerification
+        fields = ('pincode',)
+        widgets = {
+            'pincode': forms.TextInput(
+                attrs={'class': "ds_input"})
+        }
+
+    def __init__(self, *args, **kwargs):
+        self.correct_pincode = kwargs.pop('correct_pincode', None)
+        super().__init__(*args, **kwargs)
+
+    def clean_pincode(self):
+        pincode = self.cleaned_data['pincode']
+
+        if not re.match(r'^\d{4}$', pincode):
+            raise forms.ValidationError("Код должен состоять из 4 цифр")
+
+        if not self.correct_pincode:
+            raise forms.ValidationError(
+                'Что то пошло не так. Пин-код не найден. Попробуйте еще раз.'
+            )
+        if self.correct_pincode != pincode:
+            raise forms.ValidationError('Неверный пин-код! Попробуйте еще раз.')
+        return pincode
