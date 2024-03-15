@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <script src="{% static 'js/phone_verification.js' %}"></script>
+  <div class="container">
+    <h4>Смена телефонного номера</h4>
+    {% if error == 'time_limit' %}
+    <p>
+      Вы достигли максимального количества попыток ввода кода подтверждения. Пожалуйста, повторите попытку позже.
+    </p>
+    {% elif error == 'attempt_limit' %}
+    <p>
+      Смена телефонного номера может быть осуществлена не чаще чем раз в месяц.
+    </p>
+    {% endif %}
+    <p>
+      Либо вы можете обратиться в нашу <a href="mailto: support@kdsstroy.ru">службу поддержки</a>.
+    </p>
+    <br>
+  </div>
+{% endblock %}

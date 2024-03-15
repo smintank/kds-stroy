@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
+  <script src="{% static 'js/phone_verification.js' %}"></script>
   <div class="container">
     <h4>Подтверждение телефонного номера</h4>
     <p>
@@ -18,12 +20,15 @@
           {{ field }}
           {% if field.errors %}
               <p>{{ field.errors }}</p>
-              <a href="{% url 'users:phone_verification' %}">Отправить код повторно</a>
           {% endif %}
-
         {% endfor %}
         <button type="submit">Подтвердить</button>
       </form>
+      <p>Вы можете повторно запросить звонок через:</p>
+      <div id="countdown" data-countdown-duration="{{ countdown }}"></div>
+      <div id="linkContainer" style="display: none;">
+        <a href="{% url 'users:phone_verification' %}">Отправить код повторно</a>
+      </div>
     </div>
   </div>
 {% endblock %}
