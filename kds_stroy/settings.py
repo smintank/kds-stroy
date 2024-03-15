@@ -88,7 +88,6 @@ LOGGING = {
 
 WSGI_APPLICATION = "kds_stroy.wsgi.application"
 
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -157,7 +156,6 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_ID')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PW')
 DEFAULT_FROM_EMAIL = os.environ.get('FROM_EMAIL')
 
-
 VERIFICATION_SUCCESS_TEMPLATE = TEMPLATES_DIR / 'registration/varification_done.html'
 VERIFICATION_FAILED_TEMPLATE = TEMPLATES_DIR / 'registration/varification_fail.html'
 HTML_MESSAGE_TEMPLATE = TEMPLATES_DIR / 'registration/verification_message.html'
@@ -172,3 +170,7 @@ MAX_UPLOADED_PHOTO_SIZE = 10  # in MB
 ZVONOK_API_KEY = os.getenv("ZVONOK_API_KEY")
 ZVONOK_ENDPOINT = os.getenv("ZVONOK_ENDPOINT")
 ZVONOK_CAMPAIGN_ID = os.getenv("ZVONOK_CAMPAIGN_ID")
+
+PHONE_VERIFICATION_TIME_LIMIT = 360  # in seconds
+PHONE_VERIFICATION_ATTEMPTS_LIMIT = 10  # with one phone number
+PHONE_CHANGE_FREQUENCY_LIMIT = 30  # in days
