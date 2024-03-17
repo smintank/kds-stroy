@@ -125,7 +125,7 @@ class PhoneVerificationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
     def clean_pincode(self):
-        pincode = self.cleaned_data['pincode']
+        pincode = self.cleaned_data['pincode'] or ''
 
         if not re.match(r'^\d{4}$', pincode):
             raise forms.ValidationError("Код должен состоять из 4 цифр")

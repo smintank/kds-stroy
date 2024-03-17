@@ -1,3 +1,4 @@
+import datetime
 import logging
 from django.db.models import Prefetch
 from django.shortcuts import render, get_object_or_404, redirect
@@ -11,16 +12,18 @@ from django.views.generic import (
 from verify_email.email_handler import send_verification_email
 
 from kds_stroy.settings import (
-    MEDIA_URL
+    MEDIA_URL, PHONE_VERIFICATION_TIME_LIMIT
 )
 from orders.models import Order, OrderPhoto
 from .models import PhoneVerification
 from .utils import (
-    is_call_attempts_limit,
-    call_api_process,
-    is_call_time_limit,
+    create_phone_changing_request,
     is_phone_change_limit,
+    is_numbers_amount_limit,
+    call_api_request,
     set_countdown_value,
+    is_call_time_limit,
+    is_call_attempts_limit
 )
 
 from users.forms import (
@@ -46,7 +49,13 @@ class RegistrationView(FormView):
         user.is_active = False
         user.save()
 
-        self.request.session['phone_number'] = form.cleaned_data['phone_number']
+        phone_number = form.cleaned_data['phone_number']
+        phone_validation_request = create_phone_changing_request(
+            user=user, phone_number=phone_number
+        )
+        self.request.session['object_id'] = phone_validation_request[0].id
+        self.request.session['phone_number'] = phone_number
+
         return redirect('users:phone_verification')
 
 
@@ -59,15 +68,25 @@ class ChangePhoneNumberView(FormView):
         return self.model.objects.get(pk=self.request.user.pk)
 
     def get(self, request, *args, **kwargs):
-        if is_phone_change_limit(request):
+        if False and is_phone_change_limit(request):
             return render(request, 'registration/phone_verification_limit.html',
                           {'error': 'time_limit'})
+        if False and is_numbers_amount_limit(request):
+            return render(request, 'registration/phone_verification_limit.html',
+                          {'error': 'number_limit'})
         return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
-        old_phone_number = self.request.user.phone_number
-        self.request.session['old_phone_number'] = old_phone_number
-        self.request.session['phone_number'] = form.cleaned_data['phone_number']
+        session = self.request.session
+        user = self.request.user
+        phone_number = form.cleaned_data['phone_number']
+
+        phone_validation_request = create_phone_changing_request(
+            user=user, phone_number=phone_number
+        )
+        session['old_phone_number'] = user.phone_number
+        session['phone_number'] = phone_number
+        session['object_id'] = phone_validation_request[0].id
         return redirect('users:phone_verification')
 
 
@@ -87,17 +106,45 @@ class PhoneVerificationView(FormView):
         return kwargs
 
     def get(self, request, *args, **kwargs):
-        phone_number = request.session.get('phone_number')
-        if not is_call_attempts_limit(request, phone_number):
-            if not is_call_time_limit(request):
-                user = User.objects.filter(phone_number=phone_number).first()
-                call_api_process(request, phone_number, user)
+        last_request = PhoneVerification.objects.get(
+            id=self.request.session.get('object_id')
+        )
+
+        if not last_request.pincode:
+            pincode = call_api_request(last_request.phone_number)
+            last_request.pincode = pincode
+            last_request.save()
+            request.session['pincode'] = pincode
+            request.session['last_call_timestamp'] = timezone.now().strftime(
+                '%Y-%m-%d %H:%M:%S'
+            )
+            set_countdown_value(request, is_full=True)
+
+        elif not is_call_time_limit(request.session.get('last_call_timestamp')):
+            if request.session.get('repeat_call'):
+                pincode = request.session.get('pincode')
+                call_api_request(last_request.phone_number, pincode)
+                request.session[
+                    'last_call_timestamp'] = timezone.now().strftime(
+                    '%Y-%m-%d %H:%M:%S'
+                )
+                set_countdown_value(request, is_full=True)
+                request.session['repeat_call'] = False
             else:
-                last_call_timestamp = request.session.get('last_call_timestamp')
-                set_countdown_value(request, last_call_timestamp)
-        else:
-            return render(request, "registration/phone_verification_limit.html",
-                          {'error': 'attempt_limit'})
+                pincode_creation_tz = timezone.make_aware(
+                    timezone.datetime.strptime(
+                        request.session['last_call_timestamp'],
+                        '%Y-%m-%d %H:%M:%S'),
+                    timezone=datetime.timezone.utc
+                )
+
+                barrier_tz = timezone.now() - timezone.timedelta(
+                    seconds=PHONE_VERIFICATION_TIME_LIMIT)
+                if pincode_creation_tz > barrier_tz:
+                    set_countdown_value(request, pincode_creation_tz)
+                else:
+                    set_countdown_value(request, is_empty=True)
+
         return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -111,12 +158,12 @@ class PhoneVerificationView(FormView):
             Order.objects.filter(phone_number=old_phone_number).update(
                 phone_number=new_phone_number
             )
-            del self.request.session['old_phone_number']
         else:
             user = get_object_or_404(User, phone_number=new_phone_number)
         user.is_active = True
         user.is_phone_verified = True
         user.save()
+        self.request.session['is_call_made'] = False
 
         return render(self.request, "registration/registration_done.html",
                       {"new_user": user})

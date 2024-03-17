@@ -14,6 +14,14 @@ from users.models import PhoneVerification
 logger = logging.getLogger(__name__)
 
 
+def create_phone_changing_request(request=None, phone_number=None, user=None):
+    user = user or request.user
+    return PhoneVerification.objects.get_or_create(
+        user=user,
+        phone_number=phone_number or phone_number.session.get('phone_number')
+    )
+
+
 def call_api_process(request, phone_number=None, user=None, pincode=None):
     phone_number = phone_number or request.user.phone_number
     user = user or request.user
@@ -27,15 +35,26 @@ def call_api_process(request, phone_number=None, user=None, pincode=None):
     ).created_at
 
     request.session['pincode'] = pincode
+    request.session['last_call_timestamp'] = last_call_tz.strftime(
+        '%Y-%m-%d %H:%M:%S'
+    )
     set_countdown_value(request, last_call_tz)
 
 
-def set_countdown_value(request, last_call_tz):
-    time_limit = PHONE_VERIFICATION_TIME_LIMIT or 60
+def set_countdown_value(request, last_call_tz=None, is_full=False, is_empty=False):
+    time_limit = PHONE_VERIFICATION_TIME_LIMIT or 360
     now_tz = timezone.now()
+
+    if is_full:
+        request.session['countdown'] = time_limit
+        return
+    if is_empty:
+        request.session['countdown'] = 0
+        return
+
     last_call_passed = now_tz - last_call_tz
-    countdown_value = max(time_limit, last_call_passed.total_seconds())
-    request.session['countdown'] = countdown_value
+    time_last = time_limit - last_call_passed.total_seconds()
+    request.session['countdown'] = int(time_last)
 
 
 def call_api_request(phone_number: str, pincode: str = None) -> dict:
@@ -59,16 +78,24 @@ def call_api_request(phone_number: str, pincode: str = None) -> dict:
         pincode = data.get('pincode')
     except requests.exceptions.RequestException as e:
         logger.exception("Zvonok API request error: ", e)
-        raise ValidationError("Ошибка при отправке запроса на звонок")
+        raise ValidationError(
+            "Ошибка при отправке запроса на звонок от Zvonok API"
+        )
     except requests.JSONDecodeError as e:
         logger.exception("Zvonok API response json error: ", e)
-        raise ValidationError("Ошибка при обработке ответа от Zvonok API")
+        raise ValidationError(
+            "Ошибка при преобразовании в json ответа от Zvonok API"
+        )
     except KeyError as e:
         logger.exception("Zvonok API response data error: ", e)
-        raise ValidationError("Ошибка при обработке ответа от Zvonok API")
+        raise ValidationError(
+            "Ошибка при получении значения по ключу из ответа от Zvonok API"
+        )
     except Exception as e:
         logger.exception("Zvonok API error: ", e)
-        raise ValidationError("Ошибка при отправке запроса на звонок")
+        raise ValidationError(
+            "Неизвестная ошибка при запросе звонка от Zvonok API"
+        )
     logger.info(pincode)
 
     return pincode
@@ -76,15 +103,31 @@ def call_api_request(phone_number: str, pincode: str = None) -> dict:
 
 def is_phone_change_limit(request):
     frequency_limit = PHONE_CHANGE_FREQUENCY_LIMIT or 30
+    start_date = timezone.now() - timezone.timedelta(days=frequency_limit)
     last_phone_change_tz = request.user.phone_number_change_date
-    return (timezone.now() - last_phone_change_tz).days <= frequency_limit
+
+    return start_date <= last_phone_change_tz
+
+
+def is_numbers_amount_limit(request):
+    frequency_limit = PHONE_CHANGE_FREQUENCY_LIMIT or 30
+    attempts_limit = PHONE_VERIFICATION_ATTEMPTS_LIMIT or 3
+    start_date = timezone.now() - timezone.timedelta(days=frequency_limit)
+
+    last_month_unique_numbers = PhoneVerification.objects.filter(
+        user=request.user,
+        created_at__gte=start_date
+    ).values_list('phone_number', flat=True).distinct()
+
+    return len(last_month_unique_numbers) > attempts_limit
 
 
 def is_call_attempts_limit(request, phone_number=None) -> bool:
-    attempt_limit = PHONE_VERIFICATION_ATTEMPTS_LIMIT or 3
-
     if not request.user.is_authenticated:
         return False
+
+    attempt_limit = PHONE_VERIFICATION_ATTEMPTS_LIMIT or 3
+
     call_attempts = PhoneVerification.objects.filter(
         user=request.user,
         phone_number=phone_number or request.user.phone_number
@@ -92,23 +135,18 @@ def is_call_attempts_limit(request, phone_number=None) -> bool:
     if not call_attempts:
         return False
 
-    last_call_tz = call_attempts.order_by('-created_at').first().created_at
-    request.session['last_call_timestamp'] = last_call_tz.strftime(
-        '%Y-%m-%d %H:%M:%S'
-    )
     return call_attempts.count() >= attempt_limit
 
 
-def is_call_time_limit(request):
-    time_limit = PHONE_VERIFICATION_TIME_LIMIT or 60
-    last_call_tz = request.session.get('last_call_timestamp')
+def is_call_time_limit(last_call_tz):
     if not last_call_tz:
         return False
 
     last_call_tz = timezone.make_aware(
-        timezone.datetime.strptime(last_call_tz, '%Y-%m-%d %H:%M:%S')
+        timezone.datetime.strptime(last_call_tz, '%Y-%m-%d %H:%M:%S'),
+        timezone=timezone.get_current_timezone()
     )
-    now_tz = timezone.now()
-    time_barrier_tz = now_tz - timezone.timedelta(seconds=time_limit)
 
-    return last_call_tz > time_barrier_tz
+    time_limit = PHONE_VERIFICATION_TIME_LIMIT or 60
+    call_limit_tz = last_call_tz + timezone.timedelta(seconds=time_limit)
+    return timezone.now() < call_limit_tz
