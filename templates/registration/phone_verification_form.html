@@ -5,14 +5,21 @@
   <div class="container">
     <h4>Подтверждение телефонного номера</h4>
     <p>
-      Для завершения регистрации вам нужно подтвердить ваш номер телефона.
-      В течение нескольких секунд на указанный вами номер поступит звонок.
-      Введите последние 4 цифры номера с которого поступит звонок.
+      Для завершения вам нужно подтвердить ваш номер телефона.<br><br>
+      Сейчас на указанный вами номер поступит звонок.
+      Введите последние 4 цифры входящего номера.
     </p>
     <br>
     <p>
-      <strong>Внимание!</strong> Если вы не получили звонка, попробуйте повторить запрос через 1 минут.
+      Если вы не получили звонок, вы можете запросить повторный звонок {% if countdown != 0 %}через:{% endif %}
     </p>
+    <div class="countdown_area">
+        <span id="countdown" data-countdown-duration="{{ countdown }}"></span>
+      <div id="linkContainer" style="display: none;">
+        <button id="repeatCallButton">Повторный звонок</button>
+      </div>
+    </div>
+
     <div>
       <form method="post" action="{% url 'users:phone_verification' %}">
         {% csrf_token %}
@@ -24,11 +31,6 @@
         {% endfor %}
         <button type="submit">Подтвердить</button>
       </form>
-      <p>Вы можете повторно запросить звонок через:</p>
-      <div id="countdown" data-countdown-duration="{{ countdown }}"></div>
-      <div id="linkContainer" style="display: none;">
-        <a href="{% url 'users:phone_verification' %}">Отправить код повторно</a>
-      </div>
     </div>
   </div>
 {% endblock %}

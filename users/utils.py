@@ -24,30 +24,28 @@ def phone_validation_prepare(phone_number, session, user):
 
 
 def call_api_process(session, last_request, pincode=None):
-
     pincode = call_api_request(last_request.phone_number, pincode=pincode)
     last_request.pincode = pincode
     last_request.save()
-    session['pincode'] = pincode
+
     session['last_call_timestamp'] = timezone.now().strftime(
         '%Y-%m-%d %H:%M:%S'
     )
-    set_countdown_value(session, is_full=True)
 
 
-def set_countdown_value(session, last_call_tz=None, is_full=False, is_empty=False):
+def get_countdown_value(timestamp: str) -> int:
     time_limit = PHONE_VERIFICATION_TIME_LIMIT or 360
-    now_tz = timezone.now()
+    time_passed = get_left_time(timestamp)
+    return min(time_limit, time_passed)
 
-    if is_full:
-        session['countdown'] = time_limit
-        return
-    if is_empty:
-        session['countdown'] = 0
-        return
 
-    last_call_passed = now_tz - last_call_tz
-    session['countdown'] = int(time_limit - last_call_passed.total_seconds())
+def get_left_time(timestamp: str) -> int:
+    now = timezone.now()
+    last_call_tz = timezone.make_aware(
+        timezone.datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S'),
+        timezone=datetime.timezone.utc
+    )
+    return int((now - last_call_tz).total_seconds())
 
 
 def call_api_request(phone_number: str, pincode: str = None) -> str:
@@ -115,15 +113,23 @@ def is_numbers_amount_limit(request):
     return len(last_month_unique_numbers) > attempts_limit
 
 
-def is_call_attempts_limit(request, phone_number=None) -> bool:
-    if not request.user.is_authenticated:
+def is_limits_reached(request):
+    if is_time_limit(request.session):
+        return True
+    if is_attempt_limit(request.user):
+        return True
+
+
+def is_attempt_limit(user, phone_number=None) -> bool:
+    if not user.is_authenticated:
         return False
 
+    phone_number = phone_number or user.phone_number
     attempt_limit = PHONE_VERIFICATION_ATTEMPTS_LIMIT or 3
 
     call_attempts = PhoneVerification.objects.filter(
-        user=request.user,
-        phone_number=phone_number or request.user.phone_number
+        user=user,
+        phone_number=phone_number or user.phone_number
     )
     if not call_attempts:
         return False
@@ -131,17 +137,11 @@ def is_call_attempts_limit(request, phone_number=None) -> bool:
     return call_attempts.count() >= attempt_limit
 
 
-def is_time_limit(timestamp: timezone, limit: int) -> bool:
+def is_time_limit(session) -> bool:
+    timestamp = session.get('last_call_timestamp')
     if not timestamp:
         return False
-    limit_timestamp = timestamp + timezone.timedelta(seconds=limit)
-    return timezone.now() < limit_timestamp
+    time_limit = PHONE_VERIFICATION_TIME_LIMIT or 360
 
+    return time_limit > get_left_time(timestamp)
 
-def str_to_tz(timestamp):
-    if not timestamp:
-        return None
-    return timezone.make_aware(
-        timezone.datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S'),
-        timezone=datetime.timezone.utc
-    )

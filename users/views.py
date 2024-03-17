@@ -1,6 +1,6 @@
-import datetime
 import logging
 from django.db.models import Prefetch
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -11,19 +11,16 @@ from django.views.generic import (
 )
 from verify_email.email_handler import send_verification_email
 
-from kds_stroy.settings import (
-    MEDIA_URL, PHONE_VERIFICATION_TIME_LIMIT
-)
+from kds_stroy.settings import MEDIA_URL, PHONE_VERIFICATION_TIME_LIMIT
 from orders.models import Order, OrderPhoto
 from .models import PhoneVerification
 from .utils import (
-    phone_validation_prepare,
+    call_api_process,
+    get_countdown_value,
     is_phone_change_limit,
     is_numbers_amount_limit,
-    set_countdown_value,
-    is_time_limit,
-    call_api_process,
-    str_to_tz
+    is_limits_reached,
+    phone_validation_prepare
 )
 
 from users.forms import (
@@ -68,10 +65,10 @@ class ChangePhoneNumberView(FormView):
     def get(self, request, *args, **kwargs):
         if is_phone_change_limit(request):
             return render(request, 'registration/phone_verification_limit.html',
-                          {'error': 'time_limit'})
+                          {'time_limit': 'time_limit'})
         if is_numbers_amount_limit(request):
             return render(request, 'registration/phone_verification_limit.html',
-                          {'error': 'number_limit'})
+                          {'number_limit': 'number_limit'})
         return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -97,24 +94,29 @@ class PhoneVerificationView(FormView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['correct_pincode'] = self.request.session.get('pincode')
+        kwargs['correct_pincode'] = self.kwargs.get('pincode')
         return kwargs
 
     def get(self, request, *args, **kwargs):
         session = self.request.session
-        last_request = PhoneVerification.objects.get(id=session.get('object_id'))
+        last_request = self.model.objects.get(id=session.get('object_id'))
 
-        last_call_tz = str_to_tz(session.get('last_call_timestamp'))
+        if request.GET.get('repeat_call') == 'true':
+            pincode = last_request.pincode or None
+            call_api_process(session, last_request, pincode)
+            self.kwargs['pincode'] = pincode
+            return JsonResponse({
+                'countdown': int(PHONE_VERIFICATION_TIME_LIMIT)
+            })
 
         if not last_request.pincode:
             call_api_process(session, last_request)
-        elif not is_time_limit(last_call_tz, PHONE_VERIFICATION_TIME_LIMIT):
-            if session.get('repeat_call'):
-                call_api_process(session, last_request, session.get('pincode'))
-                del session['repeat_call']
-            set_countdown_value(session, is_empty=True)
+            session['countdown'] = int(PHONE_VERIFICATION_TIME_LIMIT)
+        elif not is_limits_reached(request):
+            session['countdown'] = 0
         else:
-            set_countdown_value(session, last_call_tz)
+            last_call_tz: str = session.get('last_call_timestamp')
+            session['countdown'] = get_countdown_value(last_call_tz)
         return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
