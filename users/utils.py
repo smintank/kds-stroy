@@ -1,3 +1,4 @@
+import datetime
 import requests
 import logging
 
@@ -14,50 +15,42 @@ from users.models import PhoneVerification
 logger = logging.getLogger(__name__)
 
 
-def create_phone_changing_request(request=None, phone_number=None, user=None):
-    user = user or request.user
-    return PhoneVerification.objects.get_or_create(
-        user=user,
-        phone_number=phone_number or phone_number.session.get('phone_number')
+def phone_validation_prepare(phone_number, session, user):
+    phone_validation_request = PhoneVerification.objects.get_or_create(
+        user=user, phone_number=phone_number
     )
+    session['phone_number'] = phone_number
+    session['object_id'] = phone_validation_request[0].id
 
 
-def call_api_process(request, phone_number=None, user=None, pincode=None):
-    phone_number = phone_number or request.user.phone_number
-    user = user or request.user
+def call_api_process(session, last_request, pincode=None):
 
-    pincode = call_api_request(phone_number, pincode)
-
-    last_call_tz = PhoneVerification.objects.create(
-        user=user,
-        phone_number=phone_number,
-        pincode=pincode
-    ).created_at
-
-    request.session['pincode'] = pincode
-    request.session['last_call_timestamp'] = last_call_tz.strftime(
+    pincode = call_api_request(last_request.phone_number, pincode=pincode)
+    last_request.pincode = pincode
+    last_request.save()
+    session['pincode'] = pincode
+    session['last_call_timestamp'] = timezone.now().strftime(
         '%Y-%m-%d %H:%M:%S'
     )
-    set_countdown_value(request, last_call_tz)
+    set_countdown_value(session, is_full=True)
 
 
-def set_countdown_value(request, last_call_tz=None, is_full=False, is_empty=False):
+def set_countdown_value(session, last_call_tz=None, is_full=False, is_empty=False):
     time_limit = PHONE_VERIFICATION_TIME_LIMIT or 360
     now_tz = timezone.now()
 
     if is_full:
-        request.session['countdown'] = time_limit
+        session['countdown'] = time_limit
         return
     if is_empty:
-        request.session['countdown'] = 0
+        session['countdown'] = 0
         return
 
     last_call_passed = now_tz - last_call_tz
-    time_last = time_limit - last_call_passed.total_seconds()
-    request.session['countdown'] = int(time_last)
+    session['countdown'] = int(time_limit - last_call_passed.total_seconds())
 
 
-def call_api_request(phone_number: str, pincode: str = None) -> dict:
+def call_api_request(phone_number: str, pincode: str = None) -> str:
     """
     Request a call to the phone number with Zvonok API service.
     If pincode is not provided, a new pincode will be generated and returned.
@@ -138,15 +131,17 @@ def is_call_attempts_limit(request, phone_number=None) -> bool:
     return call_attempts.count() >= attempt_limit
 
 
-def is_call_time_limit(last_call_tz):
-    if not last_call_tz:
+def is_time_limit(timestamp: timezone, limit: int) -> bool:
+    if not timestamp:
         return False
+    limit_timestamp = timestamp + timezone.timedelta(seconds=limit)
+    return timezone.now() < limit_timestamp
 
-    last_call_tz = timezone.make_aware(
-        timezone.datetime.strptime(last_call_tz, '%Y-%m-%d %H:%M:%S'),
-        timezone=timezone.get_current_timezone()
+
+def str_to_tz(timestamp):
+    if not timestamp:
+        return None
+    return timezone.make_aware(
+        timezone.datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S'),
+        timezone=datetime.timezone.utc
     )
-
-    time_limit = PHONE_VERIFICATION_TIME_LIMIT or 60
-    call_limit_tz = last_call_tz + timezone.timedelta(seconds=time_limit)
-    return timezone.now() < call_limit_tz
