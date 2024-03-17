@@ -79,7 +79,7 @@ class PhoneVerification(models.Model):
         User, on_delete=models.CASCADE, verbose_name="Пользователь"
     )
     phone_number = models.CharField("Номер телефона", max_length=18)
-    pincode = models.CharField("Пин-код", max_length=4)
+    pincode = models.CharField("Пин-код", max_length=4, blank=True, null=True)
     created_at = models.DateTimeField("Время создания", auto_now_add=True)
 
     def __str__(self):
