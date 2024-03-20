@@ -19,7 +19,8 @@ from .utils import (
     get_countdown_value,
     is_phone_change_limit,
     is_numbers_amount_limit,
-    is_limits_reached,
+    is_attempt_limit,
+    is_time_limit,
     phone_validation_prepare
 )
 
@@ -63,12 +64,12 @@ class ChangePhoneNumberView(FormView):
         return self.model.objects.get(pk=self.request.user.pk)
 
     def get(self, request, *args, **kwargs):
-        if is_phone_change_limit(request):
+        if is_phone_change_limit(request.user.phone_number_change_date):
             return render(request, 'registration/phone_verification_limit.html',
-                          {'time_limit': 'time_limit'})
-        if is_numbers_amount_limit(request):
+                          {'limit': 'time_limit'})
+        if is_numbers_amount_limit(request.user):
             return render(request, 'registration/phone_verification_limit.html',
-                          {'number_limit': 'number_limit'})
+                          {'limit': 'number_limit'})
         return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -89,7 +90,8 @@ class PhoneVerificationView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['countdown'] = self.request.session.get('countdown')
+        context['countdown'] = self.kwargs.get('countdown', 0)
+        context['is_attempt_limit'] = self.kwargs.get('is_attempt_limit', False)
         return context
 
     def get_form_kwargs(self):
@@ -98,25 +100,26 @@ class PhoneVerificationView(FormView):
         return kwargs
 
     def get(self, request, *args, **kwargs):
-        session = self.request.session
-        last_request = self.model.objects.get(id=session.get('object_id'))
+        last_request_obj = get_object_or_404(
+            self.model, id=request.session.get('request_id')
+        )
+        is_repeat = True if request.GET.get('repeat_call') == 'true' else False
 
-        if request.GET.get('repeat_call') == 'true':
-            pincode = last_request.pincode or None
-            call_api_process(session, last_request, pincode)
-            self.kwargs['pincode'] = pincode
-            return JsonResponse({
-                'countdown': int(PHONE_VERIFICATION_TIME_LIMIT)
-            })
-
-        if not last_request.pincode:
-            call_api_process(session, last_request)
-            session['countdown'] = int(PHONE_VERIFICATION_TIME_LIMIT)
-        elif not is_limits_reached(request):
-            session['countdown'] = 0
+        if is_repeat or not last_request_obj.pincode:
+            call_api_process(last_request_obj, last_request_obj.pincode or None)
+            countdown = int(PHONE_VERIFICATION_TIME_LIMIT)
+            if is_repeat:
+                return JsonResponse({'countdown': countdown})
+        elif is_attempt_limit(last_request_obj.user):
+            self.kwargs['is_attempt_limit'] = True
+            countdown = 0
+        elif is_time_limit(last_request_obj.last_call):
+            countdown = get_countdown_value(last_request_obj.last_call)
         else:
-            last_call_tz: str = session.get('last_call_timestamp')
-            session['countdown'] = get_countdown_value(last_call_tz)
+            countdown = 0
+
+        self.kwargs['pincode'] = last_request_obj.pincode
+        self.kwargs['countdown'] = countdown
         return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -137,7 +140,6 @@ class PhoneVerificationView(FormView):
         user.is_phone_verified = True
         user.save()
         del self.request.session['phone_number']
-        del self.request.session['pincode']
 
         return render(self.request, "registration/registration_done.html",
                       {"new_user": user})

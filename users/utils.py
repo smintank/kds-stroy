@@ -1,4 +1,3 @@
-import datetime
 import requests
 import logging
 
@@ -16,43 +15,40 @@ logger = logging.getLogger(__name__)
 
 
 def phone_validation_prepare(phone_number, session, user):
-    phone_validation_request = PhoneVerification.objects.get_or_create(
+    """
+    Prepare phone validation request and store necessary data in session.
+    """
+    phone_validation_request, _ = PhoneVerification.objects.get_or_create(
         user=user, phone_number=phone_number
     )
     session['phone_number'] = phone_number
-    session['object_id'] = phone_validation_request[0].id
+    session['request_id'] = phone_validation_request.id
 
 
-def call_api_process(session, last_request, pincode=None):
-    pincode = call_api_request(last_request.phone_number, pincode=pincode)
+def call_api_process(last_request, pincode=None):
+    """
+    Process API call to verify phone number.
+    """
+    pincode = call_api_request(last_request.phone_number, pincode)
     last_request.pincode = pincode
+    last_request.last_call = timezone.now()
     last_request.save()
-
-    session['last_call_timestamp'] = timezone.now().strftime(
-        '%Y-%m-%d %H:%M:%S'
-    )
+    return pincode
 
 
-def get_countdown_value(timestamp: str) -> int:
-    time_limit = PHONE_VERIFICATION_TIME_LIMIT or 360
-    time_passed = get_left_time(timestamp)
-    return min(time_limit, time_passed)
-
-
-def get_left_time(timestamp: str) -> int:
-    now = timezone.now()
-    last_call_tz = timezone.make_aware(
-        timezone.datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S'),
-        timezone=datetime.timezone.utc
-    )
-    return int((now - last_call_tz).total_seconds())
+def get_countdown_value(timestamp) -> int:
+    """
+    Calculate remaining time for countdown based on timestamp.
+    """
+    limit_seconds = PHONE_VERIFICATION_TIME_LIMIT or 360
+    passed_seconds = int((timezone.now() - timestamp).total_seconds())
+    last_seconds = limit_seconds - passed_seconds
+    return max(last_seconds, 0)
 
 
 def call_api_request(phone_number: str, pincode: str = None) -> str:
     """
     Request a call to the phone number with Zvonok API service.
-    If pincode is not provided, a new pincode will be generated and returned.
-    Phone number should be in international format, e.g. +79991234567
     """
     payload = {
         'public_key': ZVONOK_API_KEY,
@@ -67,40 +63,32 @@ def call_api_request(phone_number: str, pincode: str = None) -> str:
         print(json_response)
         data = json_response.get('data')
         pincode = data.get('pincode')
-    except requests.exceptions.RequestException as e:
-        logger.exception("Zvonok API request error: ", e)
-        raise ValidationError(
-            "Ошибка при отправке запроса на звонок от Zvonok API"
-        )
-    except requests.JSONDecodeError as e:
-        logger.exception("Zvonok API response json error: ", e)
-        raise ValidationError(
-            "Ошибка при преобразовании в json ответа от Zvonok API"
-        )
-    except KeyError as e:
-        logger.exception("Zvonok API response data error: ", e)
-        raise ValidationError(
-            "Ошибка при получении значения по ключу из ответа от Zvonok API"
-        )
+    except requests.RequestException as e:
+        logger.exception("Zvonok API request error: ", exc_info=e)
+        raise ValidationError("Error sending request to Zvonok API")
+    except (requests.JSONDecodeError, KeyError) as e:
+        logger.exception("Zvonok API response error: ", exc_info=e)
+        raise ValidationError("Error parsing response from Zvonok API")
     except Exception as e:
-        logger.exception("Zvonok API error: ", e)
-        raise ValidationError(
-            "Неизвестная ошибка при запросе звонка от Zvonok API"
-        )
+        logger.exception("Zvonok API error: ", exc_info=e)
+        raise ValidationError("Unknown error from Zvonok API")
     logger.info(pincode)
-
     return pincode
 
 
-def is_phone_change_limit(request):
+def is_phone_change_limit(number_change_date):
+    """
+    Check if the phone number change limit has been reached.
+    """
     frequency_limit = PHONE_CHANGE_FREQUENCY_LIMIT or 30
     start_date = timezone.now() - timezone.timedelta(days=frequency_limit)
-    last_phone_change_tz = request.user.phone_number_change_date
-
-    return start_date <= last_phone_change_tz
+    return number_change_date > start_date
 
 
 def is_numbers_amount_limit(request):
+    """
+    Check if the limit for the number of verification attempts has been reached.
+    """
     frequency_limit = PHONE_CHANGE_FREQUENCY_LIMIT or 30
     attempts_limit = PHONE_VERIFICATION_ATTEMPTS_LIMIT or 3
     start_date = timezone.now() - timezone.timedelta(days=frequency_limit)
@@ -113,35 +101,36 @@ def is_numbers_amount_limit(request):
     return len(last_month_unique_numbers) > attempts_limit
 
 
-def is_limits_reached(request):
-    if is_time_limit(request.session):
+def is_limits_reached(obj):
+    """
+    Check if any of the verification limits have been reached.
+    """
+    # return is_time_limit(obj.last_call) or is_attempt_limit(obj.user)
+    if is_time_limit(obj.last_call):
         return True
-    if is_attempt_limit(request.user):
-        return True
+    # if is_attempt_limit(obj.user):
+    #     return True
+    return False
 
 
-def is_attempt_limit(user, phone_number=None) -> bool:
-    if not user.is_authenticated:
-        return False
-
-    phone_number = phone_number or user.phone_number
+def is_attempt_limit(user) -> bool:
+    """
+    Check if the user has reached the verification attempts limit.
+    """
     attempt_limit = PHONE_VERIFICATION_ATTEMPTS_LIMIT or 3
-
     call_attempts = PhoneVerification.objects.filter(
         user=user,
-        phone_number=phone_number or user.phone_number
+        phone_number=user.phone_number
     )
-    if not call_attempts:
-        return False
-
     return call_attempts.count() >= attempt_limit
 
 
-def is_time_limit(session) -> bool:
-    timestamp = session.get('last_call_timestamp')
+def is_time_limit(timestamp) -> bool:
+    """
+    Check if the time limit for verification has been reached.
+    """
     if not timestamp:
         return False
-    time_limit = PHONE_VERIFICATION_TIME_LIMIT or 360
-
-    return time_limit > get_left_time(timestamp)
-
+    limit_seconds = PHONE_VERIFICATION_TIME_LIMIT or 360
+    passed_seconds = int((timezone.now() - timestamp).total_seconds())
+    return passed_seconds <= limit_seconds

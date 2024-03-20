@@ -14,10 +14,14 @@
       Если вы не получили звонок, вы можете запросить повторный звонок {% if countdown != 0 %}через:{% endif %}
     </p>
     <div class="countdown_area">
+        {% if not is_attempt_limit %}
         <span id="countdown" data-countdown-duration="{{ countdown }}"></span>
       <div id="linkContainer" style="display: none;">
         <button id="repeatCallButton">Повторный звонок</button>
       </div>
+        {% else %}
+            <p>Вы исчерпали количество попыток для подтверждения номера. Попробуйте позже.</p>
+        {% endif %}
     </div>
 
     <div>

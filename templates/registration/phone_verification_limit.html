@@ -4,16 +4,16 @@
   <script src="{% static 'js/phone_verification.js' %}"></script>
   <div class="container">
     <h4>Смена телефонного номера</h4>
-    {% if time_limit %}
+    {% if limit == 'time_limit' %}
     <p>
       Сменить или подтвердить телефонный номер можно не чаще чем один раз в {{ freaquency_limit }} дней.<br>
       Вы можете сменить телефонный номер не раньше чем через {{ days_left }} дней.
     </p>
-    {% elif attempt_limit %}
+    {% elif limit == 'attempt_limit' %}
     <p>
         Вы превысили лимит попыток ввода кода подтверждения. Попробуйте позже.
     </p>
-    {% elif numbers_limit %}
+    {% elif limit == 'numbers_limit' %}
     <p>
       Максимальное количество телефонных номеров в течении {{ freaquency_limit }} дней на которые можно отправить код подтверждения - {{ numbers_limit }}.<br>
       Вы можете инициировать смену телефонного номера не раньше чем через {{ days_left }} дней.
