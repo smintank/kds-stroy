@@ -105,7 +105,6 @@ class ChangePhoneNumberForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["phone_number"].label = "Новый номер телефона"
-
         self.fields["phone_number"].widget.attrs.update(
             {"class": "form-control"})
 
@@ -121,19 +120,12 @@ class PhoneVerificationForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        self.correct_pincode = kwargs.pop('correct_pincode', None)
         super().__init__(*args, **kwargs)
+        if not self.is_bound or not self.is_valid():
+            self.initial['pincode'] = ''
 
     def clean_pincode(self):
-        pincode = self.cleaned_data['pincode'] or ''
-
-        if not re.match(r'^\d{4}$', pincode):
-            raise forms.ValidationError("Код должен состоять из 4 цифр")
-
-        if not self.correct_pincode:
-            raise forms.ValidationError(
-                'Что то пошло не так. Пин-код не найден. Попробуйте еще раз.'
-            )
-        if self.correct_pincode != pincode:
-            raise forms.ValidationError('Неверный пин-код! Попробуйте еще раз.')
+        pincode = self.cleaned_data.get('pincode')
+        if not re.match(r'^\d{4}$', pincode) or not pincode.isnumeric():
+            raise forms.ValidationError("Пин-код должен состоять из 4-x цифр")
         return pincode

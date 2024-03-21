@@ -25,6 +25,15 @@ def phone_validation_prepare(phone_number, session, user):
     session['request_id'] = phone_validation_request.id
 
 
+def is_limited(obj, kwargs):
+    if is_attempt_limit(obj.user):
+        kwargs['is_attempt_limit'] = True
+        return 0
+    if is_time_limit(obj.last_call):
+        return get_countdown_value(obj.last_call)
+    return 0
+
+
 def call_api_process(last_request, pincode=None):
     """
     Process API call to verify phone number.
@@ -56,6 +65,7 @@ def call_api_request(phone_number: str, pincode: str = None) -> str:
         'phone': f'+{phone_number}',
         'phone_suffix': pincode
     }
+    response = None
     try:
         response = requests.post(ZVONOK_ENDPOINT, data=payload)
         response.raise_for_status()
@@ -63,6 +73,17 @@ def call_api_request(phone_number: str, pincode: str = None) -> str:
         print(json_response)
         data = json_response.get('data')
         pincode = data.get('pincode')
+    except requests.exceptions.HTTPError as e:
+        if response.status_code == 400:
+            json = response.json()
+            logger.exception("Bad Request to Zvonok API: " + json, exc_info=e)
+        if response.status_code == 429:
+            json = response.json()
+            logger.exception(
+                "Limit exceeded to Zvonok API: " + json, exc_info=e
+            )
+        else:
+            logger.exception("HTTP Error: ", exc_info=e)
     except requests.RequestException as e:
         logger.exception("Zvonok API request error: ", exc_info=e)
         raise ValidationError("Error sending request to Zvonok API")
@@ -99,18 +120,6 @@ def is_numbers_amount_limit(request):
     ).values_list('phone_number', flat=True).distinct()
 
     return len(last_month_unique_numbers) > attempts_limit
-
-
-def is_limits_reached(obj):
-    """
-    Check if any of the verification limits have been reached.
-    """
-    # return is_time_limit(obj.last_call) or is_attempt_limit(obj.user)
-    if is_time_limit(obj.last_call):
-        return True
-    # if is_attempt_limit(obj.user):
-    #     return True
-    return False
 
 
 def is_attempt_limit(user) -> bool:

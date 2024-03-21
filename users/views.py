@@ -16,12 +16,10 @@ from orders.models import Order, OrderPhoto
 from .models import PhoneVerification
 from .utils import (
     call_api_process,
-    get_countdown_value,
     is_phone_change_limit,
     is_numbers_amount_limit,
-    is_attempt_limit,
-    is_time_limit,
-    phone_validation_prepare
+    phone_validation_prepare,
+    is_limited
 )
 
 from users.forms import (
@@ -94,11 +92,6 @@ class PhoneVerificationView(FormView):
         context['is_attempt_limit'] = self.kwargs.get('is_attempt_limit', False)
         return context
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['correct_pincode'] = self.kwargs.get('pincode')
-        return kwargs
-
     def get(self, request, *args, **kwargs):
         last_request_obj = get_object_or_404(
             self.model, id=request.session.get('request_id')
@@ -110,13 +103,8 @@ class PhoneVerificationView(FormView):
             countdown = int(PHONE_VERIFICATION_TIME_LIMIT)
             if is_repeat:
                 return JsonResponse({'countdown': countdown})
-        elif is_attempt_limit(last_request_obj.user):
-            self.kwargs['is_attempt_limit'] = True
-            countdown = 0
-        elif is_time_limit(last_request_obj.last_call):
-            countdown = get_countdown_value(last_request_obj.last_call)
         else:
-            countdown = 0
+            countdown = is_limited(last_request_obj, kwargs)
 
         self.kwargs['pincode'] = last_request_obj.pincode
         self.kwargs['countdown'] = countdown
@@ -125,9 +113,13 @@ class PhoneVerificationView(FormView):
     def form_valid(self, form):
         new_phone_number = self.request.session.get('phone_number')
         old_phone_number = self.request.session.get('old_phone_number')
+        pincode = form.cleaned_data.get('pincode')
 
         if old_phone_number:
             user = get_object_or_404(User, phone_number=old_phone_number)
+            if not self.model.verify_code(user, new_phone_number, pincode):
+                form.add_error('pincode', 'Неверный код. Попробуйте ещё раз!')
+                return self.form_invalid(form)
             user.phone_number = new_phone_number
             user.phone_number_change_date = timezone.now()
             Order.objects.filter(phone_number=old_phone_number).update(
@@ -136,6 +128,9 @@ class PhoneVerificationView(FormView):
             del self.request.session['old_phone_number']
         else:
             user = get_object_or_404(User, phone_number=new_phone_number)
+            if not self.model.verify_code(user, new_phone_number, pincode):
+                form.add_error('pincode', 'Неверный код. Попробуйте ещё раз!')
+                return self.form_invalid(form)
         user.is_active = True
         user.is_phone_verified = True
         user.save()
@@ -143,6 +138,14 @@ class PhoneVerificationView(FormView):
 
         return render(self.request, "registration/registration_done.html",
                       {"new_user": user})
+
+    def form_invalid(self, form):
+        last_call_obj = get_object_or_404(
+            self.model, id=self.request.session.get('request_id')
+        )
+        self.kwargs['countdown'] = is_limited(last_call_obj, self.kwargs)
+        form.cleaned_data['pincode'] = ''
+        return super().form_invalid(form)
 
 
 class ProfileView(DetailView):

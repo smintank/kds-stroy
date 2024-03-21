@@ -88,6 +88,16 @@ class PhoneVerification(models.Model):
     def __str__(self):
         return f"{self.phone_number}: {self.pincode}"
 
+    @classmethod
+    def verify_code(cls, user, phone_number, pincode):
+        try:
+            cls.objects.get(
+                user=user, phone_number=phone_number, pincode=pincode
+            )
+            return True
+        except cls.DoesNotExist:
+            return False
+
     class Meta:
         verbose_name = "запрос на подтверждение телефона"
         verbose_name_plural = "Запросы на подтверждение телефона"
