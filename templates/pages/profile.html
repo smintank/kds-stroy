@@ -13,12 +13,10 @@
       {% for field in form %}
         <div class="row">
           <div class="col-25">
-            {{ field.label_tag }}
+            <label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
           </div>
           <div class="col-75">
-              <label>
-                  <input type="text" name="{{ field.name }}" disabled placeholder="{{ field.value }}">
-              </label>
+            {{ field.value }}
           </div>
         </div>
         {% for error in field.errors %}<small>{{ error }}</small>{% endfor %}

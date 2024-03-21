@@ -48,22 +48,20 @@ $(document).ready(function() {
 
 
 $(document).ready(function() {
+    // Function to show the cookie banner if the user has not accepted cookies
     const cookieBanner = $('#cookieBanner');
 
-    // Check if the user has accepted cookies
     const acceptedCookies = getCookie('acceptedCookies');
     if (!acceptedCookies) {
         cookieBanner.show();
     }
 
-    // When the user clicks on the accept button
     $('#acceptCookies').click(function() {
         // Set a cookie to indicate that the user has accepted cookies
         setCookie('acceptedCookies', true, 365); // Expires in 365 days
         cookieBanner.hide();
     });
 
-    // Function to set a cookie
     function setCookie(name, value, days) {
         let expires = "";
         if (days) {
@@ -74,7 +72,6 @@ $(document).ready(function() {
         document.cookie = name + "=" + (value || "") + expires + "; path=/";
     }
 
-    // Function to get a cookie
     function getCookie(name) {
         const nameEQ = name + "=";
         const ca = document.cookie.split(';');
@@ -89,6 +86,7 @@ $(document).ready(function() {
 
 
 $(document).ready(function() {
+    // Function to check if an element is in the viewport
     function isInViewport(element) {
         if (!element || !element.length) {
             return false;
@@ -123,9 +121,13 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     // Function to save inputted text to localStorage
-    function saveInputText(inputId) {
-        const inputValue = $('#' + inputId).val();
-        localStorage.setItem(inputId, inputValue);
+    function saveInputText(inputId, debounceTime = 500) {
+        clearTimeout($(this).data('timeout'));
+        const timeout = setTimeout(function() {
+            const inputValue = $('#' + inputId).val();
+            localStorage.setItem(inputId, inputValue);
+        }, debounceTime);
+        $(this).data('timeout', timeout);
     }
 
     function populateInputFields() {
@@ -140,7 +142,7 @@ $(document).ready(function() {
 
     populateInputFields();
 
-    $('input[type="text"], textarea').on('input', function() {
+    $('input[type="text"], textarea').not('.ds_input').on('input', function() {
         const inputId = $(this).attr('id');
         saveInputText(inputId);
     });

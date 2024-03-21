@@ -1,15 +1,13 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}
   Страница пользователя {{ profile }}
 {% endblock %}
 {% block content %}
+  <script src="{% static 'js/profile.js' %}"></script>
   <div class="container">
     <div>
         <h4>Страница пользователя {{ profile }}</h4>
-          <form method="post" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit">Выйти</button>
-          </form>
     </div>
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
@@ -19,13 +17,21 @@
             {{ field.label_tag }}
           </div>
           <div class="col-75">
-            {{ field }}
-            {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+            {% if field.name == 'phone_number' %}
+              <input name="{{ field.name }}" id="{{ field.id_for_label }}" value="{{ field.value }}" hidden>
+              {{ field.value }}
+              <button type="button" id="changePhoneNumber">Изменить</button>
+              <p><strong>Внимание!</strong> После изменения номера телефона, вам придется подтвердить его.</p>
+              <p><strong>Внимание!</strong> Вы можете изменить номер телефона не чаще чем 1 раз в месяц.</p>
+            {% else %}
+              {{ field }}
+            {% endif %}
+            {% if field.errors %}<small style="color: red">{{ field.errors }}</small>{% endif %}
           </div>
         </div>
         {% for error in field.errors %}<small>{{ error }}</small>{% endfor %}
       {% endfor %}
-        <button type="submit">Сохранить</button>
+      <button type="submit">Сохранить</button>
     </form>
   </div>
 {% endblock %}

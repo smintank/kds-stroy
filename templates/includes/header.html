@@ -26,7 +26,7 @@
                 {% if user.is_authenticated %}
                   <div class="header_account {% if view_name == 'users:profile' %}header_underline{% endif %}">
                       <a href="{% url 'users:profile' %}">{{ user.first_name }}</a>
-                      <img id="show_logout_popup" class="exit_img" alt="Exit" src="{% static 'img/exit.png' %}">
+                      <img id="show_logout_popup" class="exit_img" alt="Exit" src="{% static 'img/logout.png' %}">
                   </div>
                 {% else %}
                   <div class="header_account">
