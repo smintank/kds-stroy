@@ -10,10 +10,16 @@ class UserRegistrationForm(forms.ModelForm):
 
     password = forms.CharField(
         label="Пароль",
-        widget=forms.PasswordInput(attrs={'placeholder': '********'}))
+        widget=forms.PasswordInput(attrs={'class': 'register__form-input',
+                                          'type': 'password',
+                                          'autocomplete': 'new-password',
+                                          'placeholder': 'Пароль*'}))
     password2 = forms.CharField(
         label="Повторите пароль",
-        widget=forms.PasswordInput(attrs={'placeholder': '********'}))
+        widget=forms.PasswordInput(attrs={'class': 'register__form-input',
+                                          'type': 'password',
+                                          'autocomplete': 'new-password',
+                                          'placeholder': 'Подтвердите пароль*'}))
 
     class Meta:
         model = User
@@ -21,16 +27,25 @@ class UserRegistrationForm(forms.ModelForm):
                   'phone_number')
         widgets = {
             'phone_number': forms.TextInput(
-                attrs={'type': "tel", 'data-tel-input': "",
-                       'placeholder': '+7 (999) 999-99-99'}),
+                attrs={'class': 'register__form-input',
+                       'type': 'tel', 'autocomplete': 'tel',
+                       'placeholder': 'Телефон*'}),
             'email': forms.TextInput(
-                attrs={'placeholder': 'username@mail.ru'}),
+                attrs={'class': 'register__form-input',
+                       'type': 'email', 'autocomplete': 'email',
+                       'placeholder': 'E-mail*'}),
             'last_name': forms.TextInput(
-                attrs={'placeholder': 'Иванов'}),
+                attrs={'class': 'register__form-input',
+                       'text-name-input': 'true', 'autocomplete': 'family-name',
+                       'placeholder': 'Фамилия'}),
             'first_name': forms.TextInput(
-                attrs={'placeholder': 'Иван'}),
+                attrs={'class': 'register__form-input',
+                       'text-name-input': 'true', 'autocomplete': 'given-name',
+                       'placeholder': 'Имя*'}),
             'middle_name': forms.TextInput(
-                attrs={'placeholder': 'Иванович'}),
+                attrs={'class': 'register__form-input',
+                       'text-name-input': 'true', 'autocomplete': 'additional-name',
+                       'placeholder': 'Отчество'}),
         }
 
     def save(self, commit=True):

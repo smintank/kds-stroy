@@ -22,21 +22,23 @@ class OrderCreationForm(forms.ModelForm):
         fields = ['first_name', 'phone_number', 'address', 'comment', 'photo']
         widgets = {
             'phone_number': forms.TextInput(
-                attrs={'type': "tel", 'data-tel-input': "",
+                attrs={'type': "tel", 'autocomplete': 'tel',
+                       'class': 'order__form-input',
                        'placeholder': 'Номер телефона*'}),
             'first_name': forms.TextInput(
                 attrs={
                     'placeholder': 'Имя*', 'autocomplete': 'given-name',
-                    'text-name-input': ''
+                    'class': 'order__form-input'
                 }
             ),
             'address': forms.TextInput(
                 attrs={'placeholder': 'Адрес',
+                       'class': 'order__form-input',
                        'autocomplete': 'street-address'}),
             'comment': forms.Textarea(
                 attrs={
                     'placeholder': 'Опишите вашу задачу',
-                    'class': 'id_comment',
+                    'class': 'order__form-textarea'
                 }
             ),
         }

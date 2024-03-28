@@ -1,24 +1,25 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ru">
-<head>
+  <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>КДС-Строй: Главная</title>
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="{% static 'js/main.js' %}"></script>
-    <script src="{% static 'js/phone_input.js' %}"></script>
-    <script src="{% static 'js/name_input.js' %}"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>
+       {% block title %}{% endblock %}
+    </title>
+    {% block plug_js_css %}{% endblock %}
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+    <link rel="modulepreload" crossorigin href="{% static 'js/modulepreload-polyfill-BoyGcPDr.js' %}">
+    <link rel="modulepreload" crossorigin href="{% static 'js/headerOnScroll-BsQcXGBC.js' %}">
+    <link rel="modulepreload" crossorigin href="{% static 'js/showcaseModal-BGg2r-Tz.js' %}">
+    <link rel="modulepreload" crossorigin href="{% static 'js/sliders-C0i03PCH.js' %}">
+    <link rel="modulepreload" crossorigin href="{% static 'js/useInputPhoneMask-CE77khD0.js' %}">
+    <link rel="stylesheet" crossorigin href="{% static 'css/showcaseModal-DZwIPjuC.css' %}">
+    <link rel="stylesheet" crossorigin href="{% static 'css/sliders-4DNxUV-Y.css' %}">
   </head>
-  <body>
-    <div id="overlay" class="overlay"></div>
+  <body class="body">
     {% include "includes/header.html" %}
-    {% block content %}
-    {% endblock %}
+    {% block content %}{% endblock %}
     {% include "includes/footer.html" %}
     {% if not user.is_authenticated %}
       {% include "includes/login_popup.html" with form=login_form %}
@@ -26,7 +27,37 @@
       {% include "includes/logout_popup.html" %}
     {% endif %}
     {% include "includes/order_popup.html" with form=order_form %}
-    {% include "includes/photo_popup.html" %}
     {% include "includes/cookie_banner.html" %}
+    <div class="popup" id="popup-contacts">
+      <div class="container popup__container">
+        <button class="popup__close" type="button" aria-label="Закрыть попап"></button>
+        <h2 class="popup__title">Заявка принята в работу</h2>
+        <p class="popup__text">Мы свяжемся с вами в ближайшее время.</p>
+      </div>
+    </div>
+    <div class="popup" id="popup-failure">
+      <div class="container popup__container">
+        <button class="popup__close" type="button" aria-label="Закрыть попап"></button>
+        <h2 class="popup__title">Что-то пошло не так...</h2>
+        <p class="popup__text">Попробуйте еще раз или свяжитесь с нами.</p>
+        <a class="popup__link" href="#">Перейти на главную страницу</a>
+      </div>
+    </div>
+    <div class="popup" id="popup-stocks">
+      <div class="container popup__container">
+        <button class="popup__close" type="button" aria-label="Закрыть попап"></button>
+        <h2 class="popup__title">Мы рады, что вы с нами!</h2>
+        <p class="popup__text">Мы уже направили вам приветственное письмо.
+            Пожалуйста, перейдите по ссылке в письме, чтобы подтвердить адрес
+            своей электронной почты.</p>
+      </div>
+    </div>
+    <div class="popup" id="popup-success">
+      <div class="container popup__container">
+        <button class="popup__close" type="button" aria-label="Закрыть попап"></button>
+        <h2 class="popup__title">Вы успешно зарегистрировались!</h2>
+        <a class="popup__link" href="#">Перейти в личный кабинет</a>
+      </div>
+    </div>
   </body>
 </html>

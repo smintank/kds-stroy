@@ -12,6 +12,7 @@ class MainView(TemplateView):
         context = super().get_context_data(**kwargs)
         order_form = OrderCreationForm()
         context["order_form"] = order_form
+        context["view_name"] = self.__class__.__name__
 
         order_id = self.request.session.get('order_id', None)
         if Order.objects.filter(order_id=order_id).exists():
