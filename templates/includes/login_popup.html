@@ -1,27 +1,28 @@
 {% load static %}
-  <div class="login_popup">
-    <span class="close">&times;</span>
-        <div class="form_content" id="formContent">
-          <h3>Вход в личный кабинет</h3>
-          {% include "includes/errors.html" %}
-          <form method="post" action="{% url 'login' %}" id="loginForm">
+<div class="popup" id="popup-auth">
+    <div class="container popup__container">
+        <button class="popup__close" type="button" aria-label="Закрыть попап"></button>
+        <h2 class="popup__title">Вход в личный кабинет</h2>
+        <form class="popup__form" action="{% url 'login' %}" id="formAuth">
             {% csrf_token %}
             {% for field in form %}
-              {% if field.name == 'username' %}
-                <label for="id_username"></label>
-                <input type="{{ field.type }}" name="username" autocomplete="tel" required id="id_username" placeholder="E-mail/Логин*">
-              {% else %}
-                <label for="id_password"></label>
-                <input type="password" name="password" autocomplete="current-password" required id="id_password" placeholder="Пароль*">
-              {% endif %}
+                {{ field }}
+                {% if field.errors %}
+                    <div class="popup__form-error">{{ field.errors }}</div>
+                {% endif %}
+{#              {% if field.name == 'username' %}#}
+{#                <label for="id_username"></label>#}
+{#                <input class="popup__form-input" id="id_username" type="{{ field.type }}" name="login" autocomplete="tel" placeholder="Email или Телефон*" required>#}
+{#              {% else %}#}
+{#                <label for="id_password"></label>#}
+{#                <input class="popup__form-input" id="id_password" type="password" name="password" placeholder="Пароль*" required>#}
+{#              {% endif %}#}
             {% endfor %}
-            <div class="login_submit">
-              <button type="submit" class="login_button" id="loginButton" autofocus>Войти</button>
-              <a href="{% url 'registration' %}">Зарегистрироваться</a>
+            <div class="popup__form-buttons">
+                <button class="popup__form-submit button" id="loginButton" type="submit" autofocus>Войти</button>
+                <a class="popup__form-signup-link" href="{% url 'registration' %}">Зарегистрироваться</a>
             </div>
-          </form>
-          <div class="login_forgot">
-            <a href="{% url 'password_reset' %}">Восстановить пароль</a>
-          </div>
-        </div>
-  </div>
+            <a class="popup__form-forgot-link" href="{% url 'password_reset' %}">Восстановить пароль</a>
+        </form>
+    </div>
+</div>
