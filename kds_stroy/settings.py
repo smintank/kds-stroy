@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "orders.apps.OrdersConfig",
     "main.apps.MainConfig",
     "verify_email.apps.VerifyEmailConfig",
+    "sass_processor",
 ]
 
 MIDDLEWARE = [
@@ -61,6 +62,12 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'sass_processor.finders.CssFinder',
 ]
 
 LOGGING = {
@@ -133,9 +140,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = "static/"
+STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [BASE_DIR / "static_dev"]
+STATIC_ROOT = BASE_DIR / 'static_dev/'
+
+SASS_PROCESSOR_ROOT = STATIC_ROOT
 
 MEDIA_URL = "/media/"
 
