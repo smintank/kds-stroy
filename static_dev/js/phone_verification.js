@@ -1,7 +1,7 @@
-$(document).ready(function() {
-    const countdownElement = $('#countdown');
-    const linkContainer = $('#linkContainer');
-    let countdownDuration = countdownElement.data('countdown-duration');
+document.addEventListener("DOMContentLoaded", function() {
+    const countdownElement = document.getElementById('countdown');
+    const linkContainer = document.getElementById('linkContainer');
+    let countdownDuration = parseInt(countdownElement.dataset.countdownDuration);
     let timerInterval;
 
     function startTimer() {
@@ -10,43 +10,33 @@ $(document).ready(function() {
             minutes = Math.floor(countdownDuration / 60);
             seconds = countdownDuration % 60;
 
-            const display = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-            countdownElement.text(display);
+            countdownElement.textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
 
             if (--countdownDuration < 0) {
                 clearInterval(timerInterval);
-                linkContainer.show();
-                countdownElement.hide();
+                linkContainer.style.display = 'block';
+                countdownElement.style.display = 'none';
             }
         }, 1000);
     }
 
-    $("#repeatCallButton").click(function() {
+    document.getElementById("repeatCallButton").addEventListener("click", function() {
         let data = {
             repeat_call: true
-        }
-        $.ajax({
-            url: "/profile/phone_verification/",
-            type: "GET",
-            data: data,
-            success: function(data) {
+        };
+        fetch("/profile/phone_verification/?repeat_call=true")
+            .then(response => response.json())
+            .then(data => {
                 countdownDuration = data.countdown;
-                countdownElement.show();
-                linkContainer.hide();
+                countdownElement.style.display = 'block';
+                linkContainer.style.display = 'none';
                 startTimer();
-
                 console.log('Повторный звонок');
-            },
-            error: function(xhr, status, error) {
-                // Handle errors
-                console.error(xhr.responseText);
-            }
-        });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     });
 
     startTimer();
-});
-
-$(document).ready(function() {
-
 });

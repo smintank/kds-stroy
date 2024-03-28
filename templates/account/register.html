@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Регистрация{% endblock %}
+{% block plug_js_css %}
+    <script type="module" crossorigin src="{% static 'js/register-CKbcX9UB.js' %}"></script>
+    <link rel="stylesheet" crossorigin href="{% static 'css/register-BKHnbJhD.css' %}">
+{% endblock %}
+{% block content %}
+<main>
+    <section class="register">
+        <div class="container register__container">
+            <h1 class="register__title">Регистрация личного кабинета</h1>
+            <form method="post" action="{% url 'registration' %}" enctype="multipart/form-data" class="register__form">
+                <div class="register__form-container">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        {{ field }}
+                        {% if field.errors %}<p>{{ field.errors }}</p>{% endif %}
+                    {% endfor %}
+                        {% if error %}<p>{{ error }}</p>{% endif %}
+
+{#                    <input class="register__form-input" name="name">#}
+{#                    <div class="register__row register__row--name">#}
+{#                        <input  name="surname">#}
+{#                        <input  name="second-surname">#}
+{#                    </div>#}
+{#                    <div class="register__row register__row--contacts">#}
+{#                        <input  name="tel">#}
+{#                        <input  name="email">#}
+{#                    </div>#}
+{#                    <div class="register__row register__row--location">#}
+{#                        <input class="register__form-input" type="text" name="region" placeholder="Регион">#}
+{#                        <input class="register__form-input" type="text" name="city" placeholder="Город">#}
+{#                    </div>#}
+{#                    <input class="register__form-input register__form-input--wide" type="text" name="address" placeholder="Адрес">#}
+{#                    <input  name="password">#}
+{#                    <input  name="repeat-password">#}
+                </div>
+                <div class="register__checkboxes">
+                    <label class="register__form-agreement checkbox">
+                        <input type="checkbox" name="register-checkbox">
+                        <span class="checkmark"></span> Соглашаюсь на обработку персональных данных в соответствии с политикой конфиденциальности.
+                    </label>
+                    <label class="register__form-agreement checkbox">
+                        <input type="checkbox" name="register-checkbox">
+                        <span class="checkmark"></span> Соглашаюсь получать письма на свой электронный адрес об акциях и новостях компании.
+                    </label>
+                </div>
+                <button class="register__form__submit button" type="submit">Зарегистрироваться</button>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock content %}
