@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Главная{% endblock title %}
+{% block title %}КДС-Строй::Главная{% endblock title %}
 {% block plug_js_css %}
   <script type="module" crossorigin src="{% static 'js/main-WCi7f0ZE.js' %}"></script>
   <link rel="stylesheet" crossorigin href="{% static 'css/main-DcfXKzfr.css' %}">
 {% endblock plug_js_css %}
 {% block content %}
   <main>
-     <section class="hero">
+    <section class="hero">
         <div class="hero__top">
             <div class="container hero__container">
                 <div class="hero__top-wrapper">
@@ -719,14 +719,17 @@
             <div class="stocks__form">
                 <h3 class="stocks__form-title">Подпишитесь, чтобы получать уведомления о новых акциях.<br>
                     Воспользуйтесь ими в нужный момент!</h3>
-                <form class="stocks__form-body" id="formStocks">
-                    <input class="stocks__form-input" type="email" name="stocks-email" placeholder="Введите ваш e-mail">
+                <form class="stocks__form-body" id="formStocks" action="{% url 'subscribe' %}">
+                    {% csrf_token %}
+                    {% for field in subscribe_form %}
+{#                        <label>#}
+{#                            <input class="stocks__form-input" type="email" name="stocks-email" placeholder="Введите ваш e-mail">#}
+{#                        </label>#}
+                        {{ field }}
+                    {% endfor %}
                     <button class="stocks__form-submit button" type="submit">Подписаться</button>
                     <label class="stocks__form-agreement checkbox">
-                        <input type="checkbox" name="stocks-checkbox" required>
-                        <span class="checkmark"></span>
-                        Я соглашаюсь на обработку персональных данных в соответствии с политикой
-                        конфиденциальности.
+                        <input type="checkbox" name="stocks-checkbox" required><span class="checkmark"></span>Я соглашаюсь на обработку персональных данных в соответствии с политикой конфиденциальности.
                     </label>
                 </form>
             </div>
@@ -973,36 +976,13 @@
                     <p class="contacts__information-time">
                         График работы: 9-22:00, ежедневно<br>Краснодарский край
                     </p>
-                    <button class="callback__button button" id="orderPopup" type="button">Оставить заявку</button>
+                    <button class="contacts_callback button" id="orderPopup" type="button">Оставить заявку</button>
                 </div>
                 <div class="contacts__information-image-wrapper">
                     <img src="{% static 'img/contacts-B7TEI1Qr.jpg' %}" alt="Изображении секции">
                 </div>
             </div>
-{#                <div class="order__form">#}
-{#                    <h3 class="order__form-title">Заявка на вызов мастера</h3>#}
-{#                    <h4 class="order__form-subtitle">Заполните форму и мы свяжемся с вами в течение 15 минут.</h4>#}
-{#                    <form class="order__form-body" id="formOrder">#}
-{#                        <input class="order__form-input" type="text" name="name" placeholder="Имя*" required>#}
-{#                        <input class="order__form-input" type="tel" name="tel" placeholder="Номер телефона*" required>#}
-{#                        <input class="order__form-input" type="text" name="address" placeholder="Адрес">#}
-{#                        <textarea class="order__form-textarea" name="description" placeholder="Опишите вашу задачу"></textarea>#}
-{#                        <input type="file" name="file-image" id="fileInput" accept="image/*" multiple hidden>#}
-{#                        <div id="imagePreviewRow" class="image-preview-row">#}
-{#                            <div id="imagePreviews" class="image-previews"></div>#}
-{#                            <label for="fileInput" class="add-image-button" id="addImage">+</label>#}
-{#                            <label for="fileInput" class="add-image-text" id="addImageText">Добавьте фото</label>#}
-{#                        </div>#}
-{#                        <label class="order__form-agreement checkbox">#}
-{#                            <input type="checkbox" name="contacts-checkbox" required>#}
-{#                            <span class="checkmark"></span><p>Я соглашаюсь на обработку персональных данных в соответствии с <a href="{% url 'personal_info_terms' %}">политикой конфиденциальности</a>.</p>#}
-{#                        </label>#}
-{#                        <button class="order__form-submit button" type="submit">Оставить заявку</button>#}
-{#                    </form>#}
-{#                </div>#}
-
         </div>
     </section>
 </main>
-{% include "includes/promotion_banner.html" %}
 {% endblock content %}

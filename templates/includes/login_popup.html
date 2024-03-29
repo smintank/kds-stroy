@@ -10,13 +10,6 @@
                 {% if field.errors %}
                     <div class="popup__form-error">{{ field.errors }}</div>
                 {% endif %}
-{#              {% if field.name == 'username' %}#}
-{#                <label for="id_username"></label>#}
-{#                <input class="popup__form-input" id="id_username" type="{{ field.type }}" name="login" autocomplete="tel" placeholder="Email или Телефон*" required>#}
-{#              {% else %}#}
-{#                <label for="id_password"></label>#}
-{#                <input class="popup__form-input" id="id_password" type="password" name="password" placeholder="Пароль*" required>#}
-{#              {% endif %}#}
             {% endfor %}
             <div class="popup__form-buttons">
                 <button class="popup__form-submit button" id="loginButton" type="submit" autofocus>Войти</button>

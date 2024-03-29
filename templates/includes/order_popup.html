@@ -1,6 +1,6 @@
 {% load static %}
 <div class="popup" id="popup-order">
-    <div class="order__form" id="formOrder">
+    <div class="container popup__container" id="formOrder">
         <button class="popup__close" type="button" aria-label="Закрыть попап"></button>
         <h3 class="order__form-title">Заявка на вызов мастера</h3>
         <h4 class="order__form-subtitle">Заполните форму и мы свяжемся с вами в течение 15 минут.</h4>
@@ -20,7 +20,8 @@
             </div>
             <label class="order__form-agreement checkbox">
                 <input type="checkbox" name="order-checkbox" required>
-                <span class="checkmark"></span><p>Я соглашаюсь на обработку персональных данных в соответствии с <a href="{% url 'personal_info_terms' %}">политикой конфиденциальности</a>.</p>
+                <span class="checkmark"></span>
+                <p>Я соглашаюсь на обработку персональных данных в соответствии с <a href="{% url 'personal_info_terms' %}">политикой конфиденциальности</a>.</p>
             </label>
             <button type="submit" class="order__form-submit button" id="orderSubmit">Оставить заявку</button>
         </form>

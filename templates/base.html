@@ -4,11 +4,16 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>
-       {% block title %}{% endblock %}
-    </title>
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'img/favicon/site.webmanifest' %}">
+    <link rel="mask-icon" href="{% static 'img/favicon/safari-pinned-tab.svg' %}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#00a300">
+    <meta name="theme-color" content="#ffffff">
     {% block plug_js_css %}{% endblock %}
-    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
     <link rel="modulepreload" crossorigin href="{% static 'js/modulepreload-polyfill-BoyGcPDr.js' %}">
     <link rel="modulepreload" crossorigin href="{% static 'js/headerOnScroll-BsQcXGBC.js' %}">
     <link rel="modulepreload" crossorigin href="{% static 'js/showcaseModal-BGg2r-Tz.js' %}">
@@ -21,43 +26,18 @@
     {% include "includes/header.html" %}
     {% block content %}{% endblock %}
     {% include "includes/footer.html" %}
-    {% if not user.is_authenticated %}
-      {% include "includes/login_popup.html" with form=login_form %}
-    {% else %}
-      {% include "includes/logout_popup.html" %}
-    {% endif %}
     {% include "includes/order_popup.html" with form=order_form %}
     {% include "includes/cookie_banner.html" %}
-    <div class="popup" id="popup-contacts">
-      <div class="container popup__container">
-        <button class="popup__close" type="button" aria-label="Закрыть попап"></button>
-        <h2 class="popup__title">Заявка принята в работу</h2>
-        <p class="popup__text">Мы свяжемся с вами в ближайшее время.</p>
-      </div>
-    </div>
-    <div class="popup" id="popup-failure">
-      <div class="container popup__container">
-        <button class="popup__close" type="button" aria-label="Закрыть попап"></button>
-        <h2 class="popup__title">Что-то пошло не так...</h2>
-        <p class="popup__text">Попробуйте еще раз или свяжитесь с нами.</p>
-        <a class="popup__link" href="#">Перейти на главную страницу</a>
-      </div>
-    </div>
-    <div class="popup" id="popup-stocks">
-      <div class="container popup__container">
-        <button class="popup__close" type="button" aria-label="Закрыть попап"></button>
-        <h2 class="popup__title">Мы рады, что вы с нами!</h2>
-        <p class="popup__text">Мы уже направили вам приветственное письмо.
-            Пожалуйста, перейдите по ссылке в письме, чтобы подтвердить адрес
-            своей электронной почты.</p>
-      </div>
-    </div>
-    <div class="popup" id="popup-success">
-      <div class="container popup__container">
-        <button class="popup__close" type="button" aria-label="Закрыть попап"></button>
-        <h2 class="popup__title">Вы успешно зарегистрировались!</h2>
-        <a class="popup__link" href="#">Перейти в личный кабинет</a>
-      </div>
-    </div>
+    {% include "includes/failure_popup.html" %}
+    {% include "includes/order_success_popup.html" %}
+    {% if view_name == 'MainView' %}
+        {% include "includes/promotion_banner.html" %}
+        {% include "includes/news_subscribe_popup.html" %}
+    {% endif %}
+{#    {% if not user.is_authenticated %}#}
+{#      {% include "includes/login_popup.html" with form=login_form %}#}
+{#    {% else %}#}
+{#      {% include "includes/logout_popup.html" %}#}
+{#    {% endif %}#}
   </body>
 </html>
