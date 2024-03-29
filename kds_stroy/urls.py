@@ -16,7 +16,8 @@ urlpatterns = [
     path("profile/", include("users.urls")),
     path("orders/", include("orders.urls")),
     path("news/", include("news.urls")),
-    path("privacy/",
+    path("subs/", include("ads_mailing.urls")),
+    path("terms/",
          TemplateView.as_view(template_name="pages/personal_terms.html"),
          name="personal_info_terms"),
 ]

@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "news.apps.NewsConfig",
     "orders.apps.OrdersConfig",
     "main.apps.MainConfig",
+    "ads_mailing.apps.AdsMailingConfig",
     "verify_email.apps.VerifyEmailConfig",
     "sass_processor",
 ]
@@ -112,6 +113,7 @@ DATABASES = {
 #         "PORT": os.getenv("DB_PORT", 5432),
 #     }
 # }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
