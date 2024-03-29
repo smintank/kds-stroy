@@ -1,8 +1,12 @@
 import "./modulepreload-polyfill-BoyGcPDr.js";
-import { P as Popup, u as useBurger, a as useHeaderOnScroll, S as StockPopup } from "./headerOnScroll-BsQcXGBC.js";
+import { P as Popup, u as useBurger, a as useHeaderOnScroll, PP as PromotionPopup } from "./headerOnScroll-BsQcXGBC.js";
 import { u as useShowcaseModal } from "./showcaseModal-BGg2r-Tz.js";
 import { u as useProjectsRepairsSlider, a as useProjectsBigsSlider, b as useReviewsSlider } from "./sliders-C0i03PCH.js";
 import { u as useInputPhoneMask } from "./useInputPhoneMask-CE77khD0.js";
+
+const popupOrder = new Popup("#popup-order");
+  popupOrder.setEventListeners();
+
 const useAccordion = () => {
   const accordion = document.querySelector(".accordion");
   const accordionItems = accordion.querySelectorAll(
@@ -37,7 +41,7 @@ const useActiveNavSection = () => {
   };
 };
 
-const popupSuccess = new Popup("#popup-success");
+const popupSuccess = new Popup("#popup-contacts");
 popupSuccess.setEventListeners();
 const popupFailure = new Popup("#popup-failure");
 popupFailure.setEventListeners();
@@ -111,14 +115,14 @@ const useContactsFormWithImages = () => {
       body: originFormData
     }).then(function(response) {
       if (response.ok) {
-        console.log("Заказ создан!");
         return response.json();
       } else {
         throw new Error("Ошибка при создании заказа!");
       }
     }).then(function(data) {
+      popupOrder.close();
       popupSuccess.open();
-      console.log('Дата: ', data);
+      setCookie('order_created', true, 1);
       const messageElement = document.querySelector("#successMessage");
       const textElement = document.querySelector("#successText");
         if (messageElement) {
@@ -127,9 +131,9 @@ const useContactsFormWithImages = () => {
         }
     }).catch(function(error) {
       popupFailure.open();
-      console.log('Ошибка: ', error);
       const messageElement = document.querySelector("#failureMessage");
-        if (messageElement) messageElement.textContent = error.message;
+        console.log(error)
+        if (messageElement) messageElement.textContent = error;
     });
   });
 };
@@ -138,14 +142,14 @@ const useContactsFormWithImages = () => {
 //   console.log(input);
 // };
 function setCookie(cname, cvalue, exdays) {
-  var d = /* @__PURE__ */ new Date();
+  const d = /* @__PURE__ */ new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1e3);
-  var expires = "expires=" + d.toUTCString();
+  const expires = "expires=" + d.toUTCString();
   document.cookie = cname + "=" + cvalue + "; " + expires;
 }
 function getCookie(cname) {
-  var name = cname + "=";
-  var ca = document.cookie.split(";");
+  const name = cname + "=";
+  const ca = document.cookie.split(";");
   for (var i = 0; i < ca.length; i++) {
     var c = ca[i];
     while (c.charAt(0) == " ")
@@ -202,28 +206,51 @@ addEventListener("DOMContentLoaded", () => {
   useCustomAnchorScroll();
   useActiveNavSection();
 
-  const popupOrder = new Popup("#popup-order");
-  popupOrder.setEventListeners();
-  const popupStocks = new Popup("#popup-stocks");
-  popupStocks.setEventListeners();
-  const popupSuccess2 = new Popup("#popup-success");
-  popupSuccess2.setEventListeners();
-  const popupFailure2 = new Popup("#popup-failure");
-  popupFailure2.setEventListeners();
-  const popupAuth = new Popup("#popup-auth");
-  if (popupAuth) {
-    popupAuth.setEventListeners();
-  }
-  const stockPopup = new StockPopup("#popup-stock");
-  stockPopup.setEventListeners();
-  if (getCookie("visit")) {
-    stockPopup.close();
-  }
-  const signInButton = document.querySelector("#signIn");
-  if (signInButton) {
-    signInButton.addEventListener("click", () => popupAuth.open());
-  }
+  const popupNewsSub = new Popup("#popup-news-sub");
+  popupNewsSub.setEventListeners();
+  const promotionPopup = new PromotionPopup("#popup-promotion");
+  promotionPopup.setEventListeners();
 
+  if (getCookie("promo_popup_hide")) promotionPopup.close();
+  setCookie("promo_popup_hide", true, 1);
+
+  const formStocks = document.querySelector("#formStocks");
+  formStocks.addEventListener("submit", (e) => {
+    e.preventDefault();
+    formStocks.reset();
+    popupNewsSub.open();
+  });
+
+  const orderPopupButton = document.querySelectorAll("#orderPopup");
+  orderPopupButton.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (getCookie("order_created") !== "true") {
+        popupOrder.open();
+      } else {
+        console.log("order already created");
+        const messageElement = document.querySelector("#successMessage");
+        const textElement = document.querySelector("#successText");
+        messageElement.textContent = "Вы уже отправили заявку!";
+        textElement.textContent = "Мы свяжемся с вами в ближайшее время";
+        popupSuccess.open();
+      }
+    });
+  });
+
+
+  // Auth and Sign In Popups
+  // const popupSuccess2 = new Popup("#popup-success");
+  // popupSuccess2.setEventListeners();
+  // const popupFailure2 = new Popup("#popup-failure");
+  // popupFailure2.setEventListeners();
+  // const popupAuth = new Popup("#popup-auth");
+  // if (popupAuth) {
+  //   popupAuth.setEventListeners();
+  // }
+  // const signInButton = document.querySelector("#signIn");
+  // if (signInButton) {
+  //   signInButton.addEventListener("click", () => popupAuth.open());
+  // }
   // const formAuth = document.querySelector("#formAuth");
   // formAuth.addEventListener("submit", (e) => {
   //   e.preventDefault();
@@ -231,18 +258,16 @@ addEventListener("DOMContentLoaded", () => {
   //   formAuth.reset();
   //   popupSuccess2.open();
   // });
+});
 
-  const formStocks = document.querySelector("#formStocks");
-  formStocks.addEventListener("submit", (e) => {
-    e.preventDefault();
-    formStocks.reset();
-    popupStocks.open();
-  });
-  setCookie("visit", true, 1);
-  const orderPopupButton = document.querySelectorAll("#orderPopup");
-  orderPopupButton.forEach((button) => {
-    button.addEventListener("click", () => {
-      popupOrder.open();
+document.addEventListener("DOMContentLoaded", function() {
+    // Function to show the cookie banner if the user has not accepted cookies
+    const cookieBanner = document.getElementById('cookieBanner');
+    const acceptedCookies = getCookie('acceptedCookies');
+    if (!acceptedCookies) cookieBanner.style.display = 'flex';
+
+    document.getElementById('acceptCookies').addEventListener("click", function() {
+        setCookie('acceptedCookies', true, 365); // Expires in 365 days
+        cookieBanner.style.display = 'none';
     });
-  });
 });

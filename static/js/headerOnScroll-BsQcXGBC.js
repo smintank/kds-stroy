@@ -1,9 +1,15 @@
-var __defProp = Object.defineProperty;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField = (obj, key, value) => {
+const __defProp = Object.defineProperty;
+const __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, {
+  enumerable: true,
+  configurable: true,
+  writable: true,
+  value
+}) : obj[key] = value;
+const __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
+
 class Popup {
   constructor(popupSelector) {
     __publicField(this, "_closeEscPopup", (e) => {
@@ -29,7 +35,7 @@ class Popup {
     });
   }
 }
-class StockPopup {
+class PromotionPopup {
   constructor(popupSelector) {
     this._popup = document.querySelector(popupSelector);
   }
@@ -71,7 +77,7 @@ const useHeaderOnScroll = () => {
 };
 export {
   Popup as P,
-  StockPopup as S,
+  PromotionPopup as PP,
   useHeaderOnScroll as a,
   useBurger as u
 };

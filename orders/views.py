@@ -15,7 +15,7 @@ class OrderCreateView(View):
 
         if order_form.is_valid():
             order = order_form.save()
-            request.session['form_submitted'] = True
+            request.session['order_created'] = True
             request.session['order_id'] = order.order_id
 
             handled_photos = handle_photos(request.FILES)

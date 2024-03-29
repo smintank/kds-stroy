@@ -1,9 +1,14 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import TemplateView
+from django.shortcuts import render
 
 from ads_mailing.forms import SubscribeForm
 from orders.forms import OrderCreationForm
 from orders.models import Order
+
+
+def handler404(request, exception):
+    return render(request, '404.html', status=404)
 
 
 class MainView(TemplateView):

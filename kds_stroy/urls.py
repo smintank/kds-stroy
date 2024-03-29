@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 
 from kds_stroy import settings
 from users.views import RegistrationView
-from main.views import MainView
+from main.views import MainView, handler404
 
 urlpatterns = [
     path("", MainView.as_view(), name="home"),
@@ -26,3 +26,5 @@ if settings.DEBUG:
     # import debug_toolbar
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     # urlpatterns += (path('debug/', include(debug_toolbar.urls)),)
+
+handler404 = handler404

@@ -1599,6 +1599,16 @@ a:hover {
   display: flex;
   align-items: center;
 }
+.contacts_callback {
+  max-width: 300px;
+  padding: 24px 50px;
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  margin-right: 100px;
+  text-decoration: none;
+  display: block;
+}
 .callback__button {
   max-width: 300px;
   padding: 24px 50px;
@@ -2504,12 +2514,12 @@ a:hover {
   .stocks__form-body {
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
   .stocks__form-input {
     padding: 18px 20px;
     margin-bottom: 20px;
     height: 55px;
-    max-width: 193px;
   }
   .stocks__form-submit {
     letter-spacing: -0.03em;
@@ -2811,13 +2821,12 @@ a:hover {
 }
 .contacts__body {
   display: flex;
-  justify-content: flex-end;
-  gap: 35px;
+  justify-content: space-between;
 }
 .contacts__information {
   width: 100%;
   max-width: 570px;
-  padding-top: 31px;
+  padding: 50px 0;
 }
 .contacts__information-title {
   font-weight: 500;
@@ -3009,7 +3018,7 @@ a:hover {
     bottom: 0;
     left: 0;
     z-index: -1;
-    max-height: 164px;
+    max-height: 120px;
   }
   .order__form {
     max-width: 500px;
@@ -3035,13 +3044,11 @@ a:hover {
   }
   .contacts__title {
     margin-bottom: 10px;
-    padding-left: 18px;
     padding-right: 18px;
   }
   .contacts__subtitle {
     margin-bottom: 45px;
     font-size: 15px;
-    padding-left: 18px;
     padding-right: 18px;
   }
   .contacts__information {
@@ -3373,12 +3380,13 @@ a:hover {
   flex-direction: column;
   align-items: center;
   border-radius: 5px;
-  padding: 70px 18px;
+  padding: 70px;
 }
 .popup__close {
   position: absolute;
-  top: 26px;
-  right: 26px;
+  top: 20px;
+  right: 20px;
+  float: right;
   width: 24px;
   height: 24px;
   transform: rotate(45deg);
@@ -3479,10 +3487,9 @@ a:hover {
   }
   .popup__container {
     padding: 45px 40px;
+    margin: 0 15px;
   }
   .popup__close {
-    top: 20px;
-    right: 20px;
     width: 16px;
     height: 16px;
   }
@@ -3528,8 +3535,6 @@ a:hover {
   max-width: 440px;
   z-index: 1001;
   border: 2px solid #d9d9d9;
-  opacity: 0;
-  visibility: hidden;
 }
 .stock-popup::after {
   display: flex;
@@ -3599,9 +3604,8 @@ a:hover {
 @media (max-width: 1023px) {
   .stock-popup {
     top: auto;
-    bottom: 0;
+    bottom: 10%;
     right: 0;
-    transform: none;
     transform: translate(95%, 0);
   }
   .stock-popup--active {
@@ -3628,7 +3632,6 @@ a:hover {
     top: auto;
     bottom: 0;
     right: 0;
-    transform: none;
   }
   .stock-popup__title {
     font-size: 16px;
