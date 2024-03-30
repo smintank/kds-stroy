@@ -9,7 +9,6 @@ from django.views.generic import (
     DetailView,
     FormView,
 )
-from verify_email.email_handler import send_verification_email
 
 from kds_stroy.settings import MEDIA_URL, PHONE_VERIFICATION_TIME_LIMIT
 from orders.models import Order, OrderPhoto
@@ -36,7 +35,7 @@ logger = logging.getLogger(__name__)
 
 
 class RegistrationView(FormView):
-    template_name = 'registration/registration_form.html'
+    template_name = 'account/register.html'
     form_class = UserRegistrationForm
     success_url = '/registration_done/'
 
@@ -83,7 +82,7 @@ class ChangePhoneNumberView(FormView):
 
 class PhoneVerificationView(FormView):
     model = PhoneVerification
-    template_name = 'registration/phone_verification_form.html'
+    template_name = 'account/phone_verification_form.html'
     form_class = PhoneVerificationForm
 
     def get_context_data(self, **kwargs):
@@ -136,7 +135,7 @@ class PhoneVerificationView(FormView):
         user.save()
         del self.request.session['phone_number']
 
-        return render(self.request, "registration/registration_done.html",
+        return render(self.request, "account/registration_done.html",
                       {"new_user": user})
 
     def form_invalid(self, form):
@@ -150,7 +149,7 @@ class PhoneVerificationView(FormView):
 
 class ProfileView(DetailView):
     model = User
-    template_name = "pages/profile.html"
+    template_name = "account/account.html"
     form_class = UserForm
 
     def get_object(self, queryset=None):
@@ -194,12 +193,5 @@ class ProfileEditView(UpdateView):
             form.changed_data.remove('phone_number')
         if 'email' in form.changed_data:
             user = form.save(commit=False)
-            user.is_active = False
-            updated_user = send_verification_email(self.request, form)
-            return render(
-                self.request,
-                "registration/email_change_done.html",
-                {"updated_user": updated_user}
-            )
-        else:
-            return super().form_valid(form)
+            user.is_email_verified = False
+        return super().form_valid(form)

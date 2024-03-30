@@ -25,7 +25,9 @@ INSTALLED_APPS = [
     "news.apps.NewsConfig",
     "orders.apps.OrdersConfig",
     "main.apps.MainConfig",
+    "ads_mailing.apps.AdsMailingConfig",
     "verify_email.apps.VerifyEmailConfig",
+    "sass_processor",
 ]
 
 MIDDLEWARE = [
@@ -63,6 +65,12 @@ TEMPLATES = [
     },
 ]
 
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'sass_processor.finders.CssFinder',
+]
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -88,23 +96,24 @@ LOGGING = {
 
 WSGI_APPLICATION = "kds_stroy.wsgi.application"
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB", "django"),
+        "USER": os.getenv("POSTGRES_USER", "django"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD", ""),
+        "HOST": os.getenv("DB_HOST", ""),
+        "PORT": os.getenv("DB_PORT", 5432),
     }
 }
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": os.getenv("POSTGRES_DB", "django"),
-#         "USER": os.getenv("POSTGRES_USER", "django"),
-#         "PASSWORD": os.getenv("POSTGRES_PASSWORD", ""),
-#         "HOST": os.getenv("DB_HOST", ""),
-#         "PORT": os.getenv("DB_PORT", 5432),
-#     }
-# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -133,9 +142,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = "static/"
+STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [BASE_DIR / "static_dev"]
+STATIC_ROOT = BASE_DIR / 'static'
+
+SASS_PROCESSOR_ROOT = BASE_DIR / 'static'
 
 MEDIA_URL = "/media/"
 
@@ -174,3 +185,7 @@ ZVONOK_CAMPAIGN_ID = os.getenv("ZVONOK_CAMPAIGN_ID")
 PHONE_VERIFICATION_TIME_LIMIT = 300  # in seconds
 PHONE_VERIFICATION_ATTEMPTS_LIMIT = 3  # with one phone number
 PHONE_CHANGE_FREQUENCY_LIMIT = 30  # in days
+
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

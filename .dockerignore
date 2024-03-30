@@ -1,0 +1,8 @@
+venv
+.git
+#db.sqlite3
+.log
+dist1
+dist2
+#media
+templates2
