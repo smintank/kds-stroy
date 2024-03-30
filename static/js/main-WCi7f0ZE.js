@@ -24,6 +24,7 @@ const useAccordion = () => {
     });
   });
 };
+
 const useActiveNavSection = () => {
   const navLinks = document.querySelectorAll(".header__nav-list-item a");
   const headerHeight = document.querySelector(".header").offsetHeight;
@@ -132,15 +133,11 @@ const useContactsFormWithImages = () => {
     }).catch(function(error) {
       popupFailure.open();
       const messageElement = document.querySelector("#failureMessage");
-        console.log(error)
         if (messageElement) messageElement.textContent = error;
     });
   });
 };
-// const useFileInput = () => {
-//   const input = document.querySelector("#upload-images");
-//   console.log(input);
-// };
+
 function setCookie(cname, cvalue, exdays) {
   const d = /* @__PURE__ */ new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1e3);
@@ -159,6 +156,7 @@ function getCookie(cname) {
   }
   return false;
 }
+
 const useCustomAnchorScroll = () => {
   const headerHeight = document.querySelector(".header").offsetHeight;
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -171,6 +169,7 @@ const useCustomAnchorScroll = () => {
     });
   });
 };
+
 const useWorksToggle = (e) => {
   const links = document.querySelectorAll(".hero__footer-list-item-link");
   const works = document.querySelectorAll(".works__list-item");
@@ -191,6 +190,7 @@ const useWorksToggle = (e) => {
     });
   });
 };
+
 addEventListener("DOMContentLoaded", () => {
   useBurger();
   useHeaderOnScroll();
@@ -217,8 +217,26 @@ addEventListener("DOMContentLoaded", () => {
   const formStocks = document.querySelector("#formStocks");
   formStocks.addEventListener("submit", (e) => {
     e.preventDefault();
-    formStocks.reset();
-    popupNewsSub.open();
+    const stocksFormContainer = document.querySelector("#stocksFormContainer");
+    fetch("/subs/subscribe/", {
+      method: "POST",
+      body: new FormData(e.target),
+    }).then(function(response) {
+      if (response.ok) {
+        stocksFormContainer.innerHTML = '' +
+          '<h2 class="popup__title">Мы рады, что вы с нами!</h2>\n' +
+          '<p class="popup__text">\n' +
+          'Теперь вы всегда будете в курсе наших новостей, акций и специальных предложений.\n' +
+          '</p>';
+        setCookie('email_subscribed', true, 1);
+      } else {
+        throw new Error("Не удалось подписаться, попробуйте позже!");
+      }
+    }).catch(function(error) {
+      popupFailure.open();
+      const messageElement = document.querySelector("#failureMessage");
+        if (messageElement) messageElement.textContent = error;
+    });
   });
 
   const orderPopupButton = document.querySelectorAll("#orderPopup");
@@ -235,6 +253,20 @@ addEventListener("DOMContentLoaded", () => {
         popupSuccess.open();
       }
     });
+  });
+
+  const emailSubscribed = getCookie('email_subscribed');
+    if (emailSubscribed) {
+        document.getElementById('stocksFormContainer').style.display = 'none';
+    }
+
+  const cookieBanner = document.getElementById('cookieBanner');
+  const acceptedCookies = getCookie('acceptedCookies');
+  if (!acceptedCookies) cookieBanner.style.display = 'flex';
+
+  document.getElementById('acceptCookies').addEventListener("click", function() {
+      setCookie('acceptedCookies', true, 365); // Expires in 365 days
+      cookieBanner.style.display = 'none';
   });
 
 
@@ -260,14 +292,3 @@ addEventListener("DOMContentLoaded", () => {
   // });
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Function to show the cookie banner if the user has not accepted cookies
-    const cookieBanner = document.getElementById('cookieBanner');
-    const acceptedCookies = getCookie('acceptedCookies');
-    if (!acceptedCookies) cookieBanner.style.display = 'flex';
-
-    document.getElementById('acceptCookies').addEventListener("click", function() {
-        setCookie('acceptedCookies', true, 365); // Expires in 365 days
-        cookieBanner.style.display = 'none';
-    });
-});

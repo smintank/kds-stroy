@@ -1730,6 +1730,7 @@ a:hover {
 .projects__slide-image {
   display: block;
   width: 100%;
+  max-height: 200px;
   height: 100%;
   object-fit: cover;
 }
@@ -2333,7 +2334,7 @@ a:hover {
   letter-spacing: -0.03em;
 }
 .stocks__form {
-  align-self: end;
+  align-self: start;
   background-color: rgba(255, 255, 255, 0.9);
   padding: 60px;
   border-radius: 5px;
@@ -2504,7 +2505,7 @@ a:hover {
     gap: 45px;
   }
   .stocks__form {
-    align-self: end;
+    align-self: start;
     padding: 60px 18px;
   }
   .stocks__form-title {

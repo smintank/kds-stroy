@@ -1,5 +1,4 @@
 from django.http import JsonResponse
-from django.utils import timezone
 from django.views.generic import FormView
 
 from ads_mailing.forms import SubscribeForm
