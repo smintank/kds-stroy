@@ -41,8 +41,8 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'users.authentication.EmailPhoneUsernameBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    "users.authentication.EmailPhoneUsernameBackend",
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 ROOT_URLCONF = "kds_stroy.urls"
@@ -66,30 +66,30 @@ TEMPLATES = [
 ]
 
 STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'sass_processor.finders.CssFinder',
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "sass_processor.finders.CssFinder",
 ]
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
         },
-        'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': 'error.log',
+        "file": {
+            "level": "ERROR",
+            "class": "logging.FileHandler",
+            "filename": "error.log",
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['console', 'file'],
-            'level': 'INFO',
-            'propagate': True,
+    "loggers": {
+        "django": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": True,
         },
     },
 }
@@ -142,15 +142,15 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = BASE_DIR / "static"
 
-SASS_PROCESSOR_ROOT = BASE_DIR / 'static'
+SASS_PROCESSOR_ROOT = BASE_DIR / "static"
 
 MEDIA_URL = "/media/"
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -158,21 +158,21 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 LOGIN_URL = "login"
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
-EMAIL_PORT = int(os.environ.get('EMAIL_PORT'))
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT"))
 EMAIL_USE_TLS = bool(int(os.getenv("EMAIL_TLS", default=0)))
 EMAIL_USE_SSL = bool(int(os.getenv("EMAIL_SSL", default=0)))
-EMAIL_HOST_USER = os.environ.get('EMAIL_ID')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PW')
-DEFAULT_FROM_EMAIL = os.environ.get('FROM_EMAIL')
+EMAIL_HOST_USER = os.environ.get("EMAIL_ID")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PW")
+DEFAULT_FROM_EMAIL = os.environ.get("FROM_EMAIL")
 
-VERIFICATION_SUCCESS_TEMPLATE = TEMPLATES_DIR / 'registration/varification_done.html'
-VERIFICATION_FAILED_TEMPLATE = TEMPLATES_DIR / 'registration/varification_fail.html'
-HTML_MESSAGE_TEMPLATE = TEMPLATES_DIR / 'registration/verification_message.html'
-REQUEST_NEW_EMAIL_TEMPLATE = 'registration/new_email_request.html'
-LINK_EXPIRED_TEMPLATE = 'registration/expired.html'
-NEW_EMAIL_SENT_TEMPLATE = 'registration/new_email_sent.html'
+VERIFICATION_SUCCESS_TEMPLATE = TEMPLATES_DIR / "registration/varification_done.html"
+VERIFICATION_FAILED_TEMPLATE = TEMPLATES_DIR / "registration/varification_fail.html"
+HTML_MESSAGE_TEMPLATE = TEMPLATES_DIR / "registration/verification_message.html"
+REQUEST_NEW_EMAIL_TEMPLATE = "registration/new_email_request.html"
+LINK_EXPIRED_TEMPLATE = "registration/expired.html"
+NEW_EMAIL_SENT_TEMPLATE = "registration/new_email_sent.html"
 EXPIRE_AFTER = "10m"
 MAX_RETRIES = 3
 
@@ -188,4 +188,4 @@ PHONE_CHANGE_FREQUENCY_LIMIT = 30  # in days
 
 
 USE_X_FORWARDED_HOST = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

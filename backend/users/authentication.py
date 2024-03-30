@@ -11,15 +11,17 @@ class EmailPhoneUsernameBackend(ModelBackend):
         if username is None:
             return None
 
-        if bool(re.search(r'^\+7 \(\d{3}\) \d{3}\-\d{2}\-\d{2}$|^\+\d{9,15}$', username)):
+        if bool(
+            re.search(r"^\+7 \(\d{3}\) \d{3}\-\d{2}\-\d{2}$|^\+\d{9,15}$", username)
+        ):
             # Check if the input is a phone number
             # regex finds '+7 (999) 999-99-99' or '1999999999999' patterns
-            username = re.sub(r'\D', '', username)
+            username = re.sub(r"\D", "", username)
             try:
                 user = User.objects.get(phone_number=username)
             except User.DoesNotExist:
                 return None
-        elif bool(re.search(r'\S+@[\w.-]+\.\w+', username)):
+        elif bool(re.search(r"\S+@[\w.-]+\.\w+", username)):
             # Check if the input is an email address
             try:
                 user = User.objects.get(email=username.lower())

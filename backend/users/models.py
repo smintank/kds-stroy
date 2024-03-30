@@ -6,39 +6,23 @@ from django.db import models
 
 class User(AbstractUser):
     first_name = models.CharField(
-        "Имя", max_length=150,
-        blank=False,
-        null=False,
-        help_text="Обязательное поле"
+        "Имя", max_length=150, blank=False, null=False, help_text="Обязательное поле"
     )
     middle_name = models.CharField("Отчество", max_length=150, blank=True)
     avatar = models.ImageField(
-        "Фото профиля",
-        upload_to="avatars/",
-        default="avatars/default.png"
+        "Фото профиля", upload_to="avatars/", default="avatars/default.png"
     )
     email = models.EmailField(
-        "Электронная почта",
-        unique=True,
-        help_text="Обязательное поле"
+        "Электронная почта", unique=True, help_text="Обязательное поле"
     )
-    is_email_verified = models.BooleanField(
-        "Email подтвержден", default=False
-    )
+    is_email_verified = models.BooleanField("Email подтвержден", default=False)
     phone_number = models.CharField(
-        "Номер телефона",
-        max_length=18,
-        unique=True,
-        help_text="Обязательное поле"
+        "Номер телефона", max_length=18, unique=True, help_text="Обязательное поле"
     )
     phone_number_change_date = models.DateTimeField(
-        "Последняя дата изменения номера телефона",
-        auto_now_add=True
+        "Последняя дата изменения номера телефона", auto_now_add=True
     )
-    is_phone_verified = models.BooleanField(
-        "Телефон подтвержден",
-        default=False
-    )
+    is_phone_verified = models.BooleanField("Телефон подтвержден", default=False)
     address = models.ForeignKey(
         "orders.Address",
         on_delete=models.SET_NULL,
@@ -46,10 +30,7 @@ class User(AbstractUser):
         verbose_name="Адрес проживания",
     )
 
-    date_joined = models.DateTimeField(
-        "Дата создания аккаунта",
-        auto_now_add=True
-    )
+    date_joined = models.DateTimeField("Дата создания аккаунта", auto_now_add=True)
     last_login = models.DateTimeField("Последний вход", auto_now=True)
 
     USERNAME_FIELD = "email"
@@ -91,9 +72,7 @@ class PhoneVerification(models.Model):
     @classmethod
     def verify_code(cls, user, phone_number, pincode):
         try:
-            cls.objects.get(
-                user=user, phone_number=phone_number, pincode=pincode
-            )
+            cls.objects.get(user=user, phone_number=phone_number, pincode=pincode)
             return True
         except cls.DoesNotExist:
             return False

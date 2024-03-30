@@ -4,12 +4,15 @@ import logging
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
-from ..kds_stroy.settings import (
-    ZVONOK_API_KEY, ZVONOK_ENDPOINT, ZVONOK_CAMPAIGN_ID,
-    PHONE_VERIFICATION_TIME_LIMIT, PHONE_VERIFICATION_ATTEMPTS_LIMIT,
-    PHONE_CHANGE_FREQUENCY_LIMIT
+from kds_stroy.settings import (
+    ZVONOK_API_KEY,
+    ZVONOK_ENDPOINT,
+    ZVONOK_CAMPAIGN_ID,
+    PHONE_VERIFICATION_TIME_LIMIT,
+    PHONE_VERIFICATION_ATTEMPTS_LIMIT,
+    PHONE_CHANGE_FREQUENCY_LIMIT,
 )
-from ..users.models import PhoneVerification
+from users.models import PhoneVerification
 
 logger = logging.getLogger(__name__)
 
@@ -21,13 +24,13 @@ def phone_validation_prepare(phone_number, session, user):
     phone_validation_request, _ = PhoneVerification.objects.get_or_create(
         user=user, phone_number=phone_number
     )
-    session['phone_number'] = phone_number
-    session['request_id'] = phone_validation_request.id
+    session["phone_number"] = phone_number
+    session["request_id"] = phone_validation_request.id
 
 
 def is_limited(obj, kwargs):
     if is_attempt_limit(obj.user):
-        kwargs['is_attempt_limit'] = True
+        kwargs["is_attempt_limit"] = True
         return 0
     if is_time_limit(obj.last_call):
         return get_countdown_value(obj.last_call)
@@ -60,10 +63,10 @@ def call_api_request(phone_number: str, pincode: str = None) -> str:
     Request a call to the phone number with Zvonok API service.
     """
     payload = {
-        'public_key': ZVONOK_API_KEY,
-        'campaign_id': ZVONOK_CAMPAIGN_ID,
-        'phone': f'+{phone_number}',
-        'phone_suffix': pincode
+        "public_key": ZVONOK_API_KEY,
+        "campaign_id": ZVONOK_CAMPAIGN_ID,
+        "phone": f"+{phone_number}",
+        "phone_suffix": pincode,
     }
     response = None
     try:
@@ -71,17 +74,15 @@ def call_api_request(phone_number: str, pincode: str = None) -> str:
         response.raise_for_status()
         json_response = response.json()
         print(json_response)
-        data = json_response.get('data')
-        pincode = data.get('pincode')
+        data = json_response.get("data")
+        pincode = data.get("pincode")
     except requests.exceptions.HTTPError as e:
         if response.status_code == 400:
             json = response.json()
             logger.exception("Bad Request to Zvonok API: " + json, exc_info=e)
         if response.status_code == 429:
             json = response.json()
-            logger.exception(
-                "Limit exceeded to Zvonok API: " + json, exc_info=e
-            )
+            logger.exception("Limit exceeded to Zvonok API: " + json, exc_info=e)
         else:
             logger.exception("HTTP Error: ", exc_info=e)
     except requests.RequestException as e:
@@ -114,10 +115,11 @@ def is_numbers_amount_limit(request):
     attempts_limit = PHONE_VERIFICATION_ATTEMPTS_LIMIT or 3
     start_date = timezone.now() - timezone.timedelta(days=frequency_limit)
 
-    last_month_unique_numbers = PhoneVerification.objects.filter(
-        user=request.user,
-        created_at__gte=start_date
-    ).values_list('phone_number', flat=True).distinct()
+    last_month_unique_numbers = (
+        PhoneVerification.objects.filter(user=request.user, created_at__gte=start_date)
+        .values_list("phone_number", flat=True)
+        .distinct()
+    )
 
     return len(last_month_unique_numbers) > attempts_limit
 
@@ -128,8 +130,7 @@ def is_attempt_limit(user) -> bool:
     """
     attempt_limit = PHONE_VERIFICATION_ATTEMPTS_LIMIT or 3
     call_attempts = PhoneVerification.objects.filter(
-        user=user,
-        phone_number=user.phone_number
+        user=user, phone_number=user.phone_number
     )
     return call_attempts.count() >= attempt_limit
 

@@ -1,6 +1,6 @@
 import hashlib
 
-from ..kds_stroy.settings import MAX_UPLOADED_PHOTO_SIZE
+from kds_stroy.settings import MAX_UPLOADED_PHOTO_SIZE
 
 
 def handle_photos(photos):
@@ -12,16 +12,20 @@ def handle_photos(photos):
         if len(proper_photos) >= 5:
             break
         try:
-            if photo.content_type not in ['image/jpeg', 'image/png']:
-                raise ValueError(photo_name + 'не является поддерживаемым '
-                                              'типом изображения')
+            if photo.content_type not in ["image/jpeg", "image/png"]:
+                raise ValueError(
+                    photo_name + "не является поддерживаемым " "типом изображения"
+                )
             if photo.size > 1024 * 1024 * MAX_UPLOADED_PHOTO_SIZE:
-                raise ValueError(photo_name + 'превышает максимальный размер в '
-                                              f'{MAX_UPLOADED_PHOTO_SIZE} Мб')
+                raise ValueError(
+                    photo_name + "превышает максимальный размер в "
+                    f"{MAX_UPLOADED_PHOTO_SIZE} Мб"
+                )
             file_hash = hashlib.md5(photo.read()).hexdigest()
             if proper_photos and file_hash in proper_photos:
-                raise ValueError(photo_name + 'является дубликатом другого '
-                                              'загружаемого файла')
+                raise ValueError(
+                    photo_name + "является дубликатом другого " "загружаемого файла"
+                )
         except ValueError as e:
             errors.append(str(e))
         else:
