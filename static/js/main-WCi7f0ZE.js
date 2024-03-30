@@ -245,7 +245,6 @@ addEventListener("DOMContentLoaded", () => {
       if (getCookie("order_created") !== "true") {
         popupOrder.open();
       } else {
-        console.log("order already created");
         const messageElement = document.querySelector("#successMessage");
         const textElement = document.querySelector("#successText");
         messageElement.textContent = "Вы уже отправили заявку!";
