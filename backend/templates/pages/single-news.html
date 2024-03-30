@@ -1,0 +1,84 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block title %}КДС-Строй: Новость{% endblock %}
+{% block plug_js_css %}
+<link rel="stylesheet" href="{% static 'css/../../static/css/singleNews-dKyUe2RX.css' %}">
+<script src="{% static 'js/../../static/js/singleNews-BL7MpO_0.js' %}"></script>
+{% endblock %}
+{% block content %}
+<main>
+    <section class="single-news">
+        <div class="container single-news__container">
+            <a class="single-news__link single-news__link--top" href="{% url 'news:list' %}">
+                <span>Все новости</span>
+            </a>
+            <h1 class="single-news__title">Сделали ремонт помещения для открытия новой аптеки Апрель в Краснодаре</h1>
+            <div class="single-news__row">
+                <div class="swiper single-news__slider">
+                    <div class="single-news__date">24.02.2024</div>
+                    <div class="swiper-wrapper single-news__slider-wrapper">
+                        <div class="swiper-slide single-news__slide">
+                            <img src="{% static 'img/../../static/img/about-JdyuP5GB.jpg' %}" alt="Изображение новости">
+                        </div>
+                        <div class="swiper-slide single-news__slide">
+                            <img src="{% static 'img/../../static/img/about-JdyuP5GB.jpg' %}" alt="Изображение новости">
+                        </div>
+                        <div class="swiper-slide single-news__slide">
+                            <img src="{% static 'img/../../static/img/about-JdyuP5GB.jpg' %}" alt="Изображение новости">
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination single-news__slider-pagination"></div>
+                <div class="single-news__text-wrapper">
+                    <p class="single-news__text">
+                        Компания КДС завершила комплексный ремонт помещения
+                        для аптеки 'Апрель'. Благодаря
+                        профессиональному подходу и высокому качеству работ,
+                        помещение успешно прошло все необходимые лицензионные
+                        процедуры. Теперь оно готово к приему посетителей и
+                        предоставлению качественных фармацевтических услуг.
+                    </p>
+                    <p class="single-news__text">
+                        Новая аптека 'Апрель' представляет собой современное
+                        и уютное пространство, где каждый клиент сможет получить
+                        необходимую помощь и консультацию.
+                    </p>
+                    <p class="single-news__text">
+                        При выборе КДС для ремонта своего бизнеса,
+                        заказчики могут быть уверены в своевременной реализации
+                        проекта и высоком уровне исполнения.
+                    </p>
+                    <p class="single-news__text">
+                        Мы гордимся возможностью сотрудничества с аптекой
+                        'Апрель' и желаем ей успешного старта и процветания в
+                        своей деятельности.
+                    </p>
+                </div>
+            </div>
+            <div class="single-news__text-wrapper">
+                <p class="single-news__text">
+                    Компания КДС завершила комплексный ремонт помещения для аптеки
+                    'Апрель'. Благодаря профессиональному подходу и высокому
+                    качеству работ, помещение успешно прошло все необходимые
+                    лицензионные процедуры. Теперь оно готово к приему посетителей и
+                    предоставлению качественных фармацевтических услуг.
+                </p>
+                <p class="single-news__text">
+                    Новая аптека 'Апрель' представляет
+                    собой современное и уютное пространство, где каждый клиент
+                    сможет получить необходимую помощь и консультацию.
+                </p>
+            </div>
+            <div class="single-news__navigation">
+                <a class="single-news__link" href="#">
+                    <span>Предыдущая новость</span>
+                </a>
+                <span class="single-news__navigation-text">Другие новости</span>
+                <a class="single-news__link single-news__link--reverse" href="#">
+                    <span>Следующая новость</span>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

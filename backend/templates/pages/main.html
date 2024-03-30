@@ -1,0 +1,1039 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block title %}КДС-Строй: Главная{% endblock title %}
+{% block plug_js_css %}
+  <script type="module" crossorigin src="{% static 'js/../../static/js/main-WCi7f0ZE.js' %}"></script>
+  <link rel="stylesheet" crossorigin href="{% static 'css/../../static/css/main-DcfXKzfr.css' %}">
+{% endblock plug_js_css %}
+{% block content %}
+  <main>
+    <section class="hero">
+        <div class="hero__top">
+            <div class="container hero__container">
+                <div class="hero__top-wrapper">
+                    <p class="hero__address">Краснодарский край</p>
+                    <p class="hero__worktime">Ежедневно: 9-22:00</p>
+                </div>
+                <div class="hero__title-wrapper">
+                    <h1 class="hero__title">Мастер на все случаи жизни</h1>
+                    <h2 class="hero__subtitle">От замены лампочки до возведения дома</h2>
+                </div>
+                <div class="hero__callback-wrapper">
+                    <p class="hero__callback-text">Оставьте заявку и мы перезвоним в течение 15 минут</p>
+                    <button class="hero__callback button" id="orderPopup" type="button">Оставить заявку</button>
+                </div>
+            </div>
+            <div class="hero__background">
+                <img src="{% static 'img/../../static/img/hero-background-CYjCPChe.jpg' %}" alt="Фоновое изображение секции">
+            </div>
+        </div>
+        <div class="hero__description">
+            <div class="container hero__description-container">
+                <h2 class="hero__description-title">Более 20 лет опыта</h2>
+                <p class="hero__description-text hero__description-text--big">
+                    Ремонтные работы по дому и для бизнеса
+                </p>
+                <h3 class="hero__description-subtitle">Наши услуги</h3>
+                <p class="hero__description-text">Выберите услугу, чтобы узнать подробнее.</p>
+            </div>
+        </div>
+        <div class="hero__footer">
+            <div class="container hero__footer-container">
+                <ul class="hero__footer-list">
+                    <li class="hero__footer-list-item hero__footer-list-item--active">
+                        <a class="hero__footer-list-item-link" href="#electric" id="electric-link">Электрика</a>
+                    </li>
+                    <li class="hero__footer-list-item">
+                        <a class="hero__footer-list-item-link" href="#plumbing" id="plumbing-link">Сантехника</a>
+                    </li>
+                    <li class="hero__footer-list-item">
+                        <a class="hero__footer-list-item-link" href="#installation" id="installation-link">Монтажные работы</a>
+                    </li>
+                    <li class="hero__footer-list-item">
+                        <a class="hero__footer-list-item-link" href="#technique" id="technique-link">Установка техники</a>
+                    </li>
+                    <li class="hero__footer-list-item">
+                        <a class="hero__footer-list-item-link" href="#repair" id="repair-link">Ремонтные</a>
+                    </li>
+                    <li class="hero__footer-list-item">
+                        <a class="hero__footer-list-item-link" href="#decoration" id="decoration-link">Отделочные</a>
+                    </li>
+                    <li class="hero__footer-list-item">
+                        <a class="hero__footer-list-item-link" href="#welding" id="welding-link">Сварочные</a>
+                    </li>
+                    <li class="hero__footer-list-item">
+                        <a class="hero__footer-list-item-link" href="#construction" id="construction-link">Строительство под ключ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="works" id="works-section">
+        <div class="container works__container">
+            <h2 class="works__title">Работаем по всему Краснодарскому краю</h2>
+            <h3 class="works__subtitle">Ремонтные работы по дому и для бизнеса.</h3>
+            <p class="works__description">Выберите услугу, чтобы узнать о ней подробнее.</p>
+            <ul class="works__list">
+                <li class="works__list-item works__list-item--active" id="electric">
+                    <h4 class="works__list-item-title">Электрика</h4>
+                    <div class="works__list-item-overlay">
+                        <ul class="works__list-item-overlay-list">
+                            <li class="works__list-item-overlay-list-item">
+                                Монтаж электропроводки
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Монтаж розеток и выключателей, дверного звонка
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Монтаж электрощитка
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Монтаж освещения
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="works__background">
+                        <img src="{% static 'img/../../static/img/electric-CEYs4fEv.jpg' %}" alt="Фоновое изображение секции">
+                    </div>
+                </li>
+                <li class="works__list-item" id="plumbing">
+                    <h4 class="works__list-item-title">Сантехника</h4>
+                    <div class="works__list-item-overlay">
+                        <ul class="works__list-item-overlay-list">
+                            <li class="works__list-item-overlay-list-item">
+                                Установка смесителя, душа, замена фильтра
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Установка раковины, душевой кабины, ванны,
+                                унитаза
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Монтаж и замена труб отопления, радиаторов,
+                                полотенцесушителя
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Установка водонагревателя
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Устранение засоров
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="works__background">
+                        <img src="{% static 'img/../../static/img/plumbing-BGFbpnZF.jpg' %}" alt="Фоновое изображение секции">
+                    </div>
+                </li>
+                <li class="works__list-item" id="installation"><h4
+                        class="works__list-item-title">Монтажные работы</h4>
+                    <div class="works__list-item-overlay">
+                        <ul class="works__list-item-overlay-list">
+                            <li class="works__list-item-overlay-list-item">
+                                Монтаж полок зеркала, карниза, жалюзи, люстры
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Сборка и перестановка мебели
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Установка дверей и фурнитуры
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Установка и утепление окон и подоконника
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Остекление и утепление балконов
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="works__background">
+                        <img src="{% static 'img/../../static/img/installation-Dvh4gsPn.jpg' %}" alt="Фоновое изображение секции">
+                    </div>
+                </li>
+                <li class="works__list-item" id="technique">
+                    <h4 class="works__list-item-title">Установка техники</h4>
+                    <div class="works__list-item-overlay">
+                        <ul class="works__list-item-overlay-list">
+                            <li class="works__list-item-overlay-list-item">
+                                Телевизор
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Стиральная машина
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Посудомоечная машина
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Кондиционер
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Кухонная вытяжка
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Электрическая плита, варочная панель, духовой шкаф
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="works__background">
+                        <img src="{% static 'img/../../static/img/technique-DvUbcabL.jpg' %}" alt="Фоновое изображение секции">
+                    </div>
+                </li>
+                <li class="works__list-item" id="repair">
+                    <h4 class="works__list-item-title">Ремонтные работы</h4>
+                    <div class="works__list-item-overlay">
+                        <p class="works__list-item-overlay-text">
+                            Отдельные работы, а также ремонт жилых и нежилых помещений под ключ
+                        </p>
+                        <ul class="works__list-item-overlay-list">
+                            <li class="works__list-item-overlay-list-item">
+                                Демонтаж отделки, стен и перегородок
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Черновая и чистовая отделка
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Монтаж всех инженерных сетей
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Финишная отделка
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Установка сантехники и мебели
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="works__background">
+                        <img src="{% static 'img/../../static/img/repair-B0DUWEiP.jpg' %}" alt="Фоновое изображение секции">
+                    </div>
+                </li>
+                <li class="works__list-item" id="decoration">
+                    <h4 class="works__list-item-title">Отделка</h4>
+                    <div class="works__list-item-overlay">
+                        <ul class="works__list-item-overlay-list">
+                            <li class="works__list-item-overlay-list-item">
+                                Укладка плитки на любые поверхности
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Потолки: монтаж натяжных потолков, малярные работы, побелка
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Стены: отделка (малярные работы, поклейка обоев), штробление и сверление отверстий, возведение и демонтаж
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Полы: выравнивание, плинтуса, покраска, линолеум, плитка, паркет, ламинат, ковролин
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="works__background">
+                        <img src="{% static 'img/../../static/img/decoration-DJa75fdA.jpg' %}" alt="Фоновое изображение секции">
+                    </div>
+                </li>
+                <li class="works__list-item" id="welding">
+                    <h4 class="works__list-item-title">Сварочные работы</h4>
+                    <div class="works__list-item-overlay">
+                        <ul class="works__list-item-overlay-list">
+                            <li class="works__list-item-overlay-list-item">
+                                Сварка труб
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Изготовление заборов и ограждений
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Изготовление и монтаж гаражных ворот
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Сборка теплиц
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Изготовление сварных деталей любой сложности
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="works__background">
+                        <img src="{% static 'img/../../static/img/welding-BrS6NebY.jpg' %}" alt="Фоновое изображение секции">
+                    </div>
+                </li>
+                <li class="works__list-item" id="construction">
+                    <h4 class="works__list-item-title">Строительство</h4>
+                    <div class="works__list-item-overlay">
+                        <p class="works__list-item-overlay-text">
+                            Оставьте заявку, и мы вам перезвоним, чтобы обсудить проект и направить проектировщика для детального расчета.
+                        </p>
+                        <ul class="works__list-item-overlay-list">
+                            <li class="works__list-item-overlay-list-item">
+                                Строительство домов и нежилых построек
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Монтаж всех инженерных сетей
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Фасадные и кровельные работы
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Заливка бетона, кладка кирпича
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Монтаж дренажной системы
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Земляные работы
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Демонтаж строений
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="works__background">
+                        <img src="{% static 'img/../../static/img/construction-l-MPSrfJ.jpg' %}" alt="Фоновое изображение секции">
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <section class="callback">
+        <div class="container callback__container">
+            <button class="callback__button button" id="orderPopup" type="button">Оставить заявку</button>
+            <div class="callback__text-field">
+                <h2 class="callback__title">Бесплатная консультация и расчет стоимости работ</h2>
+                <p class="callback__text">
+                    Постараемся решить вашу задачу, даже если ее нет среди указанных на сайте.
+                </p>
+            </div>
+        </div>
+    </section>
+    <section class="projects" id="projects-section">
+        <div class="container projects__container">
+            <h2 class="projects__title">Наши работы</h2>
+            <h3 class="projects__subtitle">Профессиональный и гибкий подход к решению каждой задачи.</h3>
+            <div class="projects__sliders">
+                <div class="projects__slider projects__slider--repairs swiper">
+                    <h3 class="projects__slider-title">Ремонтные работы</h3>
+                    <div class="projects__slider-wrapper swiper-wrapper">
+                        <div class="projects__slider-slide swiper-slide">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/light_1.jpeg' %}" data-fancybox="projects-4">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/light_1.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/light_3.jpeg' %}" data-fancybox="projects-4">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/light_3.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/electric_3.jpeg' %}" data-fancybox="projects-4">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/electric_3.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/electric_4.jpeg' %}" data-fancybox="projects-4">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/electric_4.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <div class="projects__slide-container">
+                                <h4 class="projects__slide-title">Монтаж освещения и розеток</h4>
+                                <div class="projects__slide-text-field">
+                                    <p class="projects__slide-text">г. Новокубанск</p>
+                                </div>
+                                <div class="projects__slide-text-field">
+                                    <p class="projects__slide-text">Установка и подключение трековых светильников, монтаж розеток</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="projects__slider-slide swiper-slide">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/plumbing_3.jpeg' %}" data-fancybox="projects-3">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/plumbing_3.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/plumbing_6.jpeg' %}" data-fancybox="projects-3">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/plumbing_6.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <div class="projects__slide-container">
+                                <h4 class="projects__slide-title">Установка сантехники</h4>
+                                <div class="projects__slide-text-field">
+                                    <p class="projects__slide-text">г.Адлер</p>
+                                </div>
+                                <div class="projects__slide-text-field">
+                                    <p class="projects__slide-text">Монтаж раковины, подвод труб, установка смесителя.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="projects__slider-slide swiper-slide">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/floor_6.jpeg' %}" data-fancybox="projects-2">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/floor_6.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/floor_2.jpeg' %}" data-fancybox="projects-2">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/floor_2.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <div class="projects__slide-container">
+                                <h4 class="projects__slide-title">Монтаж теплых полов</h4>
+                                <div class="projects__slide-text-field">
+                                    <p class="projects__slide-text">г. Сочи</p><br>
+                                    <p class="projects__slide-text">Площадь помещения - 100 м2</p>
+                                </div>
+                                <div class="projects__slide-text-field">
+                                    <p class="projects__slide-text">Подготовка пола, укладка труб, подключение системы отопления.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="projects__slider-slide swiper-slide">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/furniture_3.jpeg' %}" data-fancybox="projects-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/furniture_3.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/doors_3.jpeg' %}" data-fancybox="projects-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/doors_3.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <div class="projects__slide-container">
+                                <h4 class="projects__slide-title">Сборка и установка мебели</h4>
+                                <div class="projects__slide-text-field">
+                                    <p class="projects__slide-text">г. Краснодар</p>
+                                </div>
+                                <div class="projects__slide-text-field">
+                                    <p class="projects__slide-text">Сборка и установка кухонной мебели. Установка дверей.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="projects__slider-slide swiper-slide">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/boiler_2.jpeg' %}" data-fancybox="projects-1">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/boiler_2.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/plumbing_7.jpeg' %}" data-fancybox="projects-1">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/plumbing_7.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <div class="projects__slide-container">
+                                <h4 class="projects__slide-title">Монтаж системы водоснабжения и канализации</h4>
+                                <div class="projects__slide-text-field">
+                                    <p class="projects__slide-text">г.Краснодар</p><br>
+                                    <p class="projects__slide-text">Частный дом, площадь 150 м2</p>
+                                </div>
+                                <div class="projects__slide-text-field">
+                                    <p class="projects__slide-text">Подключение насоса. Монтаж систем отопления, канализации и подачи воды.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="projects__slider-navigation slider-navigation">
+                        <button class="projects__slider-navigation-prev projects__slider-navigation-prev--repair slider-navigation-prev" type="button"></button>
+                        <span class="projects__slider-navigation-text slider-navigation-text">Другие работы</span>
+                        <button class="projects__slider-navigation-next projects__slider-navigation-next--repair slider-navigation-next" type="button"></button>
+                    </div>
+                </div>
+                <div class="projects__slider projects__slider--bigs swiper">
+                    <h3 class="projects__slider-title">Крупные проекты</h3>
+                    <div class="projects__slider-wrapper swiper-wrapper">
+                        <div class="projects__slider-slide swiper-slide">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/aprel_2.jpg' %}" data-fancybox="projects-bigs-1">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/aprel_2.jpg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/aprel_1.jpg' %}" data-fancybox="projects-bigs-1">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/aprel_1.jpg' %}" alt="изображение слайда">
+                            </a>
+                            <div class="projects__slide-container">
+                                <h4 class="projects__slide-title">Обслуживание сети аптек «Апрель»</h4>
+                                <div class="projects__slide-text-field">
+                                    <p class="projects__slide-text">Краснодарский край</p><br>
+                                    <p class="projects__slide-text">7 лет сотрудничества, 1100 филиалов</p>
+                                </div>
+                                <div class="projects__slide-text-field">
+                                    <p class="projects__slide-text">Текущий ремонт, подготовка новых помещений к лицензированию.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="projects__slider-slide swiper-slide">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/gates_1.jpeg' %}" data-fancybox="projects-bigs-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/gates_1.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/gates_2.jpeg' %}" data-fancybox="projects-bigs-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/gates_2.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/canopy_1.jpeg' %}" data-fancybox="projects-bigs-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/canopy_1.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/canopy_2.jpeg' %}" data-fancybox="projects-bigs-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/canopy_2.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <div class="projects__slide-container">
+                                <h4 class="projects__slide-title">Изготовление и монтаж ворот и навесов</h4>
+                                <div class="projects__slide-text-field">
+                                    <p class="projects__slide-text">Краснодарский край</p><br>
+                                    <p class="projects__slide-text">
+                                        Изготовление и монтаж ворот и навесов для частных домов и коттеджей.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="projects__slider-slide swiper-slide">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/ponton_1.jpeg' %}" data-fancybox="projects-bigs-4">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/ponton_1.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/ponton_2.jpeg' %}" data-fancybox="projects-bigs-4">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/ponton_2.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/ponton_3.jpeg' %}" data-fancybox="projects-bigs-4">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/ponton_3.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <div class="projects__slide-container">
+                                <h4 class="projects__slide-title">Строительство понтонов и пирсов</h4>
+                                <div class="projects__slide-text-field">
+                                    <p class="projects__slide-text">Краснодарский край</p><br>
+                                    <p class="projects__slide-text">
+                                        Возведение кладок понтонного и стационарного типа в регионах Краснодарского края.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="projects__slider-slide swiper-slide">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/construction_1.jpeg' %}" data-fancybox="projects-bigs-2">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/construction_1.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/construction_2.jpeg' %}" data-fancybox="projects-bigs-2">
+                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/construction_2.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <div class="projects__slide-container">
+                                <h4 class="projects__slide-title">Строительство детского кафе</h4>
+                                <div class="projects__slide-text-field">
+                                    <p class="projects__slide-text">Краснодарский край, ст.&nbspНовокорсунская</p><br>
+                                    <p class="projects__slide-text">Площадь помещения 150кв.м</p>
+                                </div>
+                                <div class="projects__slide-text-field">
+                                    <p class="projects__slide-text">Капитально строительство.</p>
+                                </div>
+                            </div>
+                        </div>
+{#                        <div class="projects__slider-slide swiper-slide">#}
+{#                            <a class="projects__slide-image-wrapper" href="{% static 'img/slider-bigs_3-DazO8zMp.png' %}" data-fancybox="projects-bigs-3">#}
+{#                                <img class="projects__slide-image" src="{% static 'img/slider-bigs_3-DazO8zMp.png' %}" alt="изображение слайда">#}
+{#                            </a>#}
+{#                            <a class="projects__slide-image-wrapper" href="{% static 'img/slider-bigs_3-DazO8zMp.png' %}" data-fancybox="projects-bigs-3">#}
+{#                                <img class="projects__slide-image" src="{% static 'img/slider-bigs_3-DazO8zMp.png' %}" alt="изображение слайда">#}
+{#                            </a>#}
+{#                            <div class="projects__slide-container">#}
+{#                                <h4 class="projects__slide-title">Обустройство парков</h4>#}
+{#                                <div class="projects__slide-text-field">#}
+{#                                    <p class="projects__slide-text">Краснодарский край</p><br>#}
+{#                                    <p class="projects__slide-text">Площадь - 500 м2</p>#}
+{#                                </div>#}
+{#                                <div class="projects__slide-text-field">#}
+{#                                    <p class="projects__slide-text">#}
+{#                                        Изготовление плитки. Демонтаж старого#}
+{#                                        покрытия, выравнивание почвы, укладка плитки#}
+{#                                        и бордюра.#}
+{#                                    </p>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+                    </div>
+                    <div class="projects__slider-navigation slider-navigation">
+                        <button class="projects__slider-navigation-prev projects__slider-navigation-prev--bigs slider-navigation-prev" type="button"></button>
+                        <span class="projects__slider-navigation-text slider-navigation-text">Другие работы</span>
+                        <button class="projects__slider-navigation-next projects__slider-navigation-next--bigs slider-navigation-next" type="button"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="reviews">
+        <div class="container reviews__container">
+            <h2 class="reviews__title">Нас ценят за качество и сервис</h2>
+            <h3 class="reviews__subtitle">Отзывы наших клиентов</h3>
+            <div class="reviews__slider swiper">
+                <div class="reviews__slider-wrapper swiper-wrapper">
+                    <div class="reviews__slider-slide swiper-slide">
+                        <div class="reviews__slide-container">
+                            <p class="reviews__text">
+                                «Я доволен тем, что нашел
+                                Ваш сайт, а вместе с ним и мастеров-профессионалов
+                                своего дела. Все реализовали, как и задумывали.
+                                Ванная комната просто СУПЕР!, да и стиральная
+                                машинка здорово вписалась.»
+                            </p>
+                            <p class="reviews__name">Евгений, Краснодар</p>
+{#                            <a class="reviews__link" href="#">Посмотреть отзыв</a>#}
+                        </div>
+                    </div>
+                    <div class="reviews__slider-slide swiper-slide">
+                        <div class="reviews__slide-container">
+                            <p class="reviews__text">
+                                «Хотим поблагодарить Вас
+                                за качественный и профессиональный подход к нашей
+                                проблеме. Остались очень довольны, нет никаких
+                                нареканий. Спасибо, что помогли выбрать качественный
+                                материал, за отделку стен и полов.»
+                            </p>
+                            <p class="reviews__name">Елена, Сочи</p>
+{#                            <a class="reviews__link" href="#">Посмотреть отзыв</a>#}
+                        </div>
+                    </div>
+                    <div class="reviews__slider-slide swiper-slide">
+                        <div class="reviews__slide-container">
+                            <p class="reviews__text">
+                                «Очень понравился сервис. Надо было постелить ламинат у ребенка в комнате.
+                                Оставила заявку, перезвонили срезу, на следующий
+                                день мастер был уже у меня и приступил к работе.
+                                Сделал всё быстро и качественно. Оставил за собой порядок. Рекомендую!»
+                            </p>
+                            <p class="reviews__name">Инна, Новокубанск</p>
+{#                            <a class="reviews__link" href="#">Посмотреть отзыв</a>#}
+                        </div>
+                    </div>
+                </div>
+                <div class="reviews__slider-navigation slider-navigation">
+                    <button class="reviews__slider-navigation-prev slider-navigation-prev" type="button"></button>
+                    <span class="reviews__slider-navigation-text slider-navigation-text">Другие отзывы</span>
+                    <button class="reviews__slider-navigation-next slider-navigation-next" type="button"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="experience">
+        <div class="experience__background">
+            <img src="{% static 'img/../../static/img/experience-bg-DynIxXN1.png' %}" alt="Фоновое изображение секции">
+        </div>
+        <div class="container experience__container">
+            <h2 class="experience__title">Работаем более 20 лет</h2>
+            <h3 class="experience__subtitle">Оказываем услуги по всему Краснодарскому краю.</h3>
+            <ul class="experience__list">
+                <li class="experience__list-item">
+                    <div class="experience__list-item-top">
+                        <h3 class="experience__list-item-title">Качественно</h3>
+                        <img class="experience__list-item-icon" src="data:image/svg+xml,%3csvg%20width='59'%20height='59'%20viewBox='0%200%2059%2059'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M24.7936%2010.834H21.8002C21.0649%2010.8361%2020.3474%2011.0529%2019.7416%2011.4561C19.1358%2011.8594%2018.6701%2012.4301%2018.4053%2013.0937L16.8356%2017.0128L11.4329%2019.9787L7.12539%2019.3431C6.40816%2019.249%205.67816%2019.3632%205.02817%2019.6712C4.37817%2019.9793%203.83753%2020.4673%203.47493%2021.0732L2.01476%2023.5447C1.6406%2024.1604%201.46821%2024.8712%201.52035%2025.5835C1.57248%2026.2958%201.8467%2026.976%202.3068%2027.5345L5.04464%2030.8181V36.7499L2.37981%2040.0335C1.91971%2040.5919%201.64549%2041.2722%201.59335%2041.9845C1.54122%2042.6967%201.71361%2043.4076%202.08778%2044.0233L3.54796%2046.4946C3.91056%2047.1006%204.45119%2047.5886%205.10115%2047.8967C5.75115%2048.2048%206.48119%2048.319%207.19841%2048.225L11.506%2047.5895L16.8356%2050.5551L18.4053%2054.4743C18.6701%2055.1377%2019.1358%2055.7087%2019.7416%2056.112C20.3474%2056.5149%2021.0649%2056.7319%2021.8002%2056.734H24.8666C25.602%2056.7319%2026.3196%2056.5149%2026.9253%2056.112C27.5311%2055.7087%2027.9968%2055.1377%2028.2616%2054.4743L29.8313%2050.5551L35.1609%2047.5895L39.4685%2048.225C40.1857%2048.319%2040.9157%2048.2048%2041.5657%2047.8967C42.2157%2047.5886%2042.7566%2047.1006%2043.1191%2046.4946L44.5792%2044.0233C44.9534%2043.4076%2045.1256%2042.6967%2045.0737%2041.9845C45.0214%2041.2722%2044.7474%2040.5919%2044.2872%2040.0335L41.5493%2036.7499V32.9253M15.996%2033.784C15.996%2035.1806%2016.4242%2036.5459%2017.2265%2037.7072C18.0287%2038.8684%2019.1689%2039.7735%2020.503%2040.308C21.8371%2040.8425%2023.305%2040.9823%2024.7213%2040.7099C26.1375%2040.4374%2027.4384%2039.7648%2028.4595%2038.7773C29.4805%2037.7897%2030.1759%2036.5314%2030.4576%2035.1616C30.7393%2033.7918%2030.5947%2032.372%2030.0421%2031.0816C29.4895%2029.7913%2028.5537%2028.6885%2027.3531%2027.9125C26.1525%2027.1366%2024.7409%2026.7224%2023.2969%2026.7224C21.3606%2026.7224%2019.5036%2027.4664%2018.1344%2028.7907C16.7652%2030.115%2015.996%2031.9111%2015.996%2033.784Z'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M34.2954%2014.929C32.9575%2014.7039%2032.9575%2012.8464%2034.2954%2012.6213C39.1419%2011.8058%2042.9967%208.23529%2044.0485%203.58728L44.1291%203.231C44.4188%201.95218%2046.3011%201.94422%2046.6022%203.22054L46.7002%203.63575C47.7913%208.26184%2051.6469%2011.8022%2056.4803%2012.6155C57.8249%2012.8417%2057.8249%2014.7086%2056.4803%2014.9349C51.6469%2015.7482%2047.7913%2019.2885%2046.7002%2023.9146L46.6022%2024.3298C46.3011%2025.6062%2044.4188%2025.5982%2044.1291%2024.3194L44.0485%2023.9631C42.9967%2019.3151%2039.1419%2015.7446%2034.2954%2014.929Z'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e" alt="Декоративная иконка карточки">
+                    </div>
+                    <p class="experience__list-item-text">25 квалифицированных мастеров в постоянном штате компании.</p>
+                    <p class="experience__list-item-text">Современные материалы, проверенные технологии.</p>
+                </li>
+                <li class="experience__list-item">
+                    <div class="experience__list-item-top">
+                        <h3 class="experience__list-item-title">Быстро</h3>
+                        <img class="experience__list-item-icon" src="data:image/svg+xml,%3csvg%20width='48'%20height='48'%20viewBox='0%200%2048%2048'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M24%2012V25.7143L32.9143%2030.1714'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M45.6896%2029.1434C43.3677%2038.9721%2034.5381%2046.2863%2024.0001%2046.2863C11.692%2046.2863%201.71436%2036.3088%201.71436%2024.0006C1.71436%2011.6925%2011.692%201.71484%2024.0001%201.71484C32.598%201.71484%2040.0588%206.58379%2043.7754%2013.7148'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'/%3e%3cpath%20d='M46.2858%206.85742V15.4289H37.7144'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e" alt="Декоративная иконка карточки">
+                    </div>
+                    <p class="experience__list-item-text">Отвечаем на заявку в течение 15 минут. Мастер приезжает в течение 2-х часов.</p>
+                    <p class="experience__list-item-text">Работаем оперативно, не затягивая процесс. Соблюдаем сроки.</p>
+                </li>
+                <li class="experience__list-item">
+                    <div class="experience__list-item-top">
+                        <h3 class="experience__list-item-title">Надежно</h3>
+                        <img class="experience__list-item-icon" src="data:image/svg+xml,%3csvg%20width='48'%20height='48'%20viewBox='0%200%2048%2048'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M25.2122%2045.8875C24.4244%2046.1912%2023.5517%2046.1912%2022.7639%2045.8875C16.617%2043.5272%2011.3306%2039.3584%207.60292%2033.9307C3.87524%2028.5032%201.88176%2022.0725%201.88575%2015.4881V5.28708C1.88575%204.38526%202.244%203.52033%202.88169%202.88266C3.51939%202.24497%204.38428%201.88672%205.2861%201.88672H42.69C43.5917%201.88672%2044.4568%202.24497%2045.0945%202.88266C45.7322%203.52033%2046.0905%204.38526%2046.0905%205.28708V15.4881C46.0943%2022.0725%2044.1009%2028.5032%2040.3733%2033.9307C36.6455%2039.3584%2031.3591%2043.5272%2025.2122%2045.8875Z'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M34.2858%2013.7148L20.5715%2029.1434L13.7144%2024.0006'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e" alt="Декоративная иконка карточки">
+                    </div>
+                    <p class="experience__list-item-text">Всегда оформляем договор и акт приемки.</p>
+                    <p class="experience__list-item-text">Даем гарантию на все наши работы от 6 месяцев.</p>
+                </li>
+                <li class="experience__list-item">
+                    <div class="experience__list-item-top">
+                        <h3 class="experience__list-item-title">Хорошие цены</h3>
+                        <img class="experience__list-item-icon" src="data:image/svg+xml,%3csvg%20width='48'%20height='43'%20viewBox='0%200%2048%2043'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M41.1429%2031.0003V37.8574C41.1429%2038.7667%2040.7816%2039.6389%2040.1387%2040.2818C39.4958%2040.9246%2038.6236%2041.286%2037.7144%2041.286H5.14293C4.2336%2041.286%203.36154%2040.9246%202.71856%2040.2818C2.07558%2039.6389%201.71436%2038.7667%201.71436%2037.8574V12.1431C1.71436%206.46251%206.31944%201.85742%2012.0001%201.85742H34.2858V10.4289'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M44.5717%2020.7148H32.5717C31.6249%2020.7148%2030.8574%2021.4824%2030.8574%2022.4291V29.2863C30.8574%2030.2329%2031.6249%2031.0006%2032.5717%2031.0006H44.5717C45.5183%2031.0006%2046.286%2030.2329%2046.286%2029.2863V22.4291C46.286%2021.4824%2045.5183%2020.7148%2044.5717%2020.7148Z'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M41.1429%2020.7154V13.8583C41.1429%2012.9489%2040.7815%2012.0769%2040.1386%2011.4339C39.4958%2010.7909%2038.6235%2010.4297%2037.7143%2010.4297H12'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e" alt="Декоративная иконка карточки">
+                    </div>
+                    <p class="experience__list-item-text">Стоимость выезда с выполнением работ от 500 руб.</p>
+                    <p class="experience__list-item-text">Не выходим за рамки согласованного бюджета и сметы.</p>
+                </li>
+                <li class="experience__list-item">
+                    <div class="experience__list-item-top">
+                        <h3 class="experience__list-item-title">Постоплата</h3>
+                        <img class="experience__list-item-icon" src="data:image/svg+xml,%3csvg%20width='55'%20height='41'%20viewBox='0%200%2055%2041'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M2.15332%204.11914L10.7742%208.7587L18.4694%207.42637C21.067%206.97663%2023.7291%207.72023%2025.7177%209.45104'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M44.3232%2028.4657L32.1344%2037.122C29.4551%2039.025%2025.8746%2039.0592%2023.1593%2037.208L2.15332%2022.8887'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M52.6523%2022.7974L44.0279%2028.6907L30.6465%2017.8859L25.7244%2021.4683C23.723%2022.925%2020.927%2022.5325%2019.404%2020.5811C17.8845%2018.6342%2018.1776%2015.834%2020.0674%2014.244L25.1926%209.93177C27.649%207.86499%2030.8422%206.88964%2034.0342%207.23119L42.022%208.08581L52.6523%202.33984'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M30.6479%2017.9151C33.8678%2020.7838%2038.4342%2019.3203%2040.132%2016.9785'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e" alt="Декоративная иконка карточки">
+                    </div>
+                    <p class="experience__list-item-text">На этапе работ затраты на материалы покрываем из собственного бюджета.</p>
+                    <p class="experience__list-item-text">Работы стоимостью до 20 000 руб. - постоплата, более - предоплата 20%.</p>
+                </li>
+                <li class="experience__list-item">
+                    <div class="experience__list-item-top">
+                        <h3 class="experience__list-item-title">Выгодные материалы</h3>
+                        <img class="experience__list-item-icon" src="data:image/svg+xml,%3csvg%20width='45'%20height='46'%20viewBox='0%200%2045%2046'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M16.9562%2026.6719H3.57432C2.70486%2026.6719%202%2027.3972%202%2028.2919V42.0622C2%2042.9569%202.70486%2043.6823%203.57432%2043.6823H16.9562C17.8257%2043.6823%2018.5305%2042.9569%2018.5305%2042.0622V28.2919C18.5305%2027.3972%2017.8257%2026.6719%2016.9562%2026.6719Z'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M41.426%2026.6719H28.044C27.1746%2026.6719%2026.4697%2027.3972%2026.4697%2028.2919V42.0622C26.4697%2042.9569%2027.1746%2043.6823%2028.044%2043.6823H41.426C42.2955%2043.6823%2043.0001%2042.9569%2043.0001%2042.0622V28.2919C43.0001%2027.3972%2042.2955%2026.6719%2041.426%2026.6719Z'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M16.9562%201.49219H3.57432C2.70486%201.49219%202%202.21751%202%203.11222V16.8826C2%2017.7773%202.70486%2018.5026%203.57432%2018.5026H16.9562C17.8257%2018.5026%2018.5305%2017.7773%2018.5305%2016.8826V3.11222C18.5305%202.21751%2017.8257%201.49219%2016.9562%201.49219Z'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M26.1943%2011.253C25.2249%2011.0794%2025.2249%209.64747%2026.1943%209.47394C29.7061%208.84526%2032.4992%206.09273%2033.2616%202.50956L33.32%202.23489C33.5296%201.24904%2034.8937%201.24291%2035.1117%202.22683L35.1826%202.54692C35.9734%206.1132%2038.7671%208.84247%2042.2693%209.4694C43.2435%209.64382%2043.2435%2011.0831%2042.2693%2011.2575C38.7671%2011.8845%2035.9734%2014.6137%2035.1826%2018.18L35.1117%2018.5001C34.8937%2019.484%2033.5296%2019.4779%2033.32%2018.492L33.2616%2018.2174C32.4992%2014.6342%2029.7061%2011.8817%2026.1943%2011.253Z'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e" alt="Декоративная иконка карточки">
+                    </div>
+                    <p class="experience__list-item-text">Закупаем у проверенных поставщиков по оптовым ценам. Доставим бесплатно.</p>
+                    <p class="experience__list-item-text">Вам не придется переплачивать, тратить силы и время.</p>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <section class="guarantee">
+        <div class="container guarantee__container">
+            <div class="guarantee__content">
+                <ul class="guarantee__text-items">
+                    <li class="guarantee__text-item">
+                        <h3 class="guarantee__title">Гарантия на все наши работы</h3>
+                        <h4 class="guarantee__subtitle">от 6 месяцев до 2-х лет.</h4>
+                    </li>
+                    <li class="guarantee__text-item">
+                        <h3 class="guarantee__title">Способы оплаты</h3>
+                        <ul class="guarantee__text-item-list">
+                            <li class="guarantee__text-item-list-item">
+                                Наличные
+                            </li>
+                            <li class="guarantee__text-item-list-item">
+                                Перевод на карту
+                            </li>
+                            <li class="guarantee__text-item-list-item">
+                                Оплата по реквизитам на расчетный счет
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="guarantee__image-wrapper">
+                <img src="{% static 'img/../../static/img/guarantee-DU3WHv_S.jpg' %}" alt="Изображение работника">
+            </div>
+        </div>
+    </section>
+    <section class="steps" id="steps-section">
+        <div class="steps__background">
+            <img src="{% static 'img/../../static/img/steps-bg-CDzaKLHc.png' %}" alt="Фоновое изображение секции">
+        </div>
+        <div class="container steps__container">
+            <h2 class="steps__title">С нами легко и надежно</h2>
+            <div class="steps__list-wrapper">
+                <ul class="steps__list">
+                    <li class="steps__list-item">
+                        <span class="steps__list-item-count">1</span>
+                        <h4 class="steps__list-item-title">Заявка</h4>
+                        <p class="steps__list-item-text">
+                            Оставьте заявку на
+                            сайте и мы перезвоним в течение 5 минут. Или
+                            свяжитесь с нами любым удобным способом.
+                        </p>
+                    </li>
+                    <li class="steps__list-item">
+                        <span class="steps__list-item-count">2</span>
+                        <h4 class="steps__list-item-title">Расчет стоимости</h4>
+                        <p class="steps__list-item-text">
+                            При звонке оператор
+                            озвучит предварительную стоимость работ и согласует
+                            время выезда специалиста.
+                        </p>
+                    </li>
+                    <li class="steps__list-item">
+                        <span class="steps__list-item-count">3</span>
+                        <h4 class="steps__list-item-title">Выезд специалиста</h4>
+                        <p class="steps__list-item-text">
+                            Специалист приедет к
+                            вам течение 2-х часов. Либо в любое другое удобное
+                            вам время.
+                        </p>
+                    </li>
+                    <li class="steps__list-item">
+                        <span class="steps__list-item-count">4</span>
+                        <h4 class="steps__list-item-title">Договор</h4>
+                        <p class="steps__list-item-text">
+                            Перед началом работ мы
+                            подписываем договор, в котором фиксируем условия,
+                            стоимость работ и гарантию.
+                        </p>
+                    </li>
+                    <li class="steps__list-item">
+                        <span class="steps__list-item-count">5</span>
+                        <h4 class="steps__list-item-title">Работа</h4>
+                        <p class="steps__list-item-text">
+                            Выполняем работу быстро
+                            и качественно. Если нужно, сами купим и привезем
+                            материалы. Уберем за собой мусор.
+                        </p>
+                    </li>
+                    <li class="steps__list-item">
+                        <span class="steps__list-item-count">6</span>
+                        <h4 class="steps__list-item-title">Оплата</h4>
+                        <p class="steps__list-item-text">
+                            Вы проверяете работу,
+                            после этого подписываете акт приемки и производите
+                            оплату.
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="callback">
+        <div class="container callback__container">
+            <button class="callback__button button" id="orderPopup" type="button">Оставить заявку</button>
+            <div class="callback__text-field">
+                <h2 class="callback__title">Оставьте заявку, и мы перезвоним вам в течение 15 минут.</h2>
+                <p class="callback__text">
+                    Постараемся решить вашу задачу, даже если ее нет среди указанных на сайте.</p>
+            </div>
+        </div>
+    </section>
+    <section class="stocks" id="stocks-section">
+        <div class="stocks__background">
+            <img src="{% static 'img/../../static/img/stocks-bg2-Bt5AbOxC.jpg' %}" alt="Фоновое изображение секции">
+        </div>
+        <div class="container stocks__container">
+            <div class="stocks__content">
+                <h2 class="stocks__title">Акции</h2>
+                <ul class="stocks__list">
+                    <li class="stocks__list-item">
+                        <h4 class="stocks__list-item-title">Бесплатный выезд проектировщика</h4>
+                        <p class="stocks__list-item-text">
+                            Выезд, консультация
+                            специалиста и расчет стоимости работ бесплатно при
+                            заключении договора.
+                        </p>
+                    </li>
+                    <li class="stocks__list-item">
+                        <h4 class="stocks__list-item-title">Каждая 5-я услуга в подарок</h4>
+                        <p class="stocks__list-item-text">
+                            Выполним работы стоимостью до 2000 руб. бесплатно. Если вы
+                            воспользовались нашими услугами уже 4 раза просто
+                            сообщите об этом оператору.
+                        </p>
+                        <p class="stocks__list-item-text">
+                            Мы сохраняем историю заказов, ценим ваше доверие и всегда рады
+                            помочь.
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="stocks__form" id="stocksFormContainer">
+                <h3 class="stocks__form-title">Подпишитесь, чтобы получать уведомления о новых акциях.<br>
+                    Воспользуйтесь ими в нужный момент!</h3>
+                <form class="stocks__form-body" id="formStocks" method="post" action="{% url 'subscribe' %}">
+                    {% csrf_token %}
+                    {% for field in subscribe_form %}
+                        {{ field }}
+                    {% endfor %}
+                    <button class="stocks__form-submit button" type="submit">Подписаться</button>
+                    <label class="stocks__form-agreement checkbox">
+                        <input type="checkbox" name="stocks-checkbox" required>
+                        <span class="checkmark"></span>
+                        Я соглашаюсь на обработку персональных данных в соответствии с <a href="{% url 'personal_info_terms' %}">политикой конфиденциальности</a>.
+                    </label>
+                </form>
+            </div>
+        </div>
+        <div class="stocks__bottom">
+            <div class="container stocks__bottom-container">
+                <p class="stocks__bottom-text">
+                    В социальных сетях мы публикуем полезные советы и больше информации о работе компании.
+                    Подпишитесь, чтобы лучше нас узнать и быть в курсе всех спецпредложений.
+                </p>
+                <div class="stocks__bottom-icons">
+                    <a class="stocks__bottom-icons-link" href="https://t.me/kds-stroy">
+                        <img src="data:image/svg+xml,%3csvg%20width='83'%20height='83'%20viewBox='0%200%2083%2083'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M2%2041.5C2%2046.6872%203.0217%2051.8236%205.00676%2056.616C6.99182%2061.4084%209.90137%2065.7628%2013.5693%2069.4307C17.2372%2073.0986%2021.5916%2076.0082%2026.384%2077.9933C31.1764%2079.9783%2036.3128%2081%2041.5%2081C46.6872%2081%2051.8236%2079.9783%2056.616%2077.9933C61.4084%2076.0082%2065.7628%2073.0986%2069.4307%2069.4307C73.0986%2065.7628%2076.0082%2061.4084%2077.9932%2056.616C79.9783%2051.8236%2081%2046.6872%2081%2041.5C81%2036.3128%2079.9783%2031.1764%2077.9932%2026.384C76.0082%2021.5916%2073.0986%2017.2372%2069.4307%2013.5693C65.7628%209.90137%2061.4084%206.99182%2056.616%205.00676C51.8236%203.0217%2046.6872%202%2041.5%202C36.3128%202%2031.1764%203.0217%2026.384%205.00676C21.5916%206.99182%2017.2372%209.90137%2013.5693%2013.5693C9.90137%2017.2372%206.99182%2021.5916%205.00676%2026.384C3.0217%2031.1764%202%2036.3128%202%2041.5Z'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M58.8306%2021.3477L55.5144%2064.459L37.2961%2045.7636L15.7192%2041.2452L58.8306%2021.3477Z'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M29.2549%2044.0684L32.497%2062.7866L44.3636%2052.9559'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M37.2778%2045.6706L44.1903%2040.1406'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e" alt="Иконка Телеграм">
+                    </a>
+                    <a class="stocks__bottom-icons-link" href="https://www.instagram.com/yourusername" target="_blank">
+                        <img src="data:image/svg+xml,%3csvg%20width='80'%20height='80'%20viewBox='0%200%2080%2080'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M62.0044%2019.6376C61.1345%2019.6376%2060.4297%2018.9326%2060.4297%2018.063C60.4297%2017.1933%2061.1345%2016.4883%2062.0044%2016.4883'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M62.0044%2019.6376C62.8742%2019.6376%2063.5791%2018.9326%2063.5791%2018.063C63.5791%2017.1933%2062.8742%2016.4883%2062.0044%2016.4883'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M2.32422%2018.2965C2.32422%209.34584%209.58016%202.08984%2018.5309%202.08984H61.7488C70.6993%202.08984%2077.9554%209.34584%2077.9554%2018.2965V61.5144C77.9554%2070.4649%2070.6993%2077.721%2061.7488%2077.721H18.5309C9.58016%2077.721%202.32422%2070.4649%202.32422%2061.5144V18.2965Z'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M24.0781%2039.9055C24.0781%2042.0147%2024.4936%2044.1033%2025.3007%2046.052C26.1079%2048.0007%2027.291%2049.7713%2028.7825%2051.2628C30.2739%2052.7543%2032.0446%2053.9374%2033.9933%2054.7445C35.942%2055.5517%2038.0306%2055.9672%2040.1398%2055.9672C42.2491%2055.9672%2044.3377%2055.5517%2046.2864%2054.7445C48.235%2053.9374%2050.0057%2052.7543%2051.4971%2051.2628C52.9886%2049.7713%2054.1717%2048.0007%2054.9789%2046.052C55.786%2044.1033%2056.2015%2042.0147%2056.2015%2039.9055C56.2015%2035.6456%2054.5093%2031.5603%2051.4971%2028.5481C48.485%2025.536%2044.3996%2023.8438%2040.1398%2023.8438C35.88%2023.8438%2031.7946%2025.536%2028.7825%2028.5481C25.7703%2031.5603%2024.0781%2035.6456%2024.0781%2039.9055Z'%20stroke='%23C82027'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e" alt="Иконка Инстаграм" target="_blank">
+                    </a>
+                    <a class="stocks__bottom-icons-link" href="https://vk.com" target="_blank">
+                        <img src="data:image/svg+xml,%3csvg%20width='80'%20height='80'%20viewBox='0%200%2080%2080'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M63.1785%202.08984H17.1909C9.03857%202.08984%202.36914%208.75927%202.36914%2016.9075V62.9033C2.36914%2071.0516%209.03857%2077.721%2017.1909%2077.721H63.1769C71.3309%2077.721%2078.0003%2071.0516%2078.0003%2062.9033V16.9075C78.0003%208.75927%2071.3309%202.08984%2063.1785%202.08984Z'%20stroke='%23C82027'%20stroke-width='3'%20stroke-miterlimit='10'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M61.3499%2046.7497C65.6696%2050.6876%2066.5672%2052.6034%2066.7136%2052.8423C68.5053%2055.7567%2064.7299%2055.9856%2064.7299%2055.9856L57.5157%2056.0843C57.5157%2056.0843%2055.9622%2056.3837%2053.9231%2055.0078C51.2247%2053.1931%2048.6834%2048.4715%2046.6981%2049.0828C45.0337%2049.5936%2044.6797%2051.5194%2044.6797%2053.495C44.6797%2054.2041%2044.1726%2054.5209%2042.8341%2054.5209C41.4949%2054.5209%2040.1986%2054.5209%2039.6047%2054.5209C35.2468%2054.5209%2030.9238%2054.3219%2026.2045%2049.2611C19.5304%2042.1053%2013.3188%2028.7524%2013.3188%2028.7524C13.3188%2028.7524%2012.973%2028.0267%2013.3494%2027.5855C13.7763%2027.0903%2014.936%2027.1525%2014.936%2027.1525L22.6532%2027.1492C22.6532%2027.1492%2023.3795%2027.291%2023.9015%2027.6667C24.3325%2027.9761%2024.5715%2028.5666%2024.5715%2028.5666C24.5715%2028.5666%2025.8206%2031.6701%2027.4718%2034.4725C30.6979%2039.9423%2032.1969%2041.1415%2033.2913%2040.5543C34.8895%2039.7001%2034.4097%2032.8246%2034.4097%2032.8246C34.4097%2032.8246%2034.4395%2030.3274%2033.6056%2029.216C32.9629%2028.3543%2031.7477%2028.103%2031.2108%2028.0333C30.7757%2027.9761%2031.4871%2026.9866%2032.412%2026.5413C33.8017%2025.8736%2036.2536%2025.8371%2039.1538%2025.8662C41.4105%2025.8877%2042.0615%2026.0262%2042.9433%2026.2352C45.6053%2026.8656%2044.702%2029.3022%2044.702%2035.1443C44.702%2037.0154%2044.3571%2039.6478%2045.7327%2040.5203C46.325%2040.896%2047.7718%2040.5759%2051.3868%2034.5472C53.1033%2031.6892%2054.3871%2028.3294%2054.3871%2028.3294C54.3871%2028.3294%2054.6692%2027.8069%2055.106%2027.5506C55.5543%2027.2877%2055.5403%2027.2927%2056.1549%2027.2927C56.7695%2027.2927%2062.9274%2027.2429%2064.2782%2027.2429C65.6283%2027.2429%2066.8947%2027.2272%2067.114%2028.0391C67.4266%2029.2069%2066.2007%2031.8244%2062.8827%2036.167C57.4313%2043.2946%2056.8266%2042.6286%2061.3499%2046.7497Z'%20stroke='%23C82027'%20stroke-width='3'%20stroke-miterlimit='10'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e" alt="Иконка ВК">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="about">
+        <div class="container about__container">
+            <h2 class="about__title">КДС-Строй</h2>
+            <h3 class="about__subtitle">Держим слово при любых обстоятельствах</h3>
+            <div class="about__content">
+                <div class="about__image-wrapper">
+                    <img src="{% static 'img/../../static/img/about-JdyuP5GB.jpg' %}" alt="Работник">
+                </div>
+                <div class="about__text-wrapper">
+                    <p class="about__text">
+                        Работаем с 2000г.
+                    </p>
+                    <p class="about__text">
+                        Выполняем как бытовые работы так и крупные проекты:
+                        ремонт, строительство помещений и сооружений под ключ.
+                    </p>
+                    <p class="about__text">
+                        Наши мастера проходят обучения, используют современные технологии,
+                        материалы и инструменты.
+                    </p>
+                    <p class="about__text">
+                        Мы даем людям возможность быстрее и проще получать качественные услуги по строительству и
+                        ремонту по приемлемым ценам.
+                    </p>
+                    <p class="about__text">
+                        Наши клиенты говорят нам «Спасибо» и обращаются вновь и вновь.
+                    </p>
+                </div>
+                <ul class="about__list">
+                    <li class="about__list-item">
+                        <h4 class="about__list-item-title">20 лет</h4>
+                        <p class="about__list-item-text">
+                            Опыт работы компании
+                        </p>
+                    </li>
+                    <li class="about__list-item">
+                        <h4 class="about__list-item-title">30 сотрудников</h4>
+                        <p class="about__list-item-text">
+                            В постоянном штате
+                        </p>
+                    </li>
+                    <li class="about__list-item">
+                        <h4 class="about__list-item-title">20 объектов</h4>
+                        <p class="about__list-item-text">
+                            капитального строительства мы возвели
+                        </p>
+                    </li>
+                    <li class="about__list-item">
+                        <h4 class="about__list-item-title">2000+ клиентов</h4>
+                        <p class="about__list-item-text">
+                            воспользовались нашими услугами
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="accordion">
+        <div class="container accordion__container">
+            <h2 class="accordion__title">Ответы на частые вопросы</h2>
+            <ul class="accordion__list">
+                <li class="accordion__list-item">
+                    <button class="accordion__list-item-btn">Какая минимальная стоимость услуг?
+                        <span class="accordion__list-item-btn-icon"></span>
+                    </button>
+                    <div class="accordion__list-item-panel">
+                        <p class="accordion__list-item-text">
+                            Минимальная стоимость выезда и работы мастера - 500 руб.
+                        </p>
+                    </div>
+                </li>
+                <li class="accordion__list-item">
+                    <button class="accordion__list-item-btn">
+                        Почему стоимость работ, озвученная оператором, не окончательная?
+                        <span class="accordion__list-item-btn-icon"></span>
+                    </button>
+                    <div class="accordion__list-item-panel">
+                        <p class="accordion__list-item-text">
+                            Часто невозможно выявить истинные причины поломок.
+                            Не работает розетка, а причина не в розетке, а в
+                            повреждении кабеля на сети. Установка посудомоечной
+                            машины может потребовать разбор кухонной столешницы,
+                            укладка плитки - выравнивание пола и так далее.
+                        </p>
+                        <p class="accordion__list-item-text">
+                            При этом, возможно
+                            и уменьшение стоимости работ. К примеру, вместо
+                            замены подтекающего крана помочь может просто замена
+                            прокладки или фильтра на новые - так мастер
+                            сэкономит ваш бюджет.
+                        </p>
+                        <p class="accordion__list-item-text">
+                            Поэтому только
+                            осмотрев задачу лично специалист сможет предложить
+                            вам оптимальное решение.
+                        </p>
+                    </div>
+                </li>
+                <li class="accordion__list-item">
+                    <button class="accordion__list-item-btn">В каких городах вы работаете?
+                        <span class="accordion__list-item-btn-icon"></span>
+                    </button>
+                    <div class="accordion__list-item-panel">
+                        <p class="accordion__list-item-text">
+                            Мы оказываем услуги по всему Краснодарскому краю. У нас есть
+                            сотрудники в нескольких городах, поэтому мы быстро можем
+                            подъехать по любому адресу.
+                        </p>
+                    </div>
+                </li>
+                <li class="accordion__list-item">
+                    <button class="accordion__list-item-btn">Мастера приедет со своим инструментом?
+                        <span class="accordion__list-item-btn-icon"></span>
+                    </button>
+                    <div class="accordion__list-item-panel">
+                        <p class="accordion__list-item-text">
+                            Да, мастер привезет весь профессиональный инструмент,
+                            необходимый для работы.
+                        </p>
+                    </div>
+                </li>
+                <li class="accordion__list-item">
+                    <button class="accordion__list-item-btn">Поможет ли мастер с выбором материалов?
+                        <span class="accordion__list-item-btn-icon"></span>
+                    </button>
+                    <div class="accordion__list-item-panel">
+                        <p class="accordion__list-item-text">
+                            Конечно, мастер проконсультирует и даст советы.
+                            При необходимости сам сделает закупку материалов.
+                        </p>
+                    </div>
+                </li>
+                <li class="accordion__list-item">
+                    <button class="accordion__list-item-btn">
+                        Как быстро приедет мастер? Возможно ли срочное выполнение работы?
+                        <span class="accordion__list-item-btn-icon"></span>
+                    </button>
+                    <div class="accordion__list-item-panel">
+                        <p class="accordion__list-item-text">
+                            Если работу нужно выполнить срочно, то мы стараемся
+                            подъехать как можно скорее и быстро беремся за работу.
+                            Время ожидания мастера составит от 20 минут до 2-х часов.
+                        </p>
+                    </div>
+                </li>
+                <li class="accordion__list-item">
+                    <button class="accordion__list-item-btn">Какая наценка за срочность работы?
+                        <span class="accordion__list-item-btn-icon"></span>
+                    </button>
+                    <div class="accordion__list-item-panel">
+                        <p class="accordion__list-item-text">
+                            У нас нет наценки за срочность. Расчет идет по общему тарифу.
+                        </p>
+                    </div>
+                </li>
+                <li class="accordion__list-item">
+                    <button class="accordion__list-item-btn">Возможна ли работа с юр. лицом по безналичному расчету?
+                        <span class="accordion__list-item-btn-icon"></span>
+                    </button>
+                    <div class="accordion__list-item-panel">
+                        <p class="accordion__list-item-text">
+                            Да, мы заключаем договоры с компаниями и выставляем счета.
+                            После выполнения работ мы предоставим отчетные документы
+                            (акт и счета фактуры, при необходимости КС-2 и КС-3).
+                        </p>
+                    </div>
+                </li>
+                <li class="accordion__list-item">
+                    <button class="accordion__list-item-btn">Что делать, если на этапе ремонта у нас изменились планы?
+                        <span class="accordion__list-item-btn-icon"></span>
+                    </button>
+                    <div class="accordion__list-item-panel">
+                        <p class="accordion__list-item-text">
+                            Мы понимаем, что у вас могут возникнуть причины для
+                            изменения хода выполнения работ и подходим лояльно,
+                            если клиент меняет проект. Мы обновим расчет и план
+                            работ с учетом новых данных. Если вы отказываетесь
+                            от услуг на каком либо этапе, то просто оплачиваете
+                            уже выполненный объем работ.
+                        </p>
+                    </div>
+                </li>
+                <li class="accordion__list-item">
+                    <button class="accordion__list-item-btn">Вы правда делаете
+                        все работы? <span
+                                class="accordion__list-item-btn-icon"></span>
+                    </button>
+                    <div class="accordion__list-item-panel"><p
+                            class="accordion__list-item-text">В штате нашей
+                        компании 25 профессиональных мастеров, в том числе:
+                        электрик, сантехник, отделочник, бетонщик, каменщик,
+                        кровельщик и универсальные специалисты. С вероятностью
+                        99% мы сможем выполнить и вашу задачу. Звоните - мы
+                        проконсультируем и подскажем решение.</p></div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <section class="contacts" id="contacts-section">
+        <div class="container contacts__container">
+            <div class="contacts__body">
+                <div class="contacts__information">
+                    <h2 class="contacts__title">Контакты</h2>
+                    <h3 class="contacts__subtitle">Свяжитесь с нами любым удобным способом.</h3>
+                    <h4 class="contacts__information-title">КДС-Строй</h4>
+                    <div class="contacts__information-contacts">
+                        <div class="contacts__information-contacts-column">
+                            <a class="contacts__information-link" href="tel:+79883872676">+7 (988) 387 26 76</a>
+                            <a class="contacts__information-link" href="mailto:support@kdsstroy.ru">support@kdsstroy.ru</a>
+                        </div>
+                        <div class="contacts__information-contacts-column contacts__information-contacts-column--icons">
+                            <a class="contacts__information-icon" href="https://wa.me/+79883872676">
+                                <img src="{% static 'img/../../static/img/whatsapp-contacts-B3avWGYz.svg' %}" alt="whatsapp-icon">
+                            </a>
+                            <a class="contacts__information-icon" href="telegram.me/@groupname">
+                                <img src="{% static 'img/../../static/img/telegram-contacts-DrSurIma.svg' %}" alt="telegram-icon">
+                            </a>
+                        </div>
+                    </div>
+                    <p class="contacts__information-time">
+                        График работы: 9-22:00, ежедневно<br>Краснодарский край
+                    </p>
+                    <button class="contacts_callback button" id="orderPopup" type="button">Оставить заявку</button>
+                </div>
+                <div class="contacts__information-image-wrapper">
+                    <img src="{% static 'img/../../static/img/contacts-B7TEI1Qr.jpg' %}" alt="Изображении секции">
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock content %}

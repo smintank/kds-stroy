@@ -1,8 +1,0 @@
-{% extends "base.html" %}
-{% block content %}
-  <div class="container">
-      <h4>Письмо отправлено</h4>
-        <p>{{ updated_user.first_name }}, вы изменили адрес электронной почты, в связи с чем вам на почту отправлено письмо для подтверждения.</p><br>
-      <div><p><a href="{% url 'home' %}">На главную</a></p></div>
-  </div>
-{% endblock %}
