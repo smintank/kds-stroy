@@ -1,6 +1,6 @@
 from django.urls import path
 
-from backend.news.views import NewsListView
+from ..news.views import NewsListView
 
 app_name = 'news'
 

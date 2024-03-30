@@ -3,9 +3,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
-from backend.kds_stroy import settings
-from backend.users.views import RegistrationView
-from backend.main.views import MainView, handler404
+from ..kds_stroy import settings
+from ..users.views import RegistrationView
+from ..main.views import MainView, handler404
 
 urlpatterns = [
     path("", MainView.as_view(), name="home"),
@@ -18,7 +18,7 @@ urlpatterns = [
     path("news/", include("news.urls")),
     path("subs/", include("ads_mailing.urls")),
     path("terms/",
-         TemplateView.as_view(template_name="pages/../templates/pages/personal_terms.html"),
+         TemplateView.as_view(template_name="pages/personal_terms.html"),
          name="personal_info_terms"),
 ]
 

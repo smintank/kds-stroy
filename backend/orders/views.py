@@ -2,14 +2,13 @@ from django.http import JsonResponse
 from django.views import View
 from django.views.generic import DetailView
 
-from backend.kds_stroy import settings
+from ..kds_stroy import settings
 from .forms import OrderCreationForm
 from .models import OrderPhoto, Order
 from .utils import handle_photos
 
 
 class OrderCreateView(View):
-
     def post(self, request):
         order_form = OrderCreationForm(request.POST, request.FILES or None)
 

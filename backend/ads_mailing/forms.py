@@ -1,6 +1,6 @@
 from django import forms
 
-from backend.ads_mailing.models import MailingList
+from ..ads_mailing.models import MailingList
 
 
 class SubscribeForm(forms.Form):

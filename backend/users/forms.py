@@ -2,7 +2,7 @@ import re
 
 from django import forms
 
-from backend.users.models import User, PhoneVerification
+from ..users.models import User, PhoneVerification
 
 
 class UserRegistrationForm(forms.ModelForm):

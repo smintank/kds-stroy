@@ -10,8 +10,8 @@ from django.views.generic import (
     FormView,
 )
 
-from backend.kds_stroy.settings import MEDIA_URL, PHONE_VERIFICATION_TIME_LIMIT
-from backend.orders.models import Order, OrderPhoto
+from ..kds_stroy.settings import MEDIA_URL, PHONE_VERIFICATION_TIME_LIMIT
+from ..orders.models import Order, OrderPhoto
 from .models import PhoneVerification
 from .utils import (
     call_api_process,
@@ -21,7 +21,7 @@ from .utils import (
     is_limited
 )
 
-from backend.users.forms import (
+from ..users.forms import (
     UserForm,
     ChangePhoneNumberForm,
     UserRegistrationForm,

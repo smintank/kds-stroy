@@ -1,6 +1,6 @@
 from django.urls import path
 
-from backend.users.views import (
+from ..users.views import (
     ProfileView,
     ProfileEditView,
     ChangePhoneNumberView,

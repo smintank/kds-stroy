@@ -1,5 +1,5 @@
 from django.test import TestCase
-from backend.orders.models import Order, OrderPhoto
+from ..orders.models import Order, OrderPhoto
 
 
 class OrderModelTest(TestCase):

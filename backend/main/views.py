@@ -2,9 +2,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import TemplateView
 from django.shortcuts import render
 
-from backend.ads_mailing.forms import SubscribeForm
-from backend.orders.forms import OrderCreationForm
-from backend.orders.models import Order
+from ..ads_mailing.forms import SubscribeForm
+from ..orders.forms import OrderCreationForm
+from ..orders.models import Order
 
 
 def handler404(request, exception):

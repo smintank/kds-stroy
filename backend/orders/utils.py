@@ -1,6 +1,6 @@
 import hashlib
 
-from backend.kds_stroy.settings import MAX_UPLOADED_PHOTO_SIZE
+from ..kds_stroy.settings import MAX_UPLOADED_PHOTO_SIZE
 
 
 def handle_photos(photos):
