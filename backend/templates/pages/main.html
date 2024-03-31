@@ -1,9 +1,9 @@
-{% extends "../base.html" %}
+{% extends "base.html" %}
 {% load static %}
 {% block title %}КДС-Строй: Главная{% endblock title %}
 {% block plug_js_css %}
-  <script type="module" crossorigin src="{% static 'js/../../static/js/main-WCi7f0ZE.js' %}"></script>
-  <link rel="stylesheet" crossorigin href="{% static 'css/../../static/css/main-DcfXKzfr.css' %}">
+  <script type="module" crossorigin src="{% static 'js/main-WCi7f0ZE.js' %}"></script>
+  <link rel="stylesheet" crossorigin href="{% static 'css/main-DcfXKzfr.css' %}">
 {% endblock plug_js_css %}
 {% block content %}
   <main>
@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="hero__background">
-                <img src="{% static 'img/../../static/img/hero-background-CYjCPChe.jpg' %}" alt="Фоновое изображение секции">
+                <img src="{% static 'img/hero-background-CYjCPChe.jpg' %}" alt="Фоновое изображение секции">
             </div>
         </div>
         <div class="hero__description">
@@ -93,7 +93,7 @@
                         </ul>
                     </div>
                     <div class="works__background">
-                        <img src="{% static 'img/../../static/img/electric-CEYs4fEv.jpg' %}" alt="Фоновое изображение секции">
+                        <img src="{% static 'img/electric-CEYs4fEv.jpg' %}" alt="Фоновое изображение секции">
                     </div>
                 </li>
                 <li class="works__list-item" id="plumbing">
@@ -120,7 +120,7 @@
                         </ul>
                     </div>
                     <div class="works__background">
-                        <img src="{% static 'img/../../static/img/plumbing-BGFbpnZF.jpg' %}" alt="Фоновое изображение секции">
+                        <img src="{% static 'img/plumbing-BGFbpnZF.jpg' %}" alt="Фоновое изображение секции">
                     </div>
                 </li>
                 <li class="works__list-item" id="installation"><h4
@@ -145,7 +145,7 @@
                         </ul>
                     </div>
                     <div class="works__background">
-                        <img src="{% static 'img/../../static/img/installation-Dvh4gsPn.jpg' %}" alt="Фоновое изображение секции">
+                        <img src="{% static 'img/installation-Dvh4gsPn.jpg' %}" alt="Фоновое изображение секции">
                     </div>
                 </li>
                 <li class="works__list-item" id="technique">
@@ -173,7 +173,7 @@
                         </ul>
                     </div>
                     <div class="works__background">
-                        <img src="{% static 'img/../../static/img/technique-DvUbcabL.jpg' %}" alt="Фоновое изображение секции">
+                        <img src="{% static 'img/technique-DvUbcabL.jpg' %}" alt="Фоновое изображение секции">
                     </div>
                 </li>
                 <li class="works__list-item" id="repair">
@@ -201,7 +201,7 @@
                         </ul>
                     </div>
                     <div class="works__background">
-                        <img src="{% static 'img/../../static/img/repair-B0DUWEiP.jpg' %}" alt="Фоновое изображение секции">
+                        <img src="{% static 'img/repair-B0DUWEiP.jpg' %}" alt="Фоновое изображение секции">
                     </div>
                 </li>
                 <li class="works__list-item" id="decoration">
@@ -223,7 +223,7 @@
                         </ul>
                     </div>
                     <div class="works__background">
-                        <img src="{% static 'img/../../static/img/decoration-DJa75fdA.jpg' %}" alt="Фоновое изображение секции">
+                        <img src="{% static 'img/decoration-DJa75fdA.jpg' %}" alt="Фоновое изображение секции">
                     </div>
                 </li>
                 <li class="works__list-item" id="welding">
@@ -248,7 +248,7 @@
                         </ul>
                     </div>
                     <div class="works__background">
-                        <img src="{% static 'img/../../static/img/welding-BrS6NebY.jpg' %}" alt="Фоновое изображение секции">
+                        <img src="{% static 'img/welding-BrS6NebY.jpg' %}" alt="Фоновое изображение секции">
                     </div>
                 </li>
                 <li class="works__list-item" id="construction">
@@ -282,7 +282,7 @@
                         </ul>
                     </div>
                     <div class="works__background">
-                        <img src="{% static 'img/../../static/img/construction-l-MPSrfJ.jpg' %}" alt="Фоновое изображение секции">
+                        <img src="{% static 'img/construction-l-MPSrfJ.jpg' %}" alt="Фоновое изображение секции">
                     </div>
                 </li>
             </ul>
@@ -308,17 +308,17 @@
                     <h3 class="projects__slider-title">Ремонтные работы</h3>
                     <div class="projects__slider-wrapper swiper-wrapper">
                         <div class="projects__slider-slide swiper-slide">
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/light_1.jpeg' %}" data-fancybox="projects-4">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/light_1.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/light_1.jpeg' %}" data-fancybox="projects-4">
+                                <img class="projects__slide-image" src="{% static 'img/projects/light_1.jpeg' %}" alt="изображение слайда">
                             </a>
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/light_3.jpeg' %}" data-fancybox="projects-4">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/light_3.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/light_3.jpeg' %}" data-fancybox="projects-4">
+                                <img class="projects__slide-image" src="{% static 'img/projects/light_3.jpeg' %}" alt="изображение слайда">
                             </a>
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/electric_3.jpeg' %}" data-fancybox="projects-4">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/electric_3.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/electric_3.jpeg' %}" data-fancybox="projects-4">
+                                <img class="projects__slide-image" src="{% static 'img/projects/electric_3.jpeg' %}" alt="изображение слайда">
                             </a>
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/electric_4.jpeg' %}" data-fancybox="projects-4">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/electric_4.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/electric_4.jpeg' %}" data-fancybox="projects-4">
+                                <img class="projects__slide-image" src="{% static 'img/projects/electric_4.jpeg' %}" alt="изображение слайда">
                             </a>
                             <div class="projects__slide-container">
                                 <h4 class="projects__slide-title">Монтаж освещения и розеток</h4>
@@ -331,11 +331,11 @@
                             </div>
                         </div>
                         <div class="projects__slider-slide swiper-slide">
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/plumbing_3.jpeg' %}" data-fancybox="projects-3">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/plumbing_3.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/plumbing_3.jpeg' %}" data-fancybox="projects-3">
+                                <img class="projects__slide-image" src="{% static 'img/projects/plumbing_3.jpeg' %}" alt="изображение слайда">
                             </a>
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/plumbing_6.jpeg' %}" data-fancybox="projects-3">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/plumbing_6.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/plumbing_6.jpeg' %}" data-fancybox="projects-3">
+                                <img class="projects__slide-image" src="{% static 'img/projects/plumbing_6.jpeg' %}" alt="изображение слайда">
                             </a>
                             <div class="projects__slide-container">
                                 <h4 class="projects__slide-title">Установка сантехники</h4>
@@ -348,11 +348,11 @@
                             </div>
                         </div>
                         <div class="projects__slider-slide swiper-slide">
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/floor_6.jpeg' %}" data-fancybox="projects-2">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/floor_6.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/floor_6.jpeg' %}" data-fancybox="projects-2">
+                                <img class="projects__slide-image" src="{% static 'img/projects/floor_6.jpeg' %}" alt="изображение слайда">
                             </a>
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/floor_2.jpeg' %}" data-fancybox="projects-2">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/floor_2.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/floor_2.jpeg' %}" data-fancybox="projects-2">
+                                <img class="projects__slide-image" src="{% static 'img/projects/floor_2.jpeg' %}" alt="изображение слайда">
                             </a>
                             <div class="projects__slide-container">
                                 <h4 class="projects__slide-title">Монтаж теплых полов</h4>
@@ -366,11 +366,11 @@
                             </div>
                         </div>
                         <div class="projects__slider-slide swiper-slide">
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/furniture_3.jpeg' %}" data-fancybox="projects-5">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/furniture_3.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/furniture_3.jpeg' %}" data-fancybox="projects-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/furniture_3.jpeg' %}" alt="изображение слайда">
                             </a>
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/doors_3.jpeg' %}" data-fancybox="projects-5">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/doors_3.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/doors_3.jpeg' %}" data-fancybox="projects-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/doors_3.jpeg' %}" alt="изображение слайда">
                             </a>
                             <div class="projects__slide-container">
                                 <h4 class="projects__slide-title">Сборка и установка мебели</h4>
@@ -383,11 +383,11 @@
                             </div>
                         </div>
                         <div class="projects__slider-slide swiper-slide">
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/boiler_2.jpeg' %}" data-fancybox="projects-1">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/boiler_2.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/boiler_2.jpeg' %}" data-fancybox="projects-1">
+                                <img class="projects__slide-image" src="{% static 'img/projects/boiler_2.jpeg' %}" alt="изображение слайда">
                             </a>
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/plumbing_7.jpeg' %}" data-fancybox="projects-1">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/plumbing_7.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/plumbing_7.jpeg' %}" data-fancybox="projects-1">
+                                <img class="projects__slide-image" src="{% static 'img/projects/plumbing_7.jpeg' %}" alt="изображение слайда">
                             </a>
                             <div class="projects__slide-container">
                                 <h4 class="projects__slide-title">Монтаж системы водоснабжения и канализации</h4>
@@ -411,11 +411,11 @@
                     <h3 class="projects__slider-title">Крупные проекты</h3>
                     <div class="projects__slider-wrapper swiper-wrapper">
                         <div class="projects__slider-slide swiper-slide">
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/aprel_2.jpg' %}" data-fancybox="projects-bigs-1">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/aprel_2.jpg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/aprel_2.jpg' %}" data-fancybox="projects-bigs-1">
+                                <img class="projects__slide-image" src="{% static 'img/projects/aprel_2.jpg' %}" alt="изображение слайда">
                             </a>
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/aprel_1.jpg' %}" data-fancybox="projects-bigs-1">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/aprel_1.jpg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/aprel_1.jpg' %}" data-fancybox="projects-bigs-1">
+                                <img class="projects__slide-image" src="{% static 'img/projects/aprel_1.jpg' %}" alt="изображение слайда">
                             </a>
                             <div class="projects__slide-container">
                                 <h4 class="projects__slide-title">Обслуживание сети аптек «Апрель»</h4>
@@ -429,17 +429,17 @@
                             </div>
                         </div>
                         <div class="projects__slider-slide swiper-slide">
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/gates_1.jpeg' %}" data-fancybox="projects-bigs-5">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/gates_1.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/gates_1.jpeg' %}" data-fancybox="projects-bigs-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/gates_1.jpeg' %}" alt="изображение слайда">
                             </a>
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/gates_2.jpeg' %}" data-fancybox="projects-bigs-5">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/gates_2.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/gates_2.jpeg' %}" data-fancybox="projects-bigs-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/gates_2.jpeg' %}" alt="изображение слайда">
                             </a>
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/canopy_1.jpeg' %}" data-fancybox="projects-bigs-5">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/canopy_1.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/canopy_1.jpeg' %}" data-fancybox="projects-bigs-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/canopy_1.jpeg' %}" alt="изображение слайда">
                             </a>
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/canopy_2.jpeg' %}" data-fancybox="projects-bigs-5">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/canopy_2.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/canopy_2.jpeg' %}" data-fancybox="projects-bigs-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/canopy_2.jpeg' %}" alt="изображение слайда">
                             </a>
                             <div class="projects__slide-container">
                                 <h4 class="projects__slide-title">Изготовление и монтаж ворот и навесов</h4>
@@ -452,14 +452,14 @@
                             </div>
                         </div>
                         <div class="projects__slider-slide swiper-slide">
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/ponton_1.jpeg' %}" data-fancybox="projects-bigs-4">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/ponton_1.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/ponton_1.jpeg' %}" data-fancybox="projects-bigs-4">
+                                <img class="projects__slide-image" src="{% static 'img/projects/ponton_1.jpeg' %}" alt="изображение слайда">
                             </a>
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/ponton_2.jpeg' %}" data-fancybox="projects-bigs-4">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/ponton_2.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/ponton_2.jpeg' %}" data-fancybox="projects-bigs-4">
+                                <img class="projects__slide-image" src="{% static 'img/projects/ponton_2.jpeg' %}" alt="изображение слайда">
                             </a>
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/ponton_3.jpeg' %}" data-fancybox="projects-bigs-4">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/ponton_3.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/ponton_3.jpeg' %}" data-fancybox="projects-bigs-4">
+                                <img class="projects__slide-image" src="{% static 'img/projects/ponton_3.jpeg' %}" alt="изображение слайда">
                             </a>
                             <div class="projects__slide-container">
                                 <h4 class="projects__slide-title">Строительство понтонов и пирсов</h4>
@@ -472,11 +472,11 @@
                             </div>
                         </div>
                         <div class="projects__slider-slide swiper-slide">
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/construction_1.jpeg' %}" data-fancybox="projects-bigs-2">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/construction_1.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/construction_1.jpeg' %}" data-fancybox="projects-bigs-2">
+                                <img class="projects__slide-image" src="{% static 'img/projects/construction_1.jpeg' %}" alt="изображение слайда">
                             </a>
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/../../static/img/projects/construction_2.jpeg' %}" data-fancybox="projects-bigs-2">
-                                <img class="projects__slide-image" src="{% static 'img/projects/../../static/img/projects/construction_2.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/construction_2.jpeg' %}" data-fancybox="projects-bigs-2">
+                                <img class="projects__slide-image" src="{% static 'img/projects/construction_2.jpeg' %}" alt="изображение слайда">
                             </a>
                             <div class="projects__slide-container">
                                 <h4 class="projects__slide-title">Строительство детского кафе</h4>
@@ -576,7 +576,7 @@
     </section>
     <section class="experience">
         <div class="experience__background">
-            <img src="{% static 'img/../../static/img/experience-bg-DynIxXN1.png' %}" alt="Фоновое изображение секции">
+            <img src="{% static 'img/experience-bg-DynIxXN1.png' %}" alt="Фоновое изображение секции">
         </div>
         <div class="container experience__container">
             <h2 class="experience__title">Работаем более 20 лет</h2>
@@ -658,13 +658,13 @@
                 </ul>
             </div>
             <div class="guarantee__image-wrapper">
-                <img src="{% static 'img/../../static/img/guarantee-DU3WHv_S.jpg' %}" alt="Изображение работника">
+                <img src="{% static 'img/guarantee-DU3WHv_S.jpg' %}" alt="Изображение работника">
             </div>
         </div>
     </section>
     <section class="steps" id="steps-section">
         <div class="steps__background">
-            <img src="{% static 'img/../../static/img/steps-bg-CDzaKLHc.png' %}" alt="Фоновое изображение секции">
+            <img src="{% static 'img/steps-bg-CDzaKLHc.png' %}" alt="Фоновое изображение секции">
         </div>
         <div class="container steps__container">
             <h2 class="steps__title">С нами легко и надежно</h2>
@@ -740,7 +740,7 @@
     </section>
     <section class="stocks" id="stocks-section">
         <div class="stocks__background">
-            <img src="{% static 'img/../../static/img/stocks-bg2-Bt5AbOxC.jpg' %}" alt="Фоновое изображение секции">
+            <img src="{% static 'img/stocks-bg2-Bt5AbOxC.jpg' %}" alt="Фоновое изображение секции">
         </div>
         <div class="container stocks__container">
             <div class="stocks__content">
@@ -811,7 +811,7 @@
             <h3 class="about__subtitle">Держим слово при любых обстоятельствах</h3>
             <div class="about__content">
                 <div class="about__image-wrapper">
-                    <img src="{% static 'img/../../static/img/about-JdyuP5GB.jpg' %}" alt="Работник">
+                    <img src="{% static 'img/about-JdyuP5GB.jpg' %}" alt="Работник">
                 </div>
                 <div class="about__text-wrapper">
                     <p class="about__text">
@@ -1017,10 +1017,10 @@
                         </div>
                         <div class="contacts__information-contacts-column contacts__information-contacts-column--icons">
                             <a class="contacts__information-icon" href="https://wa.me/+79883872676">
-                                <img src="{% static 'img/../../static/img/whatsapp-contacts-B3avWGYz.svg' %}" alt="whatsapp-icon">
+                                <img src="{% static 'img/whatsapp-contacts-B3avWGYz.svg' %}" alt="whatsapp-icon">
                             </a>
                             <a class="contacts__information-icon" href="telegram.me/@groupname">
-                                <img src="{% static 'img/../../static/img/telegram-contacts-DrSurIma.svg' %}" alt="telegram-icon">
+                                <img src="{% static 'img/telegram-contacts-DrSurIma.svg' %}" alt="telegram-icon">
                             </a>
                         </div>
                     </div>
@@ -1030,7 +1030,7 @@
                     <button class="contacts_callback button" id="orderPopup" type="button">Оставить заявку</button>
                 </div>
                 <div class="contacts__information-image-wrapper">
-                    <img src="{% static 'img/../../static/img/contacts-B7TEI1Qr.jpg' %}" alt="Изображении секции">
+                    <img src="{% static 'img/contacts-B7TEI1Qr.jpg' %}" alt="Изображении секции">
                 </div>
             </div>
         </div>

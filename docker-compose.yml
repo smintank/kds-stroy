@@ -14,7 +14,7 @@ services:
     restart: always
 
   backend:
-    build: ./backend
+    image: smintank/kdsstroy_backend
     env_file: .env
     volumes:
       - static:/app/static/
@@ -24,7 +24,7 @@ services:
     restart: always
 
   nginx:
-    build: ./nginx
+    image: smintank/kdsstroy_gateway
     env_file: .env
     ports:
       - ${NGINX_HOST_PORT}:80
