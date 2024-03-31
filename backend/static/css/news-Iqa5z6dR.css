@@ -409,48 +409,48 @@ table {
   border-spacing: 0;
 }
 @font-face {
-  src: local(IstokWeb), url("IstokWeb-Regular-Bn7BsJgd.woff") format("woff"),
-                        url("IstokWeb-Regular-BJtmzNJV.woff2") format("woff2");
+  src: local(IstokWeb), url("../fonts/IstokWeb-Regular-Bn7BsJgd.woff") format("woff"),
+                        url("../fonts/IstokWeb-Regular-BJtmzNJV.woff2") format("woff2");
   font-family: IstokWeb;
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  src: local(IstokWeb), url("IstokWeb-Bold-BWl-qLu6.woff") format("woff"),
-                        url("IstokWeb-Bold-DSoc3Bcn.woff2") format("woff2");
+  src: local(IstokWeb), url("../fonts/IstokWeb-Bold-BWl-qLu6.woff") format("woff"),
+                        url("../fonts/IstokWeb-Bold-DSoc3Bcn.woff2") format("woff2");
   font-family: IstokWeb;
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  src: local(Rubik), url("Rubik-Regular-BHLAZ23T.woff") format("woff"),
-                     url("Rubik-Regular-kodVKUU0.woff2") format("woff2");
+  src: local(Rubik), url("../fonts/Rubik-Regular-BHLAZ23T.woff") format("woff"),
+                     url("../fonts/Rubik-Regular-kodVKUU0.woff2") format("woff2");
   font-family: Rubik;
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  src: local(Rubik), url("Rubik-Medium-BugF8nae.woff") format("woff"),
-                     url("Rubik-Medium-MJUUTGRM.woff2") format("woff2");
+  src: local(Rubik), url("../fonts/Rubik-Medium-BugF8nae.woff") format("woff"),
+                     url("../fonts/Rubik-Medium-MJUUTGRM.woff2") format("woff2");
   font-family: Rubik;
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  src: local(Rubik), url("Rubik-SemiBold-D02lLuIQ.woff") format("woff"),
-                     url("Rubik-SemiBold-Ciw4onux.woff2") format("woff2");
+  src: local(Rubik), url("../fonts/Rubik-SemiBold-D02lLuIQ.woff") format("woff"),
+                     url("../fonts/Rubik-SemiBold-Ciw4onux.woff2") format("woff2");
   font-family: Rubik;
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  src: local(Rubik), url("Rubik-Bold-DiEcDKV9.woff") format("woff"),
-                     url("Rubik-Bold-C1AkCsM-.woff2") format("woff2");
+  src: local(Rubik), url("../fonts/Rubik-Bold-DiEcDKV9.woff") format("woff"),
+                     url("../fonts/Rubik-Bold-C1AkCsM-.woff2") format("woff2");
   font-family: Rubik;
   font-weight: 700;
   font-style: normal;
