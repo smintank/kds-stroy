@@ -1,0 +1,43 @@
+{% load static %}
+<div class="popup" id="popup-order">
+    <div class="container popup__container" id="formOrder">
+        <button class="popup__close" type="button" aria-label="Закрыть попап"></button>
+        <h3 class="order__form-title">Заявка на вызов мастера</h3>
+        <h4 class="order__form-subtitle">Заполните форму и мы свяжемся с вами в течение 15 минут.</h4>
+        <form action="" class="order__form-body" id="orderForm" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                {% if field.name == "photo" %}
+                    <input type="file" name="{{ field.name }}" id="fileInput" accept="image/*" multiple hidden>
+                {% else %}
+                    {{ field }}
+                {% endif %}
+            {% endfor %}
+            <div id="imagePreviewRow" class="image-preview-row">
+                <div id="imagePreviews" class="image-previews"></div>
+                <label for="fileInput" class="add-image-button" id="addImage">+</label>
+                <label for="fileInput" class="add-image-text" id="addImageText">Добавьте фото</label>
+            </div>
+            <label class="order__form-agreement checkbox">
+                <input type="checkbox" name="order-checkbox" required>
+                <span class="checkmark"></span>
+                <p>Я соглашаюсь на обработку персональных данных в соответствии с <a href="{% url 'personal_info_terms' %}">политикой конфиденциальности</a>.</p>
+            </label>
+            <button type="submit" class="order__form-submit button" id="orderSubmit">Оставить заявку</button>
+        </form>
+    </div>
+</div>
+{#    {% else %}#}
+{#        <div class="success_message">#}
+{#            <h4>Заявка №{{ order_id }} успешно создана!</h4>#}
+{#            <p>Мы свяжемся с вами в ближайшее время!</p>#}
+{#        </div>#}
+{#    {% endif %}#}
+{#    <div class="loading_message" id="loadingMessage">#}
+{#        <h4>Ожидайте...</h4>#}
+{#    </div>#}
+{#    <div class="result_message" id="resultMessage">#}
+{#        <h4 id="messageContainer"></h4>#}
+{#        <p id="descriptionContainer"></p>#}
+{#    </div>#}
+
