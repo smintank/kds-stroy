@@ -56,7 +56,7 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v4
     - name: Copy docker-compose.yml via ssh
-      uses: appleboy/scp-action@master
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
@@ -64,6 +64,7 @@ jobs:
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         source: "docker-compose.yml"
         target: "kds-stroy/"
+        overwrite: true
     - name: Executing remote ssh commands to deploy
       uses: appleboy/ssh-action@master
       with:
@@ -72,7 +73,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
-          cd kds_stroy 
+          cd kds-stroy 
           sudo docker compose -f docker-compose.yml pull
           sudo docker compose -f docker-compose.yml down
           sudo docker compose -f docker-compose.yml up --build -d 
