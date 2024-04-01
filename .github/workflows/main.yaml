@@ -63,7 +63,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         source: "./docker-compose.yml"
-        target: "kdsstroy/"
+        target: "kds-stroy/"
         strip_components: 1
     - name: Executing remote ssh commands to deploy
       uses: appleboy/ssh-action@master
@@ -73,7 +73,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
-          cd kdsstroy 
+          cd kds_stroy 
           sudo docker compose -f docker-compose.yml pull
           sudo docker compose -f docker-compose.yml down
           sudo docker compose -f docker-compose.yml up --build -d 
