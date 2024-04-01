@@ -62,10 +62,10 @@ jobs:
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
+        password: ${{ secrets.SSH_PASSWORD }}
         source: "docker-compose.yml"
         target: "kds-stroy/"
         overwrite: true
-        args: -vvv
     - name: Executing remote ssh commands to deploy
       uses: appleboy/ssh-action@master
       with:
