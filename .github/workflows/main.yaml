@@ -64,6 +64,7 @@ jobs:
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         source: "docker-compose.yml"
         target: "kds-stroy/"
+        overwrite: true
     - name: Executing remote ssh commands to deploy
       uses: appleboy/ssh-action@master
       with:
