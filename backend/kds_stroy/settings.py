@@ -49,13 +49,6 @@ ROOT_URLCONF = "kds_stroy.urls"
 
 TEMPLATES_DIR = BASE_DIR / "templates"
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://kdsstroy.ru',
-    'https://www.kdsstroy.ru',
-]
-
-CSRF_COOKIE_DOMAIN = 'kdsstroy.ru'
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -103,16 +96,30 @@ LOGGING = {
 
 WSGI_APPLICATION = "kds_stroy.wsgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB", "django"),
-        "USER": os.getenv("POSTGRES_USER", "django"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD", ""),
-        "HOST": os.getenv("DB_HOST", ""),
-        "PORT": os.getenv("DB_PORT", 5432),
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+else:
+    CSRF_TRUSTED_ORIGINS = [
+        'https://kdsstroy.ru',
+        'https://www.kdsstroy.ru'
+    ]
+
+    CSRF_COOKIE_DOMAIN = 'kdsstroy.ru'
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("POSTGRES_DB", "django"),
+            "USER": os.getenv("POSTGRES_USER", "django"),
+            "PASSWORD": os.getenv("POSTGRES_PASSWORD", ""),
+            "HOST": os.getenv("DB_HOST", ""),
+            "PORT": os.getenv("DB_PORT", 5432),
+        }
+    }
 
 
 AUTH_PASSWORD_VALIDATORS = [

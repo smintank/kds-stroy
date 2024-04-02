@@ -3,6 +3,7 @@ import uuid
 
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
 
@@ -44,10 +45,10 @@ class Address(models.Model):
 
 class Order(models.Model):
     class Status(models.TextChoices):
-        REGISTERED = "Зарегистрирован"
-        PROCESSED = "В работе"
-        COMPLETED = "Завершен"
-        CANCELED = "Отменен"
+        REGISTERED = "Зарегистрирован", _("Зарегистрирован")
+        PROCESSED = "В работе", _("В работе")
+        COMPLETED = "Завершен", _("Завершен")
+        CANCELED = "Отменен", _("Отменен")
 
     order_id = models.IntegerField("Номер заказа")
     first_name = models.CharField("Имя", max_length=150)
@@ -87,6 +88,9 @@ class Order(models.Model):
     class Meta:
         verbose_name = "заказ"
         verbose_name_plural = "Заказы"
+
+    def get_status_display(self):
+        return dict(Order.Status.choices)[self.status]
 
 
 def get_upload_path(instance, filename):
