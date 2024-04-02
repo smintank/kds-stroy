@@ -91,6 +91,8 @@ const useContactsFormWithImages = () => {
 
   function handleFileInputChange(e) {
     const photos = e.target.files;
+    console.log("Files:", photos); // Log the files obtained from the input event
+
     Array.from(photos).forEach((photo) => {
       if (!containsFile(formData, photo.name) && Array.from(formData.entries()).length < 5) {
         const currentPhotoId = "photo-" + imageNumbers;
