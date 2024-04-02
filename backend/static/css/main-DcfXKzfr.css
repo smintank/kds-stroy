@@ -930,8 +930,8 @@ a:hover {
   opacity: 0.5;
 }
 .burger {
-  width: 16px;
-  height: 10px;
+  width: 19px;
+  height: 15px;
   line-height: 2px;
   position: relative;
   display: block;
@@ -3394,6 +3394,7 @@ a:hover {
   transition: opacity 0.3s ease;
   background: none;
   font-size: 35px;
+  color: black;
 
 }
 .popup__close:hover {
