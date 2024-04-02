@@ -2692,6 +2692,7 @@ a:hover {
   width: 100%;
   border: none;
   outline: none;
+  color: black;
   background-color: #fff;
   padding: 29px 60px;
   cursor: pointer;
