@@ -930,8 +930,8 @@ a:hover {
   opacity: 0.5;
 }
 .burger {
-  width: 19px;
-  height: 13px;
+  width: 16px;
+  height: 10px;
   line-height: 2px;
   position: relative;
   display: block;
@@ -1358,10 +1358,10 @@ a:hover {
   }
   .hero__callback {
     font-weight: 500;
-    font-size: 14px;
+    font-size: 18px;
     letter-spacing: 0.01em;
-    max-width: 162px;
-    padding: 7px;
+    max-width: 220px;
+    padding: 15px;
   }
   .hero__description {
     padding: 35px 0 35px 0;
@@ -1601,7 +1601,7 @@ a:hover {
 }
 .contacts_callback {
   max-width: 300px;
-  padding: 24px 50px;
+  padding: 20px 0;
   font-weight: 500;
   font-size: 22px;
   letter-spacing: -0.03em;
@@ -3386,19 +3386,15 @@ a:hover {
 }
 .popup__close {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  float: right;
-  width: 24px;
-  height: 24px;
-  transform: rotate(45deg);
-  background: linear-gradient(#656565, #656565), linear-gradient(#656565, #656565), transparent;
-  background-position: center;
-  background-size: 100% 2px, 2px 100%;
-  background-repeat: no-repeat;
+  top: 0;
+  right: 0;
+  padding: 10px 20px;
   cursor: pointer;
   border: none;
   transition: opacity 0.3s ease;
+  background: none;
+  font-size: 35px;
+
 }
 .popup__close:hover {
   opacity: 0.5;
@@ -3491,10 +3487,6 @@ a:hover {
     padding: 45px 40px;
     margin: 0 15px;
   }
-  .popup__close {
-    width: 16px;
-    height: 16px;
-  }
   .popup__text {
     font-size: 15px;
   }
@@ -3530,13 +3522,15 @@ a:hover {
   position: fixed;
   top: 50%;
   transform: translate(95%, -50%);
+  transition: transform;
+  transition-duration: 0.2s;
+  transition-delay: 0.2s;
   right: 0;
-  background-color: #fff;
+  background-color: #ffffffee;
   padding: 40px 50px 50px 28px;
   width: 100%;
   max-width: 440px;
   z-index: 1001;
-  border: 2px solid #d9d9d9;
 }
 .stock-popup::after {
   display: flex;
@@ -3553,24 +3547,23 @@ a:hover {
 }
 .stock-popup--active {
   transform: translate(0, -50%);
+  transition: transform;
+  transition-duration: 0.2s;
+  transition-delay: 0.2s;
 }
 .stock-popup--active::after {
   display: none;
 }
 .stock-popup__close {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 25px;
-  height: 25px;
-  transform: rotate(45deg);
-  background: linear-gradient(#656565, #656565), linear-gradient(#656565, #656565), transparent;
-  background-position: center;
-  background-size: 100% 1px, 1px 100%;
-  background-repeat: no-repeat;
+  top: 0;
+  right: 0;
+  padding: 10px 20px;
   cursor: pointer;
   border: none;
   transition: opacity 0.3s ease;
+  background: none;
+  font-size: 35px;
 }
 .stock-popup__close:hover {
   opacity: 0.5;
@@ -3612,6 +3605,9 @@ a:hover {
   }
   .stock-popup--active {
     transform: translate(0, 0);
+    transition: transform;
+    transition-duration: 0.2s;
+    transition-delay: 0.2s;
   }
   .stock-popup__title {
     font-size: 20px;

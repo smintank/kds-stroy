@@ -10,6 +10,13 @@ const __publicField = (obj, key, value) => {
   return value;
 };
 
+function setCookie(cname, cvalue, exdays) {
+  const d = /* @__PURE__ */ new Date();
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1e3);
+  const expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
 class Popup {
   constructor(popupSelector) {
     __publicField(this, "_closeEscPopup", (e) => {
@@ -49,8 +56,10 @@ class PromotionPopup {
     this._popup.addEventListener("mousedown", (e) => {
       if (e.target.classList.contains("stock-popup__close")) {
         this.close();
+        setCookie("promo_popup_hide", true, 1);
       } else if (e.target.classList.contains("stock-popup")) {
         this.open();
+        setCookie("promo_popup_hide", false, 1);
       }
     });
   }

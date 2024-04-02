@@ -5,7 +5,13 @@ import { u as useProjectsRepairsSlider, a as useProjectsBigsSlider, b as useRevi
 import { u as useInputPhoneMask } from "./useInputPhoneMask-CE77khD0.js";
 
 const popupOrder = new Popup("#popup-order");
-  popupOrder.setEventListeners();
+popupOrder.setEventListeners();
+
+const popupMessage = new Popup("#popup-message");
+popupMessage.setEventListeners();
+const messageElement = document.querySelector("#messageTitle");
+const textElement = document.querySelector("#messageText");
+
 
 const useAccordion = () => {
   const accordion = document.querySelector(".accordion");
@@ -41,11 +47,6 @@ const useActiveNavSection = () => {
     });
   };
 };
-
-const popupSuccess = new Popup("#popup-contacts");
-popupSuccess.setEventListeners();
-const popupFailure = new Popup("#popup-failure");
-popupFailure.setEventListeners();
 
 const useContactsFormWithImages = () => {
   const formData = new FormData();
@@ -105,6 +106,13 @@ const useContactsFormWithImages = () => {
   });
   document.getElementById("orderForm").addEventListener("submit", function(e) {
     e.preventDefault();
+    popupOrder.close();
+    popupMessage.open();
+      if (messageElement) {
+        messageElement.textContent = 'Ожидайте...';
+        textElement.textContent = 'Ваша заявка обрабатывается';
+      }
+
     const originFormData = new FormData(this);
     originFormData.delete("photo");
     for (const [key, value] of formData.entries()) {
@@ -118,22 +126,20 @@ const useContactsFormWithImages = () => {
       if (response.ok) {
         return response.json();
       } else {
-        throw new Error("Ошибка при создании заказа!");
+        throw new Error(response.statusText);
       }
     }).then(function(data) {
-      popupOrder.close();
-      popupSuccess.open();
-      setCookie('order_created', true, 1);
-      const messageElement = document.querySelector("#successMessage");
-      const textElement = document.querySelector("#successText");
         if (messageElement) {
+          setCookie('order_created', true, 1);
           messageElement.textContent = data.message;
           textElement.textContent = data.text
         }
     }).catch(function(error) {
-      popupFailure.open();
-      const messageElement = document.querySelector("#failureMessage");
-        if (messageElement) messageElement.textContent = error;
+      console.log(error);
+      if (messageElement) {
+          messageElement.textContent = 'Ошибка при создании заказа!';
+          textElement.textContent = 'Попробуйте позже или свяжитесь с нами';
+        }
     });
   });
 };
@@ -147,11 +153,11 @@ function setCookie(cname, cvalue, exdays) {
 function getCookie(cname) {
   const name = cname + "=";
   const ca = document.cookie.split(";");
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == " ")
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === " ")
       c = c.substring(1);
-    if (c.indexOf(name) == 0)
+    if (c.indexOf(name) === 0)
       return c.substring(name.length, c.length);
   }
   return false;
@@ -201,18 +207,22 @@ addEventListener("DOMContentLoaded", () => {
   useInputPhoneMask();
   useWorksToggle();
   useShowcaseModal();
-  // useFileInput();
   useContactsFormWithImages();
   useCustomAnchorScroll();
   useActiveNavSection();
 
   const popupNewsSub = new Popup("#popup-news-sub");
   popupNewsSub.setEventListeners();
+
   const promotionPopup = new PromotionPopup("#popup-promotion");
   promotionPopup.setEventListeners();
 
-  if (getCookie("promo_popup_hide")) promotionPopup.close();
-  setCookie("promo_popup_hide", true, 1);
+  if (getCookie("promo_popup_hide") === 'true') {
+    promotionPopup.close();
+  } else {
+    promotionPopup.open();
+  }
+
 
   const formStocks = document.querySelector("#formStocks");
   formStocks.addEventListener("submit", (e) => {
@@ -230,12 +240,13 @@ addEventListener("DOMContentLoaded", () => {
           '</p>';
         setCookie('email_subscribed', true, 1);
       } else {
-        throw new Error("Не удалось подписаться, попробуйте позже!");
+        throw new Error(response.statusText);
       }
     }).catch(function(error) {
-      popupFailure.open();
-      const messageElement = document.querySelector("#failureMessage");
-        if (messageElement) messageElement.textContent = error;
+      console.log(error);
+      messageElement.textContent = 'Ошибка при создании заказа!';
+      textElement.textContent = 'Не удалось подписаться, попробуйте позже!';
+      popupMessage.open();
     });
   });
 
@@ -245,11 +256,9 @@ addEventListener("DOMContentLoaded", () => {
       if (getCookie("order_created") !== "true") {
         popupOrder.open();
       } else {
-        const messageElement = document.querySelector("#successMessage");
-        const textElement = document.querySelector("#successText");
         messageElement.textContent = "Вы уже отправили заявку!";
         textElement.textContent = "Мы свяжемся с вами в ближайшее время";
-        popupSuccess.open();
+        popupMessage.open();
       }
     });
   });
