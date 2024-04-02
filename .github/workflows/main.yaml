@@ -78,6 +78,7 @@ jobs:
           cd kds-stroy 
           sudo docker compose -f docker-compose.yml pull
           sudo docker compose -f docker-compose.yml down
+          sudo docker volume rm kds-stroy_static
           sudo docker compose -f docker-compose.yml up --build -d 
           sudo docker compose -f docker-compose.yml exec backend python manage.py migrate
           sudo docker compose -f docker-compose.yml exec backend python manage.py collectstatic --noinput
