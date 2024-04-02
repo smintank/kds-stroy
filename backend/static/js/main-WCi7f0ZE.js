@@ -85,7 +85,11 @@ const useContactsFormWithImages = () => {
       addImageText.style.display = "none";
     }
   }
-  document.querySelector("#fileInput").addEventListener("change", (e) => {
+
+  document.querySelector("#fileInput").addEventListener("change", handleFileInputChange);
+  document.querySelector("#fileInput").addEventListener("input", handleFileInputChange);
+
+  function handleFileInputChange(e) {
     const photos = e.target.files;
     Array.from(photos).forEach((photo) => {
       if (!containsFile(formData, photo.name) && Array.from(formData.entries()).length < 5) {
@@ -96,7 +100,7 @@ const useContactsFormWithImages = () => {
       }
     });
     togglePhotoTools(formData);
-  });
+  }
   document.addEventListener("click", function(e) {
     if (e.target.classList.contains("remove-button")) {
       formData.delete(e.target.getAttribute("image-id"));
