@@ -27,9 +27,8 @@
     {% block content %}{% endblock %}
     {% include "includes/footer.html" %}
     {% include "includes/order_popup.html" with form=order_form %}
+    {% include "includes/status_message_popup.html" %}
     {% include "includes/cookie_banner.html" %}
-    {% include "includes/failure_popup.html" %}
-    {% include "includes/order_success_popup.html" %}
     {% if view_name == 'MainView' %}
         {% include "includes/promotion_banner.html" %}
         {% include "includes/news_subscribe_popup.html" %}
