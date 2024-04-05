@@ -48,28 +48,18 @@ const useActiveNavSection = () => {
   };
 };
 
+
 const useContactsFormWithImages = () => {
   const formData = new FormData();
   let imageNumbers = 0;
-  function containsFile(formData2, photoName) {
+
+  function isPhotoAlreadyAdded(formData2, photoName) {
+    // Check if the file is already in the form data
     return Array.from(formData2.values()).some(
       (photo) => photo.name === photoName
     );
   }
-  function addPreviewItem(currentPhotoId, photo) {
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      const imageSrc = event.target.result;
-      const element = document.createElement("div");
-      element.innerHTML = `
-				<div class="preview-image">
-					<img alt="uploaded_image" src="${imageSrc}">
-					<div class="remove-button" image-id="${currentPhotoId}">&times;</div>
-				</div>`;
-      document.querySelector("#imagePreviews").append(element);
-    };
-    reader.readAsDataURL(photo);
-  }
+
   function togglePhotoTools(formData2) {
     const formDataLength = Array.from(formData2.entries()).length;
     const addImage = document.querySelector("#addImage");
@@ -86,15 +76,28 @@ const useContactsFormWithImages = () => {
     }
   }
 
-  document.querySelector("#fileInput").addEventListener("change", handleFileInputChange);
-  document.querySelector("#fileInput").addEventListener("input", handleFileInputChange);
+  function addPreviewItem(currentPhotoId, photo) {
+    // Add a preview item to the imagePreviews container
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const imageSrc = event.target.result;
+      const element = document.createElement("div");
+      element.innerHTML = `
+				<div class="preview-image">
+					<img alt="uploaded_image" src="${imageSrc}">
+					<div class="remove-button" image-id="${currentPhotoId}">&times;</div>
+				</div>`;
+      document.querySelector("#imagePreviews").append(element);
+    };
+    reader.readAsDataURL(photo);
+  }
 
   function handleFileInputChange(e) {
     const photos = e.target.files;
     console.log("Files:", photos); // Log the files obtained from the input event
 
     Array.from(photos).forEach((photo) => {
-      if (!containsFile(formData, photo.name) && Array.from(formData.entries()).length < 5) {
+      if (Array.from(formData.entries()).length < 5) {
         const currentPhotoId = "photo-" + imageNumbers;
         addPreviewItem(currentPhotoId, photo);
         formData.append(currentPhotoId, photo);
@@ -103,6 +106,9 @@ const useContactsFormWithImages = () => {
     });
     togglePhotoTools(formData);
   }
+
+  document.querySelector("#fileInput").addEventListener("change", handleFileInputChange);
+
   document.addEventListener("click", function(e) {
     if (e.target.classList.contains("remove-button")) {
       formData.delete(e.target.getAttribute("image-id"));
@@ -110,6 +116,7 @@ const useContactsFormWithImages = () => {
       togglePhotoTools(formData);
     }
   });
+
   document.getElementById("orderForm").addEventListener("submit", function(e) {
     e.preventDefault();
     popupOrder.close();
@@ -149,6 +156,7 @@ const useContactsFormWithImages = () => {
     });
   });
 };
+
 
 function setCookie(cname, cvalue, exdays) {
   const d = /* @__PURE__ */ new Date();
