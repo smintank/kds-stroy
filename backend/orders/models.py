@@ -9,7 +9,8 @@ User = get_user_model()
 
 
 class Region(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -19,12 +20,43 @@ class Region(models.Model):
         verbose_name_plural = "Регионы"
 
 
-class City(models.Model):
-    name = models.CharField(max_length=255)
+class District(models.Model):
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    short_name = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "район"
+        verbose_name_plural = "Районы"
+
+
+class CityType(models.Model):
+    name = models.CharField(max_length=255)
+    short_name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "тип населенного пункта"
+        verbose_name_plural = "Типы населенных пунктов"
+
+
+class City(models.Model):
+    district = models.ForeignKey(District, on_delete=models.CASCADE)
+    is_district_shown = models.BooleanField(default=True)
+    type = models.ForeignKey(CityType, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+    latitude = models.FloatField(default=45.03333)
+    longitude = models.FloatField(default=38.98333)
+
+    def __str__(self):
+        return f"{self.type.short_name} {self.name}"
 
     class Meta:
         verbose_name = "населенный пункт"
@@ -68,10 +100,11 @@ class Order(models.Model):
     cost = models.IntegerField("Итоговая стоимость", blank=True, null=True)
     discount = models.IntegerField("Скидка", default=0)
     is_discount = models.BooleanField("Скидка", default=False)
-
     address = models.TextField(verbose_name="Адрес", blank=True, null=True)
-    # address = models.ForeignKey(
-    #     Address, on_delete=models.SET_NULL, blank=True, null=True
+    city = models.ForeignKey(
+        City, on_delete=models.SET_NULL, verbose_name="Населенный пункт",
+        blank=True, null=True
+    )
 
     def __str__(self):
         return f"Заказ №{self.order_id}"
