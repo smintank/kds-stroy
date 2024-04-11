@@ -36,10 +36,13 @@ class Command(BaseCommand):
                         name=city_data.get('region')
                     )
                     district, _ = District.objects.get_or_create(
-                        name=city_data.get("district"), region=region
+                        name=city_data.get("district"),
+                        region=region,
+                        short_name=city_data.get("district_short")
                     )
                     city_type, _ = CityType.objects.get_or_create(
-                        name=city_data.get("type")
+                        name=city_data.get("type"),
+                        short_name=city_data.get("type_short")
                     )
                     city, _ = City.objects.get_or_create(
                         district=district,
@@ -47,6 +50,6 @@ class Command(BaseCommand):
                         name=city_data.get("name"),
                         latitude=float(city_data.get("latitude")),
                         longitude=float(city_data.get("longitude")),
-                        is_district_shown=bool(city_data.get("is_district_shown")),
+                        is_district_shown=bool(int(city_data.get("is_district_shown"))),
                     )
             self.stdout.write(self.style.SUCCESS(f'{file_name} is loaded'))
