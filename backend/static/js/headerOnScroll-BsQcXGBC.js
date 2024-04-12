@@ -17,7 +17,18 @@ function setCookie(cname, cvalue, exdays) {
   document.cookie = cname + "=" + cvalue + "; " + expires;
 }
 
-const body = document.querySelector("body");
+function getCookie(cname) {
+  const name = cname + "=";
+  const ca = document.cookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === " ")
+      c = c.substring(1);
+    if (c.indexOf(name) === 0)
+      return c.substring(name.length, c.length);
+  }
+  return false;
+}
 
 class Popup {
   constructor(popupSelector) {
@@ -31,12 +42,13 @@ class Popup {
   open() {
     this._popup.classList.add("popup--active");
     document.addEventListener("keydown", this._closeEscPopup);
-    body.style.overflow = "hidden";
+    document.querySelector("body").style.overflow = "hidden";
   }
   close() {
     this._popup.classList.remove("popup--active");
     document.removeEventListener("keydown", this._closeEscPopup);
-    body.style.overflow = "auto";
+    document.querySelector("body").style.overflow = "auto";
+
     if (document.getElementById('autocomplete-dropdown')) {
       document.getElementById('autocomplete-dropdown').style.display = 'none';
     }
@@ -49,6 +61,22 @@ class Popup {
     });
   }
 }
+
+class MessagePopup extends Popup {
+  open(message, text) {
+    super.open();
+    this.update(message, text);
+  }
+  close() {
+    super.close();
+    this.update("", "")
+  }
+  update(message, text) {
+    this._popup.querySelector(".popup__title").textContent = message;
+    if (text) this._popup.querySelector(".popup__text").textContent = text;
+  }
+}
+
 class PromotionPopup {
   constructor(popupSelector) {
     this._popup = document.querySelector(popupSelector);
@@ -71,6 +99,7 @@ class PromotionPopup {
     });
   }
 }
+
 const useBurger = () => {
   const burgerBtnWrapper = document.querySelector(".header__burger-wrapper");
   const burgerBtn = document.querySelector(".burger");
@@ -80,6 +109,7 @@ const useBurger = () => {
     header.classList.toggle("header--active");
   });
 };
+
 const useHeaderOnScroll = () => {
   const header = document.querySelector(".header");
   window.addEventListener("scroll", function() {
@@ -91,9 +121,13 @@ const useHeaderOnScroll = () => {
     }
   });
 };
+
 export {
   Popup as P,
+  MessagePopup as MP,
   PromotionPopup as PP,
   useHeaderOnScroll as a,
-  useBurger as u
+  useBurger as u,
+  setCookie as s,
+  getCookie as g
 };
