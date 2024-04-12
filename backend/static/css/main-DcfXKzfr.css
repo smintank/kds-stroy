@@ -1636,6 +1636,7 @@ a:hover {
 .callback__text {
   font-size: 16px;
   letter-spacing: -0.03em;
+  color: #656565;
 }
 @media (max-width: 1279px) {
   .callback__button {
@@ -2221,6 +2222,7 @@ a:hover {
 .steps__list-item-text {
   padding-left: 20px;
   letter-spacing: -0.03em;
+  color: #656565;
 }
 @media (max-width: 1023px) {
   .steps {
@@ -2332,6 +2334,7 @@ a:hover {
 }
 .stocks__list-item-text {
   letter-spacing: -0.03em;
+  color: #656565;
 }
 .stocks__form {
   align-self: start;
@@ -2727,6 +2730,7 @@ a:hover {
 .accordion__list-item-text {
   letter-spacing: 0.03em;
   line-height: 135%;
+  color: #656565;
 }
 .accordion__list-item-text:first-child {
   margin-top: 10px;
@@ -3486,7 +3490,6 @@ a:hover {
   }
   .popup__container {
     padding: 45px 40px;
-    margin: 0 15px;
   }
   .popup__text {
     font-size: 15px;
@@ -3527,11 +3530,11 @@ a:hover {
   transition-duration: 0.2s;
   transition-delay: 0.2s;
   right: 0;
-  background-color: #ffffffee;
+  background-color: #fff;
   padding: 40px 50px 50px 28px;
   width: 100%;
   max-width: 440px;
-  z-index: 1001;
+  z-index: 500;
 }
 .stock-popup::after {
   display: flex;
@@ -3647,4 +3650,31 @@ a:hover {
     font-size: 15px;
     margin-bottom: 10px;
   }
+}
+
+.autocomplete-dropdown {
+  position: fixed;
+  z-index: 5000;
+  width: 420px;
+  top: 340px;
+  left: 260px;
+  cursor: pointer;
+  background-color: white;
+  border: rgb(210, 210, 210) 1px solid;
+  border-radius: 3px;
+  padding: 15px;
+  display: none; /* Hide the dropdown menu initially */
+  flex-direction: column;
+  flex-wrap: nowrap;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.autocomplete-dropdown-item {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.autocomplete-dropdown-item:hover {
+  background-color: #f0f0f0;
 }

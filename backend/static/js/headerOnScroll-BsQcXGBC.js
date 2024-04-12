@@ -17,6 +17,8 @@ function setCookie(cname, cvalue, exdays) {
   document.cookie = cname + "=" + cvalue + "; " + expires;
 }
 
+const body = document.querySelector("body");
+
 class Popup {
   constructor(popupSelector) {
     __publicField(this, "_closeEscPopup", (e) => {
@@ -29,10 +31,15 @@ class Popup {
   open() {
     this._popup.classList.add("popup--active");
     document.addEventListener("keydown", this._closeEscPopup);
+    body.style.overflow = "hidden";
   }
   close() {
     this._popup.classList.remove("popup--active");
     document.removeEventListener("keydown", this._closeEscPopup);
+    body.style.overflow = "auto";
+    if (document.getElementById('autocomplete-dropdown')) {
+      document.getElementById('autocomplete-dropdown').style.display = 'none';
+    }
   }
   setEventListeners() {
     this._popup.addEventListener("mousedown", (e) => {

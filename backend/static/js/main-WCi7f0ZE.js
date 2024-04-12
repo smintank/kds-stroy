@@ -11,6 +11,7 @@ const popupMessage = new Popup("#popup-message");
 popupMessage.setEventListeners();
 const messageElement = document.querySelector("#messageTitle");
 const textElement = document.querySelector("#messageText");
+let cityChosen = false;
 
 
 const useAccordion = () => {
@@ -121,15 +122,19 @@ const useContactsFormWithImages = () => {
     e.preventDefault();
     popupOrder.close();
     popupMessage.open();
-      if (messageElement) {
-        messageElement.textContent = 'Ожидайте...';
-        textElement.textContent = 'Ваша заявка обрабатывается';
-      }
+
+    if (messageElement) {
+      messageElement.textContent = 'Ожидайте...';
+      textElement.textContent = 'Ваша заявка обрабатывается';
+    }
 
     const originFormData = new FormData(this);
     originFormData.delete("photo");
     for (const [key, value] of formData.entries()) {
       originFormData.append(key, value);
+    }
+    if (!cityChosen) {
+       originFormData.delete("city");
     }
     this.reset();
     fetch("/orders/create/", {
@@ -312,5 +317,75 @@ addEventListener("DOMContentLoaded", () => {
   //   formAuth.reset();
   //   popupSuccess2.open();
   // });
+
+  const cityField = document.getElementById("id_city");
+  let dropdown;
+
+  function updateDropdownPosition() {
+    const rect = cityField.getBoundingClientRect();
+    if (dropdown) {
+      dropdown.style.top = rect.bottom + 'px';
+      dropdown.style.left = rect.left + 'px';
+      dropdown.style.width = rect.width + 'px';
+    }
+  }
+
+  function handleAutocomplete(input) {
+    input.addEventListener('input', function(event) {
+      cityChosen = false;
+      const term = event.target.value;
+
+      if (term.length > 0) {
+        fetch(
+          'orders/autocomplete/location/?term=' + term
+        ).then(
+          response => response.json()
+        ).then(data => {
+          if (!dropdown) {
+            dropdown = document.createElement('div');
+            dropdown.id = 'autocomplete-dropdown';
+            dropdown.classList.add('autocomplete-dropdown');
+            document.body.appendChild(dropdown);
+            updateDropdownPosition();
+          }
+          dropdown.innerHTML = '';
+
+          if (data.length > 0) {
+            data.forEach(function(item) {
+              const option = document.createElement('div');
+              option.classList.add('autocomplete-dropdown-item');
+              option.textContent = item;
+              option.addEventListener('click', function() {
+                input.value = item;
+                dropdown.style.display = 'none';
+                cityChosen = true;
+              });
+              dropdown.appendChild(option);
+            });
+          } else {
+            const option = document.createElement('div');
+            option.classList.add('autocomplete-dropdown-item');
+            option.textContent = 'Ничего не найдено';
+            dropdown.appendChild(option);
+          }
+          dropdown.style.display = 'flex';
+        }).catch(error => {
+          console.error('Error fetching autocomplete suggestions:', error);
+        });
+      } else {
+        if (dropdown) dropdown.style.display = 'none';
+      }
+    });
+  }
+
+  const inputs = document.querySelectorAll('[data-autocomplete-url]');
+  inputs.forEach(function(input) {
+    handleAutocomplete(input);
+  });
+
+  window.addEventListener('resize', updateDropdownPosition);
 });
+
+
+
 
