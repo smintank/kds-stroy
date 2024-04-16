@@ -126,9 +126,10 @@ const useCookieBanner = () => {
   const cookieBanner = document.getElementById('cookieBanner');
   if (!getCookie('acceptedCookies')) cookieBanner.style.display = 'flex';
 
+
   document.getElementById('acceptCookies').addEventListener("click", function() {
-      setCookie('acceptedCookies', true, 365); // Expires in 365 days
-      cookieBanner.style.display = 'none';
+    setCookie('acceptedCookies', true, 365); // Expires in 365 days
+    cookieBanner.style.display = 'none';
   });
 };
 

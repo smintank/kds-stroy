@@ -3547,18 +3547,19 @@ a:hover {
     font-size: 15px;
   }
 }
+
+
 .stock-popup {
   position: fixed;
-  top: 50%;
-  transform: translate(95%, -50%);
-  transition: transform;
-  transition-duration: 0.2s;
-  transition-delay: 0.2s;
+  transform: translate(95%, 0);
+  transition: transform 0.2s 0.2s;
   right: 0;
-  background-color: #fff;
-  padding: 40px 50px 50px 28px;
+  bottom: 35%;
   width: 100%;
   max-width: 440px;
+  background-color: #fff;
+  border: #ddd 1px solid;
+  padding: 40px 50px 50px 28px;
   z-index: 500;
 }
 .stock-popup::after {
@@ -3575,10 +3576,7 @@ a:hover {
   color: #c82027;
 }
 .stock-popup--active {
-  transform: translate(0, -50%);
-  transition: transform;
-  transition-duration: 0.2s;
-  transition-delay: 0.2s;
+  transform: translate(0, 0);
 }
 .stock-popup--active::after {
   display: none;
@@ -3627,18 +3625,6 @@ a:hover {
   text-decoration: none;
 }
 @media (max-width: 1023px) {
-  .stock-popup {
-    top: auto;
-    bottom: 10%;
-    right: 0;
-    transform: translate(95%, 0);
-  }
-  .stock-popup--active {
-    transform: translate(0, 0);
-    transition: transform;
-    transition-duration: 0.2s;
-    transition-delay: 0.2s;
-  }
   .stock-popup__title {
     font-size: 20px;
   }
@@ -3656,11 +3642,6 @@ a:hover {
   }
 }
 @media (max-width: 639px) {
-  .stock-popup {
-    top: auto;
-    bottom: 0;
-    right: 0;
-  }
   .stock-popup__title {
     font-size: 16px;
   }
