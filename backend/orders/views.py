@@ -1,10 +1,12 @@
+from django.db.models import Q
+from django.db.models.functions import Lower
 from django.http import JsonResponse
 from django.views import View
 from django.views.generic import DetailView
 
 from kds_stroy import settings
 from .forms import OrderCreationForm
-from .models import OrderPhoto, Order
+from .models import OrderPhoto, Order, Region, District, City, CityType
 from .utils import handle_photos
 
 
@@ -46,3 +48,20 @@ class OrderDetailView(DetailView):
         context["photos"] = OrderPhoto.objects.filter(order=self.object)
         context["MEDIA_URL"] = settings.MEDIA_URL
         return context
+
+
+class LocationAutocompleteView(View):
+    def get(self, request):
+        text_input = request.GET.get('term').strip().replace(", ", ",")
+        text_input = text_input.split()[-1]
+        queryset = City.objects.filter(name__icontains=text_input)
+
+        suggestions = []
+        for city in queryset:
+            text_input = [f'{city.district.region}',
+                          f'{city.type.short_name}\u00a0{city.name}']
+            if city.is_district_shown:
+                text_input.insert(1, f'{city.district.short_name}')
+            suggestions.append(", ".join(text_input))
+
+        return JsonResponse(suggestions, safe=False)

@@ -10,13 +10,6 @@ const __publicField = (obj, key, value) => {
   return value;
 };
 
-function setCookie(cname, cvalue, exdays) {
-  const d = /* @__PURE__ */ new Date();
-  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1e3);
-  const expires = "expires=" + d.toUTCString();
-  document.cookie = cname + "=" + cvalue + "; " + expires;
-}
-
 class Popup {
   constructor(popupSelector) {
     __publicField(this, "_closeEscPopup", (e) => {
@@ -29,10 +22,16 @@ class Popup {
   open() {
     this._popup.classList.add("popup--active");
     document.addEventListener("keydown", this._closeEscPopup);
+    document.querySelector("body").style.overflow = "hidden";
   }
   close() {
     this._popup.classList.remove("popup--active");
     document.removeEventListener("keydown", this._closeEscPopup);
+    document.querySelector("body").style.overflow = "auto";
+
+    if (document.getElementById('autocomplete-dropdown')) {
+      document.getElementById('autocomplete-dropdown').style.display = 'none';
+    }
   }
   setEventListeners() {
     this._popup.addEventListener("mousedown", (e) => {
@@ -42,6 +41,22 @@ class Popup {
     });
   }
 }
+
+class MessagePopup extends Popup {
+  open(message, text) {
+    super.open();
+    this.update(message, text);
+  }
+  close() {
+    super.close();
+    this.update("", "")
+  }
+  update(message, text) {
+    this._popup.querySelector(".popup__title").textContent = message;
+    if (text) this._popup.querySelector(".popup__text").textContent = text;
+  }
+}
+
 class PromotionPopup {
   constructor(popupSelector) {
     this._popup = document.querySelector(popupSelector);
@@ -64,6 +79,27 @@ class PromotionPopup {
     });
   }
 }
+
+function setCookie(cname, cvalue, exdays) {
+  const d = /* @__PURE__ */ new Date();
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1e3);
+  const expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+function getCookie(cname) {
+  const name = cname + "=";
+  const ca = document.cookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === " ")
+      c = c.substring(1);
+    if (c.indexOf(name) === 0)
+      return c.substring(name.length, c.length);
+  }
+  return false;
+}
+
 const useBurger = () => {
   const burgerBtnWrapper = document.querySelector(".header__burger-wrapper");
   const burgerBtn = document.querySelector(".burger");
@@ -73,6 +109,7 @@ const useBurger = () => {
     header.classList.toggle("header--active");
   });
 };
+
 const useHeaderOnScroll = () => {
   const header = document.querySelector(".header");
   window.addEventListener("scroll", function() {
@@ -84,9 +121,42 @@ const useHeaderOnScroll = () => {
     }
   });
 };
+
+const useCookieBanner = () => {
+  const cookieBanner = document.getElementById('cookieBanner');
+  if (!getCookie('acceptedCookies')) cookieBanner.style.display = 'flex';
+
+  document.getElementById('acceptCookies').addEventListener("click", function() {
+      setCookie('acceptedCookies', true, 365); // Expires in 365 days
+      cookieBanner.style.display = 'none';
+  });
+};
+
+const useActiveNavSection = () => {
+  const navLinks = document.querySelectorAll(".header__nav-list-item a");
+  const headerHeight = document.querySelector(".header").offsetHeight;
+  window.onscroll = function() {
+    navLinks.forEach((navLink) => {
+      if (navLink.getAttribute("href") === "#")
+        return;
+      const section = document.querySelector(navLink.getAttribute("href"));
+      if (section.offsetTop - headerHeight <= window.scrollY && section.offsetTop + section.offsetHeight > window.scrollY) {
+        navLink.classList.add("header__nav-list-item--active");
+      } else {
+        navLink.classList.remove("header__nav-list-item--active");
+      }
+    });
+  };
+};
+
 export {
   Popup as P,
+  MessagePopup as MP,
   PromotionPopup as PP,
   useHeaderOnScroll as a,
-  useBurger as u
+  useBurger as u,
+  setCookie as s,
+  getCookie as g,
+  useCookieBanner as c,
+  useActiveNavSection as n,
 };
