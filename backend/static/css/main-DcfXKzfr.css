@@ -1002,9 +1002,6 @@ a:hover {
     top: 105px;
     left: 38px;
   }
-  .header__nav-list {
-    gap: 63px;
-  }
   .header__phone {
     margin-left: auto;
     margin-right: 5px;
@@ -1055,7 +1052,6 @@ a:hover {
     left: 18px;
   }
   .header__nav-list {
-    gap: 27px;
     flex-direction: column;
   }
   .header__nav-list-item {
@@ -1583,7 +1579,7 @@ a:hover {
 }
 @media (max-width: 639px) {
   .works {
-    padding: 35px 0 60px 0;
+    padding: 45px 0 60px 0;
   }
   .works__list-item-title {
     margin-bottom: 25px;
@@ -1815,7 +1811,7 @@ a:hover {
 }
 @media (max-width: 639px) {
   .projects {
-    padding: 60px 0;
+    padding: 120px 0 60px 0;
   }
   .projects__title {
     margin-bottom: 10px;
@@ -2254,7 +2250,7 @@ a:hover {
 @media (max-width: 1023px) {
   .steps {
     position: relative;
-    padding: 90px 0 120px 0;
+    padding: 120px 0 120px 0;
   }
   .steps__title {
     margin-bottom: 50px;
@@ -2637,6 +2633,9 @@ a:hover {
   max-width: 232px;
 }
 @media (max-width: 1023px) {
+  .about {
+    padding: 120px 0 50px 0;
+  }
   .about__title {
     margin-bottom: 15px;
     font-size: 24px;
@@ -2674,9 +2673,6 @@ a:hover {
   }
 }
 @media (max-width: 639px) {
-  .about {
-    padding: 120px 0 90px 0;
-  }
   .about__title {
     margin-bottom: 10px;
   }
@@ -2799,7 +2795,7 @@ a:hover {
 }
 @media (max-width: 639px) {
   .accordion {
-    padding: 90px 0 60px 0;
+    padding: 90px 0 20px 0;
   }
   .accordion__title {
     margin-bottom: 45px;
@@ -3067,7 +3063,7 @@ a:hover {
 }
 @media (max-width: 639px) {
   .contacts {
-    padding: 60px 0 164px 0;
+    padding: 120px 0 164px 0;
     position: relative;
   }
   .contacts__container {

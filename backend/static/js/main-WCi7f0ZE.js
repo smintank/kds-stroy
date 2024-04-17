@@ -39,14 +39,21 @@ const useAccordion = () => {
 };
 
 const useCustomAnchorScroll = () => {
-  const headerHeight = document.querySelector(".header").offsetHeight;
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  document.querySelectorAll('.hero__footer-list-item-link, a[href^="#works-section"]').forEach((anchor) => {
     anchor.addEventListener("click", function(e) {
       e.preventDefault();
+      let scrollOffset
       const element = document.querySelector(this.getAttribute("href"));
       if (!element)
         return;
-      window.scrollTo(0, element.offsetTop - headerHeight);
+      if (this.getAttribute("class") === "hero__footer-list-item-link") {
+        scrollOffset = 114;
+      } else if (window.innerWidth < 639) {
+        scrollOffset = 60;
+      } else {
+        scrollOffset = 84;
+      }
+      window.scrollTo(0, element.offsetTop - scrollOffset);
     });
   });
 };
