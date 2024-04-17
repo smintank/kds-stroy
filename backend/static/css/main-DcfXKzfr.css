@@ -1829,6 +1829,7 @@ a:hover {
   }
   .projects__slider-slide {
     min-height: 380px;
+    background-color: #fff;
   }
   .projects__slide-image {
     height: 170px;

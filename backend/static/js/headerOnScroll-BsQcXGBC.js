@@ -102,11 +102,18 @@ function getCookie(cname) {
 
 const useBurger = () => {
   const burgerBtnWrapper = document.querySelector(".header__burger-wrapper");
+  const navLinks = document.querySelectorAll(".header__nav-list-item a");
   const burgerBtn = document.querySelector(".burger");
   const header = document.querySelector(".header");
   burgerBtnWrapper.addEventListener("click", () => {
     burgerBtn.classList.toggle("burger--active");
     header.classList.toggle("header--active");
+  });
+  navLinks.forEach((navLink) => {
+    navLink.addEventListener("click", () => {
+      burgerBtn.classList.remove("burger--active");
+      header.classList.remove("header--active");
+    });
   });
 };
 
