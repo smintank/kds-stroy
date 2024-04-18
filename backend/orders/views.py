@@ -1,12 +1,10 @@
-from django.db.models import Q
-from django.db.models.functions import Lower
 from django.http import JsonResponse
 from django.views import View
 from django.views.generic import DetailView
 
 from kds_stroy import settings
 from .forms import OrderCreationForm
-from .models import OrderPhoto, Order, Region, District, City, CityType
+from .models import OrderPhoto, Order, City
 from .utils import handle_photos
 
 
