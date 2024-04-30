@@ -30,22 +30,23 @@ class OrderCreateView(View):
                 status=201,
             )
         else:
-            return JsonResponse({"error": "Не получилось создать заявку"}, status=400)
+            return JsonResponse({"error": "Не получилось создать заявку"},
+                                status=400)
 
 
-class OrderDetailView(DetailView):
-    model = Order
-    slug_field = "order_id"
-    slug_url_kwarg = "order_id"
-    template_name = "pages/order_detail.html"
-    context_object_name = "order"
-    queryset = Order.objects.all()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["photos"] = OrderPhoto.objects.filter(order=self.object)
-        context["MEDIA_URL"] = settings.MEDIA_URL
-        return context
+# class OrderDetailView(DetailView):
+#     model = Order
+#     slug_field = "order_id"
+#     slug_url_kwarg = "order_id"
+#     template_name = "pages/order_detail.html"
+#     context_object_name = "order"
+#     queryset = Order.objects.all()
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context["photos"] = OrderPhoto.objects.filter(order=self.object)
+#         context["MEDIA_URL"] = settings.MEDIA_URL
+#         return context
 
 
 class LocationAutocompleteView(View):

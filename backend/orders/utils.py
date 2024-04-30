@@ -14,7 +14,7 @@ def handle_photos(photos):
         try:
             if photo.content_type not in ["image/jpeg", "image/png"]:
                 raise ValueError(
-                    photo_name + "не является поддерживаемым " "типом изображения"
+                    photo_name + "не является поддерживаемым типом изображения"
                 )
             if photo.size > 1024 * 1024 * MAX_UPLOADED_PHOTO_SIZE:
                 raise ValueError(
@@ -24,7 +24,7 @@ def handle_photos(photos):
             file_hash = hashlib.md5(photo.read()).hexdigest()
             if proper_photos and file_hash in proper_photos:
                 raise ValueError(
-                    photo_name + "является дубликатом другого " "загружаемого файла"
+                    photo_name + "является дубликатом другого загружаемого файла"
                 )
         except ValueError as e:
             errors.append(str(e))
@@ -33,3 +33,7 @@ def handle_photos(photos):
     if errors:
         [print(error) for error in errors]
     return list(proper_photos.values())
+
+
+def format_phone_number(phone: str) -> str:
+    return f'+7 ({phone[:3]}) {phone[3:6]}-{phone[6:8]}-{phone[8:]}'
