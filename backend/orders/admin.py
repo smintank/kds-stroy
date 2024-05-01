@@ -1,12 +1,9 @@
-from datetime import timedelta
-
 from django.contrib import admin
-from django.utils import timezone
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 from .models import Order, OrderPhoto
-from .utils import format_phone_number
+from .utils import format_phone_number, format_datetime, format_comment
 
 
 class OrderPhotoInline(admin.TabularInline):
@@ -24,25 +21,34 @@ class OrderPhotoInline(admin.TabularInline):
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = ("order_id", "first_name", "formatted_phone_number",
-                    "comment", "address", "status", "formatted_created_at",
-                    "display_photo_preview")
+                    "formatted_comment", "formatted_city", "status",
+                    "formatted_created_at", "display_photo_preview")
     list_filter = ("status", "created_at")
     list_display_links = ("order_id", "first_name", )
     list_editable = ('status',)
     search_fields = ("order_id", "first_name", "phone_number")
-    readonly_fields = ("created_at",)
-    ordering = ["created_at"]
+    readonly_fields = ("created_at", "formatted_discount", "final_cost")
+    ordering = ["-created_at"]
     inlines = [OrderPhotoInline]
-    fields = (
-        "first_name",
-        "phone_number",
-        "comment",
-        "city",
-        "address",
-        "status",
-        "discount",
-        "cost",
-        "created_at",
+    fieldsets = (
+        (None, {
+            "fields": (
+                "first_name",
+                "phone_number",
+                "comment",
+                "city",
+                "address",
+                "status",
+                "created_at",
+            )
+        }),
+        ("Стоимость", {
+            "fields": (
+                ("discount", "formatted_discount"),
+                "cost",
+                "final_cost",
+            )
+        }),
     )
 
     def formatted_phone_number(self, obj):
@@ -52,35 +58,33 @@ class OrderAdmin(admin.ModelAdmin):
             link = format_html('<a href="tel:{}">{}</a>', phone_number,
                                formatted_number)
             return link
-        return ""
+        return "-"
+
+    def formatted_discount(self, obj):
+        return str(float(obj.cost) / 100 * float(obj.discount))
+
+    def formatted_comment(self, obj):
+        return format_comment(obj.comment)
+
+    def formatted_city(self, obj):
+        return obj.city.short_name() if obj.city else "-"
 
     def formatted_created_at(self, obj):
-        if obj.created_at.date() == timezone.now().date():
-            time = obj.created_at.strftime('%H:%M')
-            return f'Сегодня, {time}'
-        elif obj.created_at.date() == timezone.now().date() - timedelta(days=1):
-            time = obj.created_at.strftime('%H:%M')
-            return f'Вчера, {time}'
-        return obj.created_at.strftime('%d.%m.%Y %H:%M')
+        return format_datetime(obj.created_at, raw=True) if obj.created_at else "-"
 
     def display_photo_preview(self, obj):
         if order_photo := obj.orderphoto_set.all():
             html = ""
             for photo in order_photo.all():
                 html += f'<a href="{photo.photo.url}" target="_blank">' \
-                        f'    <img src="{photo.photo.url}" width="25" />' \
+                        f'<img src="{photo.photo.url}" width="25" />' \
                         f'</a>'
             return format_html(html)
-        return "Нет фото"
+        return "-"
 
-
-    # def photo_count(self, obj):
-    #     count = obj.orderphoto_set.count()
-    #     if count == 0:
-    #         return "Нет фото"
-    #     return f'{count} шт.'
-
-    # photo_count.short_description = 'Количество фото'
+    formatted_discount.short_description = 'Скидка в рублях'
+    formatted_city.short_description = 'Город'
+    formatted_comment.short_description = 'Комментарий'
     display_photo_preview.short_description = 'Фото'
     formatted_phone_number.short_description = 'Телефонный номер'
     formatted_created_at.short_description = 'Создан'
