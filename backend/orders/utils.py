@@ -65,7 +65,7 @@ def format_datetime(datetime, raw=False):
             return f'Сегодня, {time}'
         elif datetime.date() == timezone.now().date() - timedelta(days=1):
             return f'Вчера, {time}'
-    return datetime.strftime('%d.%m.%Y %H:%M')
+    return datetime.strftime('%d.%m.%y %H:%M')
 
 
 def get_unique_uid(model) -> str:
