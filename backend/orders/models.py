@@ -5,6 +5,8 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from orders.utils import format_city
+
 User = get_user_model()
 
 
@@ -55,8 +57,11 @@ class City(models.Model):
     latitude = models.FloatField(default=45.03333)
     longitude = models.FloatField(default=38.98333)
 
-    def __str__(self):
-        return f"{self.type.short_name} {self.name}"
+    def __str__(self, *args, **kwargs):
+        return format_city(self)
+
+    def short_name(self):
+        return self.name
 
     class Meta:
         verbose_name = "населенный пункт"

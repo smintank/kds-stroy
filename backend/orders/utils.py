@@ -37,3 +37,15 @@ def handle_photos(photos):
 
 def format_phone_number(phone: str) -> str:
     return f'+7 ({phone[:3]}) {phone[3:6]}-{phone[6:8]}-{phone[8:]}'
+
+
+def format_comment(original_comment: str) -> str:
+    comment = original_comment if original_comment else 'Отсутствует'
+    return comment[:30] + '...' if len(comment) > 30 else comment
+
+
+def format_city(city):
+    region = f"{city.district.region}, "
+    if city.is_district_shown:
+        region += f"{city.district.short_name}, "
+    return region + f"{city.type.short_name}\u00a0{city.name}"
