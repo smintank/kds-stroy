@@ -1,4 +1,9 @@
 import hashlib
+import os
+import uuid
+from datetime import timedelta
+
+from django.utils import timezone
 
 from kds_stroy.settings import MAX_UPLOADED_PHOTO_SIZE
 
@@ -39,9 +44,10 @@ def format_phone_number(phone: str) -> str:
     return f'+7 ({phone[:3]}) {phone[3:6]}-{phone[6:8]}-{phone[8:]}'
 
 
-def format_comment(original_comment: str) -> str:
-    comment = original_comment if original_comment else 'Отсутствует'
-    return comment[:30] + '...' if len(comment) > 30 else comment
+def format_comment(comment: str, length: int = 50) -> str:
+    if not comment:
+        return '-'
+    return comment[:length] + '...' if len(comment) > length else comment
 
 
 def format_city(city):
@@ -49,3 +55,27 @@ def format_city(city):
     if city.is_district_shown:
         region += f"{city.district.short_name}, "
     return region + f"{city.type.short_name}\u00a0{city.name}"
+
+
+def format_datetime(datetime, raw=False):
+    datetime = timezone.localtime(datetime)
+    if not raw:
+        time = datetime.strftime('%H:%M')
+        if datetime.date() == timezone.now().date():
+            return f'Сегодня, {time}'
+        elif datetime.date() == timezone.now().date() - timedelta(days=1):
+            return f'Вчера, {time}'
+    return datetime.strftime('%d.%m.%Y %H:%M')
+
+
+def get_unique_uid(model) -> str:
+    while True:
+        unique_order_number = str(uuid.uuid1().int)[:8]
+        if not model.objects.filter(order_id=unique_order_number).exists():
+            return unique_order_number
+
+
+def get_upload_path(instance, filename):
+    _, file_extension = os.path.splitext(filename)
+    path = os.path.join("order_photos", str(instance.order.order_id))
+    return os.path.join(path, f"photo{file_extension}")
