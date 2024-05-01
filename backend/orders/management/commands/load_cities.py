@@ -1,4 +1,6 @@
 import csv
+import os
+
 from django.core.management.base import BaseCommand
 from kds_stroy import settings
 from orders.models import Region, District, City, CityType
@@ -16,35 +18,64 @@ class Command(BaseCommand):
         )
 
         parser.add_argument(
+            '-a', '--all', action='store_true',
+            help='Загрузить все файлы в директории'
+        )
+
+        parser.add_argument(
+            '-l', '--log', action='store_true',
+            help='Выводить логи загруженных городов'
+        )
+
+        parser.add_argument(
             '-p', '--path', type=str,
             help='Путь к загружаемым файлам'
         )
 
     def handle(self, *args, **options):
+        log = True if options['log'] else False
         folder_path = options['path'] or DEFAULT_PATH
-        file_names = [file if file.endswith('.csv') else f'{file}.csv'
-                      for file in options['files']]
+        if options['all']:
+            files = os.listdir(folder_path)
+        elif options['files']:
+            files = options['files']
+        else:
+            self.stdout.write(self.style.ERROR(
+                'Не указаны файлы для загрузки. Используйте -f или -a ключи.'
+            ))
+            return
+
+        file_names = [file for file in files if file.endswith('.csv')]
 
         for file_name in file_names:
             file_path = folder_path + file_name
 
             with open(file_path, newline='\n', encoding='utf-8') as file:
                 data = csv.DictReader(file)
-
+                counter = 0
                 for city_data in data:
-                    region, _ = Region.objects.get_or_create(
+                    region, is_region_created = Region.objects.get_or_create(
                         name=city_data.get('region')
                     )
-                    district, _ = District.objects.get_or_create(
+                    if log and is_region_created:
+                        self.stdout.write(self.style.SUCCESS(f'{is_region_created} is loaded'))
+
+                    district, is_district_created = District.objects.get_or_create(
                         name=city_data.get("district"),
                         region=region,
                         short_name=city_data.get("district_short")
                     )
-                    city_type, _ = CityType.objects.get_or_create(
+                    if log and is_district_created:
+                        self.stdout.write(self.style.SUCCESS(f'{is_district_created} is loaded'))
+
+                    city_type, is_city_type_created = CityType.objects.get_or_create(
                         name=city_data.get("type"),
                         short_name=city_data.get("type_short")
                     )
-                    city, _ = City.objects.get_or_create(
+                    if log and is_city_type_created:
+                        self.stdout.write(self.style.SUCCESS(f'{is_city_type_created} is loaded'))
+
+                    city, is_city_created = City.objects.get_or_create(
                         district=district,
                         type=city_type,
                         name=city_data.get("name"),
@@ -52,4 +83,10 @@ class Command(BaseCommand):
                         longitude=float(city_data.get("longitude")),
                         is_district_shown=bool(int(city_data.get("is_district_shown"))),
                     )
+                    if log and is_city_created:
+                        self.stdout.write(self.style.SUCCESS(f'{city} is loaded'))
+                    if is_city_created:
+                        counter += 1
+
             self.stdout.write(self.style.SUCCESS(f'{file_name} is loaded'))
+            self.stdout.write(self.style.SUCCESS(f'{counter} cities are loaded'))
