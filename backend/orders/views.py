@@ -34,33 +34,25 @@ class OrderCreateView(View):
                                 status=400)
 
 
-# class OrderDetailView(DetailView):
-#     model = Order
-#     slug_field = "order_id"
-#     slug_url_kwarg = "order_id"
-#     template_name = "pages/order_detail.html"
-#     context_object_name = "order"
-#     queryset = Order.objects.all()
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context["photos"] = OrderPhoto.objects.filter(order=self.object)
-#         context["MEDIA_URL"] = settings.MEDIA_URL
-#         return context
+class OrderDetailView(DetailView):
+    model = Order
+    slug_field = "order_id"
+    slug_url_kwarg = "order_id"
+    template_name = "pages/order_detail.html"
+    context_object_name = "order"
+    queryset = Order.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["photos"] = OrderPhoto.objects.filter(order=self.object)
+        context["MEDIA_URL"] = settings.MEDIA_URL
+        return context
 
 
 class LocationAutocompleteView(View):
     def get(self, request):
         text_input = request.GET.get('term').strip().replace(", ", ",")
-        text_input = text_input.split()[-1]
-        queryset = City.objects.filter(name__icontains=text_input)
-
-        suggestions = []
-        for city in queryset:
-            text_input = [f'{city.district.region}',
-                          f'{city.type.short_name}\u00a0{city.name}']
-            if city.is_district_shown:
-                text_input.insert(1, f'{city.district.short_name}')
-            suggestions.append(", ".join(text_input))
-
+        city_name = text_input.split()[-1]
+        cities = City.objects.filter(name__icontains=city_name)
+        suggestions = [str(city) for city in cities]
         return JsonResponse(suggestions, safe=False)

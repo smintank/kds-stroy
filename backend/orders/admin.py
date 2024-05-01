@@ -6,6 +6,7 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 from .models import Order, OrderPhoto
+from .utils import format_phone_number
 
 
 class OrderPhotoInline(admin.TabularInline):
@@ -36,21 +37,31 @@ class OrderAdmin(admin.ModelAdmin):
         "first_name",
         "phone_number",
         "comment",
+        "city",
         "address",
         "status",
-        "cost",
         "discount",
+        "cost",
         "created_at",
     )
 
     def formatted_phone_number(self, obj):
         phone_number = obj.phone_number
         if phone_number:
-            formatted_number = f"+{phone_number[:1]} ({phone_number[1:4]}) {phone_number[4:7]}-{phone_number[7:9]}-{phone_number[9:]}"
+            formatted_number = format_phone_number(phone_number)
             link = format_html('<a href="tel:{}">{}</a>', phone_number,
                                formatted_number)
             return link
         return ""
+
+    def formatted_created_at(self, obj):
+        if obj.created_at.date() == timezone.now().date():
+            time = obj.created_at.strftime('%H:%M')
+            return f'Сегодня, {time}'
+        elif obj.created_at.date() == timezone.now().date() - timedelta(days=1):
+            time = obj.created_at.strftime('%H:%M')
+            return f'Вчера, {time}'
+        return obj.created_at.strftime('%d.%m.%Y %H:%M')
 
     def display_photo_preview(self, obj):
         if order_photo := obj.orderphoto_set.all():
@@ -62,14 +73,6 @@ class OrderAdmin(admin.ModelAdmin):
             return format_html(html)
         return "Нет фото"
 
-    def formatted_created_at(self, obj):
-        if obj.created_at.date() == timezone.now().date():
-            time = obj.created_at.strftime('%H:%M')
-            return f'Сегодня, {time}'
-        elif obj.created_at.date() == timezone.now().date() - timedelta(days=1):
-            time = obj.created_at.strftime('%H:%M')
-            return f'Вчера, {time}'
-        return obj.created_at.strftime('%d.%m.%Y %H:%M')
 
     # def photo_count(self, obj):
     #     count = obj.orderphoto_set.count()
