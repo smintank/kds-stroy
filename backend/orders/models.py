@@ -1,13 +1,9 @@
-import os
-import uuid
-
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from orders.utils import format_city
-from users.utils import get_unique_uid, get_upload_path
+from orders.utils import format_city, get_upload_path, get_unique_uid
 
 User = get_user_model()
 
