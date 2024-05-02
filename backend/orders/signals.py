@@ -24,9 +24,13 @@ async def send_telegram_notification(sender, instance: Order, created,
                   f'Адрес: {address}\n\n' \
                   f'Комментарий: {format_comment(instance.comment)}\n'
 
-        tg_ids = await sync_to_async(list)(
-            User.objects.filter(is_notify=True).values_list("tg_id", flat=True)
-        )
+        try:
+            tg_ids = await sync_to_async(list)(
+                User.objects.filter(is_notify=True).values_list("tg_id", flat=True)
+            )
+        except Exception as e:
+            print(f"Fail to get users for TG notifications: {e}")
+            return
 
         bot = telegram.Bot(token=TG_BOT_TOKEN)
 
