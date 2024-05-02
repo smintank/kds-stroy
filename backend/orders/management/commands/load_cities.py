@@ -18,7 +18,7 @@ class Command(BaseCommand):
         parser.add_argument('-a', '--all', action='store_true',
                             help='Upload all files from the folder.')
 
-        parser.add_argument('-l', '--log', action='store_true',
+        parser.add_argument('-l', '--logs', action='store_true',
                             help='Show logs.')
 
         parser.add_argument('-p', '--path', type=str,
@@ -28,7 +28,7 @@ class Command(BaseCommand):
                             help='Clear all cities in the database.')
 
     def handle(self, *args, **options):
-        log = True if options['log'] else False
+        logs = True if options['logs'] else False
         folder_path = options['path'] or DEFAULT_PATH
 
         if options['clear']:
@@ -44,10 +44,8 @@ class Command(BaseCommand):
         elif options['files']:
             files = options['files']
         else:
-            self.stdout.write(self.style.ERROR(
-                'Please, provide file names or '
-                'use --all flag to load all files from the folder.'
-            ))
+            self.print_stdout('Please, provide file names or use --all flag '
+                              'to load all files from the folder.', False)
             return
 
         file_names = [file for file in files if file.endswith('.csv')]
@@ -65,7 +63,7 @@ class Command(BaseCommand):
                     region, is_region_created = Region.objects.get_or_create(
                         name=city_data.get('region')
                     )
-                    if log and is_region_created:
+                    if logs and is_region_created:
                         self.print_stdout(f'{region} is loaded')
 
                     district, is_district_created = District.objects.get_or_create(
@@ -73,14 +71,14 @@ class Command(BaseCommand):
                         region=region,
                         short_name=city_data.get("district_short")
                     )
-                    if log and is_district_created:
+                    if logs and is_district_created:
                         self.print_stdout(f'{district} is loaded')
 
                     city_type, is_city_type_created = CityType.objects.get_or_create(
                         name=city_data.get("type"),
                         short_name=city_data.get("type_short")
                     )
-                    if log and is_city_type_created:
+                    if logs and is_city_type_created:
                         self.print_stdout(f'{city_type} is loaded')
 
                     city, is_city_created = City.objects.get_or_create(
@@ -93,6 +91,8 @@ class Command(BaseCommand):
                             "is_district_shown"
                         ))),
                     )
+                    if logs and is_city_created:
+                        self.print_stdout(f'{city} is loaded')
 
                     if is_city_created:
                         city_counter += 1
@@ -105,5 +105,6 @@ class Command(BaseCommand):
                 f'{city_skipped} cities are skipped, '
                 f'because they are already in the database')
 
-    def print_stdout(self, msg):
-        self.stdout.write(self.style.SUCCESS(msg))
+    def print_stdout(self, msg, success=True):
+        color = self.style.SUCCESS if success else self.style.ERROR
+        self.stdout.write(color(msg))
