@@ -29,6 +29,14 @@ class User(AbstractUser):
         null=True,
         verbose_name="Адрес проживания",
     )
+    is_notify = models.BooleanField(
+        "Уведомлять о новых заказах", default=False,
+        help_text="Отметьте, если пользователь должен получать уведомления о новых заказах"
+    )
+    tg_id = models.CharField(
+        "Telegram", max_length=50,
+        blank=True, help_text="Укажите Telegram ID в формате 123456789"
+    )
 
     date_joined = models.DateTimeField("Дата создания аккаунта", auto_now_add=True)
     last_login = models.DateTimeField("Последний вход", auto_now=True)

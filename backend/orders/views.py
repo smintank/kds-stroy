@@ -4,7 +4,7 @@ from django.views.generic import DetailView
 
 from kds_stroy import settings
 from .forms import OrderCreationForm
-from .models import OrderPhoto, Order
+from .models import OrderPhoto, Order, City
 from .utils import handle_photos
 
 
@@ -30,7 +30,8 @@ class OrderCreateView(View):
                 status=201,
             )
         else:
-            return JsonResponse({"error": "Не получилось создать заявку"}, status=400)
+            return JsonResponse({"error": "Не получилось создать заявку"},
+                                status=400)
 
 
 class OrderDetailView(DetailView):
@@ -46,3 +47,12 @@ class OrderDetailView(DetailView):
         context["photos"] = OrderPhoto.objects.filter(order=self.object)
         context["MEDIA_URL"] = settings.MEDIA_URL
         return context
+
+
+class LocationAutocompleteView(View):
+    def get(self, request):
+        text_input = request.GET.get('term').strip().replace(", ", ",")
+        city_name = text_input.split()[-1]
+        cities = City.objects.filter(name__icontains=city_name)
+        suggestions = [str(city) for city in cities]
+        return JsonResponse(suggestions, safe=False)

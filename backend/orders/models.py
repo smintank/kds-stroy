@@ -1,15 +1,16 @@
-import os
-import uuid
-
 from django.contrib.auth import get_user_model
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+from orders.utils import format_city, get_upload_path, get_unique_uid
 
 User = get_user_model()
 
 
 class Region(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -19,12 +20,46 @@ class Region(models.Model):
         verbose_name_plural = "Регионы"
 
 
-class City(models.Model):
-    name = models.CharField(max_length=255)
+class District(models.Model):
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    short_name = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "район"
+        verbose_name_plural = "Районы"
+
+
+class CityType(models.Model):
+    name = models.CharField(max_length=255)
+    short_name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "тип населенного пункта"
+        verbose_name_plural = "Типы населенных пунктов"
+
+
+class City(models.Model):
+    district = models.ForeignKey(District, on_delete=models.CASCADE)
+    is_district_shown = models.BooleanField(default=True)
+    type = models.ForeignKey(CityType, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+    latitude = models.FloatField(default=45.03333)
+    longitude = models.FloatField(default=38.98333)
+
+    def __str__(self):
+        return format_city(self)
+
+    def short_name(self):
+        return f"{self.type.short_name} {self.name}"
 
     class Meta:
         verbose_name = "населенный пункт"
@@ -45,58 +80,71 @@ class Address(models.Model):
 
 class Order(models.Model):
     class Status(models.TextChoices):
-        REGISTERED = "Зарегистрирован", _("Зарегистрирован")
-        PROCESSED = "В работе", _("В работе")
-        COMPLETED = "Завершен", _("Завершен")
-        CANCELED = "Отменен", _("Отменен")
+        REGISTERED = "Зарегистрирован", _("🟥 Зарегистрирован")
+        PROCESSED = "В работе", _("🟨 В работе")
+        COMPLETED = "Завершен", _("🟩 Завершен")
+        CANCELED = "Отменен", _("⬛️ Отменен")
 
     order_id = models.IntegerField("Номер заказа")
     first_name = models.CharField("Имя", max_length=150)
     phone_number = models.CharField("Номер телефона", max_length=18)
     comment = models.TextField("Комментарий", blank=True, null=True)
-    created_at = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
+    created_at = models.DateTimeField(verbose_name="Дата создания",
+                                      auto_now_add=True)
     status = models.CharField(
-        "Статус", choices=Status.choices, default=Status.REGISTERED, max_length=20
+        "Статус", choices=Status.choices, default=Status.REGISTERED,
+        max_length=20
     )
     user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
-        verbose_name="Авторизованный пользователь",
+        verbose_name="Зарегистрированный пользователь",
         blank=True,
         null=True,
     )
-    cost = models.IntegerField("Итоговая стоимость", blank=True, null=True)
-    discount = models.IntegerField("Скидка", default=0)
-    is_discount = models.BooleanField("Скидка", default=False)
+    cost = models.FloatField(
+        "Стоимость в руб.",
+        default=0.0,
+        validators=[
+            MinValueValidator(0.0),
+            MaxValueValidator(10000000.0)
+        ]
+    )
+    final_cost = models.FloatField(
+        "Итог в руб.",
+        default=0.0,
+        validators=[
+            MinValueValidator(0.0),
+            MaxValueValidator(10000000.0)
+        ]
+    )
+    discount = models.IntegerField(
+        "Скидка в %",
+        default=0,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(100)
+        ]
+    )
 
     address = models.TextField(verbose_name="Адрес", blank=True, null=True)
-    # address = models.ForeignKey(
-    #     Address, on_delete=models.SET_NULL, blank=True, null=True
+    city = models.ForeignKey(
+        City, on_delete=models.SET_NULL, verbose_name="Населенный пункт",
+        blank=True, null=True
+    )
 
     def __str__(self):
         return f"Заказ №{self.order_id}"
 
     def save(self, *args, **kwargs):
-        is_unique = False
-        while not is_unique:
-            unique_order_number = str(uuid.uuid1().int)[:8]
-            if not Order.objects.filter(order_id=unique_order_number).exists():
-                is_unique = True
-                self.order_id = unique_order_number
-                super().save(*args, **kwargs)
+        if not self.order_id:
+            self.order_id = get_unique_uid(Order)
+        self.final_cost = round(self.cost - self.cost / 100 * self.discount, 2)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "заказ"
         verbose_name_plural = "Заказы"
-
-    def get_status_display(self):
-        return dict(Order.Status.choices)[self.status]
-
-
-def get_upload_path(instance, filename):
-    _, file_extension = os.path.splitext(filename)
-    path = os.path.join("order_photos", str(instance.order.order_id))
-    return os.path.join(path, f"photo{file_extension}")
 
 
 class OrderPhoto(models.Model):

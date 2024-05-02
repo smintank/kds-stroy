@@ -1,7 +1,7 @@
 import re
 from django import forms
 
-from .models import Order
+from .models import Order, City, Region, District
 
 
 class MultipleFileInput(forms.ClearableFileInput):
@@ -14,12 +14,45 @@ class MultipleFileField(forms.FileField):
         super().__init__(*args, **kwargs)
 
 
+class LocationAutocompleteField(forms.CharField):
+    def __init__(self, *args, **kwargs):
+        self.model_mapping = {
+            'region': Region,
+            'district': District,
+            'city': City,
+        }
+        super().__init__(*args, **kwargs)
+
+    def get_suggestions(self, value):
+        suggestions = []
+        for model_name, model in self.model_mapping.items():
+            queryset = model.objects.filter(name__icontains=value)
+            if queryset.exists():
+                suggestions.extend(queryset.values_list('name', flat=True))
+        return suggestions
+
+    def clean(self, value):
+        if not value:
+            return value
+        value = value.split(", ")[-1].split()[-1]
+        return City.objects.filter(name=value).first()
+
+    def widget_attrs(self, widget):
+        attrs = super().widget_attrs(widget)
+        attrs['data-autocomplete-url'] = 'orders/autocomplete/location/'
+        attrs["class"] = "order__form-input"
+        attrs["placeholder"] = "Город"
+        attrs["autocomplete"] = "address-level2"
+        return attrs
+
+
 class OrderCreationForm(forms.ModelForm):
     photo = MultipleFileField(label="Фото", required=False)
+    city = LocationAutocompleteField()
 
     class Meta:
         model = Order
-        fields = ["first_name", "phone_number", "address", "comment", "photo"]
+        fields = ["first_name", "phone_number", "city", "address", "comment", "photo"]
         widgets = {
             "phone_number": forms.TextInput(
                 attrs={
