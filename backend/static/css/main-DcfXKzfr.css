@@ -1002,9 +1002,6 @@ a:hover {
     top: 105px;
     left: 38px;
   }
-  .header__nav-list {
-    gap: 63px;
-  }
   .header__phone {
     margin-left: auto;
     margin-right: 5px;
@@ -1055,7 +1052,6 @@ a:hover {
     left: 18px;
   }
   .header__nav-list {
-    gap: 27px;
     flex-direction: column;
   }
   .header__nav-list-item {
@@ -1583,7 +1579,7 @@ a:hover {
 }
 @media (max-width: 639px) {
   .works {
-    padding: 35px 0 60px 0;
+    padding: 45px 0 60px 0;
   }
   .works__list-item-title {
     margin-bottom: 25px;
@@ -1647,6 +1643,7 @@ a:hover {
 .callback__text {
   font-size: 16px;
   letter-spacing: -0.03em;
+  color: #656565;
 }
 .callback__text_2 {
   font-size: 16px;
@@ -1814,7 +1811,7 @@ a:hover {
 }
 @media (max-width: 639px) {
   .projects {
-    padding: 60px 0;
+    padding: 120px 0 60px 0;
   }
   .projects__title {
     margin-bottom: 10px;
@@ -1828,6 +1825,7 @@ a:hover {
   }
   .projects__slider-slide {
     min-height: 380px;
+    background-color: #fff;
   }
   .projects__slide-image {
     height: 170px;
@@ -2247,11 +2245,12 @@ a:hover {
 .steps__list-item-text {
   padding-left: 20px;
   letter-spacing: -0.03em;
+  color: #656565;
 }
 @media (max-width: 1023px) {
   .steps {
     position: relative;
-    padding: 90px 0 120px 0;
+    padding: 120px 0 120px 0;
   }
   .steps__title {
     margin-bottom: 50px;
@@ -2357,6 +2356,7 @@ a:hover {
 }
 .stocks__list-item-text {
   letter-spacing: -0.03em;
+  color: #656565;
 }
 .stocks__form {
   align-self: start;
@@ -2633,6 +2633,9 @@ a:hover {
   max-width: 232px;
 }
 @media (max-width: 1023px) {
+  .about {
+    padding: 120px 0 50px 0;
+  }
   .about__title {
     margin-bottom: 15px;
     font-size: 24px;
@@ -2670,9 +2673,6 @@ a:hover {
   }
 }
 @media (max-width: 639px) {
-  .about {
-    padding: 120px 0 90px 0;
-  }
   .about__title {
     margin-bottom: 10px;
   }
@@ -2752,7 +2752,7 @@ a:hover {
 .accordion__list-item-text {
   letter-spacing: 0.03em;
   line-height: 135%;
-  color: #656565
+  color: #656565;
 }
 .accordion__list-item-text:first-child {
   margin-top: 10px;
@@ -2795,7 +2795,7 @@ a:hover {
 }
 @media (max-width: 639px) {
   .accordion {
-    padding: 90px 0 60px 0;
+    padding: 90px 0 20px 0;
   }
   .accordion__title {
     margin-bottom: 45px;
@@ -3063,7 +3063,7 @@ a:hover {
 }
 @media (max-width: 639px) {
   .contacts {
-    padding: 60px 0 164px 0;
+    padding: 120px 0 164px 0;
     position: relative;
   }
   .contacts__container {
@@ -3512,7 +3512,6 @@ a:hover {
   }
   .popup__container {
     padding: 45px 40px;
-    margin: 0 15px;
   }
   .popup__text {
     font-size: 15px;
@@ -3545,19 +3544,20 @@ a:hover {
     font-size: 15px;
   }
 }
+
+
 .stock-popup {
   position: fixed;
-  top: 50%;
-  transform: translate(95%, -50%);
-  transition: transform;
-  transition-duration: 0.2s;
-  transition-delay: 0.2s;
+  transform: translate(95%, 0);
+  transition: transform 0.2s 0.2s;
   right: 0;
-  background-color: #ffffffee;
-  padding: 40px 50px 50px 28px;
+  bottom: 35%;
   width: 100%;
   max-width: 440px;
-  z-index: 1001;
+  background-color: #fff;
+  border: #ddd 1px solid;
+  padding: 40px 50px 50px 28px;
+  z-index: 500;
 }
 .stock-popup::after {
   display: flex;
@@ -3573,10 +3573,7 @@ a:hover {
   color: #c82027;
 }
 .stock-popup--active {
-  transform: translate(0, -50%);
-  transition: transform;
-  transition-duration: 0.2s;
-  transition-delay: 0.2s;
+  transform: translate(0, 0);
 }
 .stock-popup--active::after {
   display: none;
@@ -3625,18 +3622,6 @@ a:hover {
   text-decoration: none;
 }
 @media (max-width: 1023px) {
-  .stock-popup {
-    top: auto;
-    bottom: 10%;
-    right: 0;
-    transform: translate(95%, 0);
-  }
-  .stock-popup--active {
-    transform: translate(0, 0);
-    transition: transform;
-    transition-duration: 0.2s;
-    transition-delay: 0.2s;
-  }
   .stock-popup__title {
     font-size: 20px;
   }
@@ -3654,11 +3639,6 @@ a:hover {
   }
 }
 @media (max-width: 639px) {
-  .stock-popup {
-    top: auto;
-    bottom: 0;
-    right: 0;
-  }
   .stock-popup__title {
     font-size: 16px;
   }
@@ -3674,4 +3654,31 @@ a:hover {
     font-size: 15px;
     margin-bottom: 10px;
   }
+}
+
+.autocomplete-dropdown {
+  position: fixed;
+  z-index: 5000;
+  width: 420px;
+  top: 340px;
+  left: 260px;
+  cursor: pointer;
+  background-color: white;
+  border: rgb(210, 210, 210) 1px solid;
+  border-radius: 3px;
+  padding: 15px;
+  display: none; /* Hide the dropdown menu initially */
+  flex-direction: column;
+  flex-wrap: nowrap;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.autocomplete-dropdown-item {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.autocomplete-dropdown-item:hover {
+  background-color: #f0f0f0;
 }

@@ -25,6 +25,24 @@ class MyUserAdmin(UserAdmin):
     readonly_fields = ("last_login", "date_joined", "email")
     ordering = ["id"]
     inlines = [OrderAdmin]
+    fieldsets = (
+        (None, {"fields": ("email", "password")}),
+        ("Персональная информация",
+         {"fields": ("first_name", "last_name", "phone_number")}),
+        ("Права доступа", {"fields": (
+            "is_active", "is_staff", "is_superuser", "user_permissions",)}),
+        ("Уведомления", {"fields": ("is_notify", "tg_id")}),
+        ("Важные даты", {"fields": ("last_login", "date_joined")}),
+    )
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        if not request.user.is_staff:
+            form.base_fields["is_notify"].disabled = True
+        return form
+
+    def has_add_permission(self, request):
+        return False
 
 
 admin.site.register(User, MyUserAdmin)
