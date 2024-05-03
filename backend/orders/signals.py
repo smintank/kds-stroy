@@ -2,6 +2,7 @@ from asgiref.sync import sync_to_async
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import telegram
+from telegram.constants import ParseMode
 
 from .models import Order, User
 from kds_stroy.settings import TG_BOT_TOKEN
@@ -16,13 +17,14 @@ async def send_telegram_notification(sender, instance: Order, created,
         address = await sync_to_async(format_city)(instance.city)
         address += f", {instance.address}" if instance.address else ""
 
-        message = f'🚨 Новая заявка! 🚨\n\n' \
+        message = f'✅ *Новая заявка!*\n\n' \
                   f'№ {instance.order_id} от ' \
                   f'{format_datetime(instance.created_at, raw=True)}\n\n' \
-                  f'Имя: {instance.first_name}\n' \
-                  f'Телефон: {format_phone_number(instance.phone_number)}\n\n' \
-                  f'Адрес: {address}\n\n' \
-                  f'Комментарий: {format_comment(instance.comment)}\n'
+                  f'👤 *Имя:* {instance.first_name}\n\n' \
+                  f'📱 *Телефон:* {format_phone_number(instance.phone_number)}\n\n' \
+                  f'📍 *Адрес:* {address}\n\n' \
+                  f'💬 *Комментарий:*\n' \
+                  f'{format_comment(instance.comment, 100)}\n'
 
         try:
             tg_ids = await sync_to_async(list)(
@@ -36,7 +38,8 @@ async def send_telegram_notification(sender, instance: Order, created,
 
         for tg_id in tg_ids:
             try:
-                await bot.send_message(chat_id=tg_id, text=message)
+                await bot.send_message(chat_id=tg_id, text=message,
+                                       parse_mode=ParseMode.MARKDOWN)
             except telegram.error.BadRequest as e:
                 print(f"Fail to send message to use {tg_id}: {e}\n"
                       f"Maybe user blocked bot or didn't start it yet.")
