@@ -203,7 +203,8 @@ const useOrderFormWithImages = () => {
         throw new Error(response.statusText);
       }
     }).then(function(data) {
-      setCookie('order_created', true, 1);
+      setCookie('order_created', 1, 1);
+      setCookie('order_id', data.order_id, 1);
       popupMessage.update(data.message, data.text);
     }).catch(function(error) {
       console.log(error);
@@ -213,10 +214,13 @@ const useOrderFormWithImages = () => {
 
   document.querySelectorAll("#orderPopup").forEach((button) => {
     button.addEventListener("click", () => {
-      if (getCookie("order_created") !== "true") {
+      if (getCookie("order_created") !== "1") {
         popupOrder.open();
       } else {
-        popupMessage.open("Вы уже отправили заявку!", "Мы свяжемся с вами в ближайшее время");
+        popupMessage.open(
+          "Вы уже отправили заявку №" + getCookie("order_id") + "!",
+          "Мы свяжемся с вами в ближайшее время"
+        );
       }
     });
   });
@@ -230,20 +234,34 @@ const useCitySuggestions = () => {
   function updateDropdownPosition() {
     const rect = cityField.getBoundingClientRect();
     if (dropdown) {
-      dropdown.style.top = rect.bottom + 'px';
-      dropdown.style.left = rect.left + 'px';
-      dropdown.style.width = rect.width + 'px';
+      dropdown.style.top = `${rect.bottom}px`;
+      dropdown.style.left = `${rect.left}px`;
+      dropdown.style.width = `${rect.width}px`;
     }
   }
 
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
   function handleAutocomplete(input) {
-    input.addEventListener('input', function(event) {
-      cityChosen = false;
+    const debouncedFetch = debounce(function(event) {
       const term = event.target.value;
 
-      if (term.length > 0) {
-        fetch(
-          'orders/autocomplete/location/?term=' + term
+      if (!term) {
+        if (dropdown) dropdown.style.display = 'none';
+        return;
+      }
+      fetch(
+        'orders/autocomplete/location/?term=' + encodeURIComponent(term)
         ).then(
           response => response.json()
         ).then(data => {
@@ -254,42 +272,41 @@ const useCitySuggestions = () => {
             document.body.appendChild(dropdown);
             updateDropdownPosition();
           }
-          dropdown.innerHTML = '';
-
-          if (data.length > 0) {
-            data.forEach(function(item) {
-              const option = document.createElement('div');
-              option.classList.add('autocomplete-dropdown-item');
-              option.textContent = item;
-              option.addEventListener('click', function() {
-                input.value = item;
-                dropdown.style.display = 'none';
-                cityChosen = true;
-              });
-              dropdown.appendChild(option);
-            });
-          } else {
-            const option = document.createElement('div');
-            option.classList.add('autocomplete-dropdown-item');
-            option.textContent = 'Ничего не найдено';
-            dropdown.appendChild(option);
-          }
+          dropdown.innerHTML = data.map(item => `
+            <div class="autocomplete-dropdown-item" onclick="setCity('${item}')">
+              ${item}
+            </div>
+          `).join('') || '<div class="autocomplete-dropdown-item">Ничего не найдено</div>';
           dropdown.style.display = 'flex';
         }).catch(error => {
           console.error('Error fetching autocomplete suggestions:', error);
         });
-      } else {
-        if (dropdown) dropdown.style.display = 'none';
-      }
-    });
+    }, 300);
+
+    window.setCity = function(item) {
+      cityField.value = item;
+      dropdown.style.display = 'none';
+      cityChosen = true;
+    };
+
+    input.addEventListener('input', debouncedFetch);
   }
 
   const inputs = document.querySelectorAll('[data-autocomplete-url]');
-  inputs.forEach(function(input) {
-    handleAutocomplete(input);
+  inputs.forEach(input => handleAutocomplete(input));
+
+  function addEventListeners() {
+    window.addEventListener('resize', updateDropdownPosition);
+    window.addEventListener('scroll', updateDropdownPosition);
+    window.addEventListener('orientationchange', updateDropdownPosition);
+  }
+
+  document.addEventListener('click', function(event) {
+    if (event.target.closest("#id_city, #autocomplete-dropdown")) return;
+    if (dropdown) dropdown.style.display = 'none';
   });
 
-  window.addEventListener('resize', updateDropdownPosition);
+  addEventListeners();
 };
 
 const useAuthPopup = () => {
