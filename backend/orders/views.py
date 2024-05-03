@@ -1,3 +1,6 @@
+from urllib.parse import quote_plus
+
+from django.core.cache import cache
 from django.http import JsonResponse
 from django.views import View
 from django.views.generic import DetailView
@@ -26,6 +29,7 @@ class OrderCreateView(View):
                 {
                     "message": f"Заявка №{order.order_id} успешно создана!",
                     "text": f"Мы свяжемся с вами в ближайшее время!",
+                    "order_id": order.order_id,
                 },
                 status=201,
             )
@@ -51,8 +55,19 @@ class OrderDetailView(DetailView):
 
 class LocationAutocompleteView(View):
     def get(self, request):
-        text_input = request.GET.get('term').strip().replace(", ", ",")
+        text_input = request.GET.get('term', '').strip().replace(", ", ",")
+        if not text_input:
+            return JsonResponse([], safe=False)
+
         city_name = text_input.split()[-1]
-        cities = City.objects.filter(name__icontains=city_name)
-        suggestions = [str(city) for city in cities]
+        cache_key = f'autocomplete:{quote_plus(city_name)}'
+        suggestions = cache.get(cache_key)
+
+        if suggestions is None:
+            cities = City.objects.filter(
+                name__icontains=city_name
+            )[:15]
+            suggestions = [str(city) for city in cities]
+            cache.set(cache_key, suggestions, timeout=60 * 5)
+
         return JsonResponse(suggestions, safe=False)
