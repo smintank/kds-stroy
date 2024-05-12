@@ -63,15 +63,11 @@ def make_safe_for_markdown(text):
     )
 
 
-def format_city(city):
+def get_full_city(city):
     region = f"{city.district.region}, "
     if city.is_district_shown:
         region += f"{city.district.short_name}, "
     return region + f"{city.type.short_name}\u00a0{city.name}"
-
-
-def format_address(address) -> str:
-    return ', ' + address if address else ""
 
 
 def format_datetime(datetime, raw=False):
@@ -98,6 +94,15 @@ def get_upload_path(instance, filename):
     return os.path.join(path, f"photo{file_extension}")
 
 
+def get_full_address(city, address):
+    if city and address:
+        return get_full_city(city) + ', ' + address
+    elif city:
+        return get_full_city(city)
+    else:
+        return address
+
+
 def get_order_message(order, md_safe=False):
     data: dict[str: str] = {"first_name": order.first_name,
                             "phone_number": order.phone_number,
@@ -114,7 +119,7 @@ def get_order_message(order, md_safe=False):
         datetime=format_datetime(order.created_at, raw=True),
         first_name=data["first_name"],
         phone=format_phone_number(data["phone_number"]),
-        address=format_city(order.city) + format_address(data["address"]),
+        address=get_full_address(order.city, data["address"]),
         comment=format_comment(data["comment"], length=100)
     )
 
