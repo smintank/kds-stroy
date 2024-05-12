@@ -6,9 +6,11 @@ from datetime import timedelta
 from django.utils import timezone
 
 from kds_stroy.settings import MAX_UPLOADED_PHOTO_SIZE
+from orders.messages import NEW_ORDER_TG_MSG
+from users.models import User
 
 
-def handle_photos(photos):
+def handle_photos(photos) -> list:
     proper_photos = {}
     errors = []
     for photo in photos.lists():
@@ -24,7 +26,7 @@ def handle_photos(photos):
             if photo.size > 1024 * 1024 * MAX_UPLOADED_PHOTO_SIZE:
                 raise ValueError(
                     photo_name + "превышает максимальный размер в "
-                    f"{MAX_UPLOADED_PHOTO_SIZE} Мб"
+                                 f"{MAX_UPLOADED_PHOTO_SIZE} Мб"
                 )
             file_hash = hashlib.md5(photo.read()).hexdigest()
             if proper_photos and file_hash in proper_photos:
@@ -47,7 +49,18 @@ def format_phone_number(phone: str) -> str:
 def format_comment(comment: str, length: int = 50) -> str:
     if not comment:
         return '-'
+    comment = comment.strip().replace('\n', ' ')
     return comment[:length] + '...' if len(comment) > length else comment
+
+
+def make_safe_for_markdown(text):
+    """
+    Convert text to make it safe for Markdown in Telegram messages.
+    """
+    escape_chars = '_*[`'
+    return ''.join(
+        ['\\' + char if char in escape_chars else char for char in text]
+    )
 
 
 def format_city(city):
@@ -55,6 +68,10 @@ def format_city(city):
     if city.is_district_shown:
         region += f"{city.district.short_name}, "
     return region + f"{city.type.short_name}\u00a0{city.name}"
+
+
+def format_address(address) -> str:
+    return ', ' + address if address else ""
 
 
 def format_datetime(datetime, raw=False):
@@ -79,3 +96,29 @@ def get_upload_path(instance, filename):
     _, file_extension = os.path.splitext(filename)
     path = os.path.join("order_photos", str(instance.order.order_id))
     return os.path.join(path, f"photo{file_extension}")
+
+
+def get_order_message(order, md_safe=False):
+    data: dict[str: str] = {"first_name": order.first_name,
+                            "phone_number": order.phone_number,
+                            "address": order.address,
+                            "comment": order.comment}
+
+    data = {
+        key: make_safe_for_markdown(value)
+        for key, value in data.items() if md_safe
+    }
+
+    return NEW_ORDER_TG_MSG.format(
+        order_id=order.order_id,
+        datetime=format_datetime(order.created_at, raw=True),
+        first_name=data["first_name"],
+        phone=format_phone_number(data["phone_number"]),
+        address=format_city(order.city) + format_address(data["address"]),
+        comment=format_comment(data["comment"], length=100)
+    )
+
+
+def get_notified_users() -> list[int]:
+    users = User.objects.filter(is_notify=True).values_list("tg_id", flat=True)
+    return list(users)

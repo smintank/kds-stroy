@@ -7,8 +7,14 @@ from django.views.generic import DetailView
 
 from kds_stroy import settings
 from .forms import OrderCreationForm
+from .messages import (
+    SUCCESS_ORDER_CREATION_MSG as SUCCESS_MSG,
+    SUCCESS_ORDER_CREATION_SUB_MSG as SUCCESS_TXT,
+    ERROR_ORDER_CREATION_MSG as ERROR_MSG,
+)
 from .models import OrderPhoto, Order, City
-from .utils import handle_photos
+from .utils import handle_photos, get_order_message, get_notified_users
+from .tasks import send_telegram_message
 
 
 class OrderCreateView(View):
@@ -25,17 +31,16 @@ class OrderCreateView(View):
                 for photo in handled_photos:
                     OrderPhoto.objects.create(order=order, photo=photo)
 
-            return JsonResponse(
-                {
-                    "message": f"Заявка №{order.order_id} успешно создана!",
-                    "text": f"Мы свяжемся с вами в ближайшее время!",
-                    "order_id": order.order_id,
-                },
-                status=201,
+            send_telegram_message.delay(
+                text=get_order_message(order, md_safe=True),
+                chat_ids=get_notified_users()
             )
+
+            return JsonResponse({"message": SUCCESS_MSG.format(order.order_id),
+                                 "text": SUCCESS_TXT.format(order.first_name),
+                                 "order_id": order.order_id}, status=201)
         else:
-            return JsonResponse({"error": "Не получилось создать заявку"},
-                                status=400)
+            return JsonResponse({"error": ERROR_MSG}, status=400)
 
 
 class OrderDetailView(DetailView):
