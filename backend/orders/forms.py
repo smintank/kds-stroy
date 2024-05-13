@@ -1,6 +1,7 @@
 import re
 from django import forms
 
+from .messages import PHONE_MIN_LENGTH_ERROR_MSG, PHONE_MAX_LENGTH_ERROR_MSG
 from .models import Order, City, Region, District
 
 
@@ -89,6 +90,10 @@ class OrderCreationForm(forms.ModelForm):
         cleared_phone_number = re.sub(r"\D", "", phone_number)
         if len(cleared_phone_number) < 11:
             raise forms.ValidationError(
-                "Номер телефона должен содержать не меньше 11 цифр"
+                PHONE_MIN_LENGTH_ERROR_MSG
+            )
+        if len(cleared_phone_number) > 11:
+            raise forms.ValidationError(
+                PHONE_MAX_LENGTH_ERROR_MSG
             )
         return cleared_phone_number
