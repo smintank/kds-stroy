@@ -4,8 +4,8 @@ from django.core.cache import cache
 from django.http import JsonResponse
 from django.views import View
 from django.views.generic import DetailView
+from django.conf import settings
 
-from kds_stroy import settings
 from .forms import OrderCreationForm
 from .messages import (
     SUCCESS_ORDER_CREATION_MSG as SUCCESS_MSG,
@@ -13,25 +13,20 @@ from .messages import (
     ERROR_ORDER_CREATION_MSG as ERROR_MSG,
 )
 from .models import OrderPhoto, Order, City
-from .utils import handle_photos, get_order_message, get_notified_users
-from .tasks import send_telegram_message
+from .utils import get_order_message, get_notified_users
+from .tasks import send_telegram_message_async
 
 
 class OrderCreateView(View):
     def post(self, request):
-        order_form = OrderCreationForm(request.POST, request.FILES or None)
+        order_form = OrderCreationForm(request.POST, request.FILES)
 
         if order_form.is_valid():
             order = order_form.save()
             request.session["order_created"] = True
             request.session["order_id"] = order.order_id
 
-            handled_photos = handle_photos(request.FILES)
-            if handled_photos:
-                for photo in handled_photos:
-                    OrderPhoto.objects.create(order=order, photo=photo)
-
-            send_telegram_message.delay(
+            send_telegram_message_async.delay(
                 text=get_order_message(order, md_safe=True),
                 chat_ids=get_notified_users()
             )

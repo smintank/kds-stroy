@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 @shared_task
-def send_telegram_message(text: str, chat_ids: list[int]):
+def send_telegram_message_async(text: str, chat_ids: list[int]):
     base_url = f'https://api.telegram.org/bot{TG_BOT_TOKEN}'
     text_api = f'{base_url}/sendMessage'
 

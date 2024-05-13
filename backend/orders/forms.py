@@ -2,17 +2,8 @@ import re
 from django import forms
 
 from .messages import PHONE_MIN_LENGTH_ERROR_MSG, PHONE_MAX_LENGTH_ERROR_MSG
-from .models import Order, City, Region, District
-
-
-class MultipleFileInput(forms.ClearableFileInput):
-    allow_multiple_selected = True
-
-
-class MultipleFileField(forms.FileField):
-    def __init__(self, *args, **kwargs):
-        kwargs.setdefault("widget", MultipleFileInput())
-        super().__init__(*args, **kwargs)
+from .models import Order, City, Region, District, OrderPhoto
+from .utils import handle_photos
 
 
 class LocationAutocompleteField(forms.CharField):
@@ -47,13 +38,23 @@ class LocationAutocompleteField(forms.CharField):
         return attrs
 
 
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+
 class OrderCreationForm(forms.ModelForm):
-    photo = MultipleFileField(label="Фото", required=False)
+    photos = MultipleFileField(label="Фото", required=False)
     city = LocationAutocompleteField()
 
     class Meta:
         model = Order
-        fields = ["first_name", "phone_number", "city", "address", "comment", "photo"]
+        fields = ["first_name", "phone_number", "city", "address", "comment", "photos"]
         widgets = {
             "phone_number": forms.TextInput(
                 attrs={
@@ -97,3 +98,18 @@ class OrderCreationForm(forms.ModelForm):
                 PHONE_MAX_LENGTH_ERROR_MSG
             )
         return cleared_phone_number
+
+    def clean_photos(self):
+        return handle_photos(self.files)
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if commit:
+            instance.save()
+            self.save_photos(instance)
+        return instance
+
+    def save_photos(self, order):
+        photos = self.cleaned_data.get("photos") or []
+        for photo in photos:
+            OrderPhoto.objects.create(order=order, photo=photo)
