@@ -1,11 +1,23 @@
-import os
-from unittest import TestCase
+from django.test import TestCase
 
-from django.conf import settings
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from django.test import Client
 
+from kds_stroy.settings import (
+    MAX_UPLOADED_PHOTO_SIZE as PHOTO_SIZE,
+    MAX_UPLOAD_PHOTO_AMOUNT
+)
+from orders.messages import ERROR_ORDER_CREATION_MSG
 from orders.models import OrderPhoto
+
+MByte = 1024 * 1024
+
+
+def get_test_photos(data: bytes, size=int(PHOTO_SIZE/10)) -> SimpleUploadedFile:
+    return SimpleUploadedFile(
+        'test.jpg', data * (size * MByte), content_type='image/jpeg'
+    )
 
 
 class OrderCreateViewTest(TestCase):
@@ -19,18 +31,12 @@ class OrderCreateViewTest(TestCase):
         self.correct_comment = 'Comment'
         self.unsafe_comment = '_*`['
 
-        # photos
-        self.data_dir = os.path.join(settings.BASE_DIR, 'orders/tests/data')
-
-        self.not_photo = open(os.path.join(self.data_dir, 'test.txt'), 'rb')
-        self.big_photo = open(os.path.join(self.data_dir, 'big.jpg'), 'rb')
-        self.empty_photo = open(os.path.join(self.data_dir, 'empty.jpg'), 'rb')
-        self.incorrect_photo = open(os.path.join(self.data_dir, 'incorrect.jpg'), 'rb')
-
-        self.correct_photos = [
-            open(os.path.join(self.data_dir, f'correct{i}.jpg'), 'rb')
-            for i in range(1, 7)
-        ]
+        self.correct_photo = get_test_photos(b'A')
+        self.big_photo = get_test_photos(b'F', PHOTO_SIZE + 1)
+        self.empty_photo = get_test_photos(b'')
+        self.not_photo = SimpleUploadedFile(
+            'not_photo.txt', b'Text', content_type='txt/plain'
+        )
 
     def test_create_order_minimal(self):
         response = self.client.post(self.url, {
@@ -61,7 +67,7 @@ class OrderCreateViewTest(TestCase):
         response = self.client.post(self.url, {})
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(),
-                         {'error': 'Не получилось создать заявку'})
+                         {'error': ERROR_ORDER_CREATION_MSG})
 
     def test_create_order_empty_first_name(self):
         response = self.client.post(self.url, {
@@ -76,53 +82,55 @@ class OrderCreateViewTest(TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_create_order_with_more_than_5_photos(self):
+        photo_amount = MAX_UPLOAD_PHOTO_AMOUNT
         response = self.client.post(self.url, {
             'first_name': self.first_name,
             'phone_number': self.phone_number,
-            'files': self.correct_photos
+            **{f'photo-{i}': get_test_photos(b'A', i) for i in range(1, 7)}
         })
         self.assertEqual(response.status_code, 201)
         self.assertEqual(OrderPhoto.objects.count(), 5)
 
-    def test_create_order_minimal_with_some_photos(self):
-        photo_amount = 2
+    def test_create_order_with_some_photos(self):
         response = self.client.post(self.url, {
             'first_name': self.first_name,
             'phone_number': self.phone_number,
-            'files': self.correct_photos[0:photo_amount],
+            **{'photo-0': get_test_photos(b'A'),
+               'photo-1': get_test_photos(b'B'),
+               'photo-2': get_test_photos(b'C')}
         })
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(OrderPhoto.objects.count(), photo_amount)
+        self.assertEqual(OrderPhoto.objects.count(), 3)
 
-    def test_create_order_minimal_with_all_invalid_photos(self):
+    def test_create_order_with_valid_and_invalid_photos(self):
         response = self.client.post(self.url, {
             'first_name': self.first_name,
             'phone_number': self.phone_number,
-            'files': [self.correct_photos[0], self.incorrect_photo,
-                      self.not_photo, self.empty_photo, self.big_photo],
+            **{'photo-0': self.not_photo,
+               'photo-1': self.big_photo,
+               'photo-2': self.correct_photo}
         })
         self.assertEqual(response.status_code, 201)
         self.assertEqual(OrderPhoto.objects.count(), 1)
+
+    def test_create_order_with_only_invalid_photos(self):
+        response = self.client.post(self.url, {
+            'first_name': self.first_name,
+            'phone_number': self.phone_number,
+            **{'photo-0': self.not_photo,
+               'photo-1': self.big_photo,
+               'photo-2': self.empty_photo}
+        })
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(OrderPhoto.objects.count(), 0)
 
     def test_create_order_with_same_photos(self):
         response = self.client.post(self.url, {
             'first_name': self.first_name,
             'phone_number': self.phone_number,
-            'files': [
-                self.correct_photos[2], self.correct_photos[2]
-            ]
+            **{'photo-0': get_test_photos(b'A'),
+               'photo-1': get_test_photos(b'A'),
+               'photo-2': get_test_photos(b'A')}
         })
         self.assertEqual(response.status_code, 201)
         self.assertEqual(OrderPhoto.objects.count(), 1)
-
-
-
-    def tearDown(self):
-        OrderPhoto.objects.all().delete()
-        # self.correct_photo.close()
-        # self.not_photo.close()
-        # self.big_photo.close()
-        # self.empty_photo.close()
-        # self.incorrect_photo.close()
-        # for photo in self.correct_photos:
-        #     photo.close()
