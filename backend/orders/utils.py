@@ -1,44 +1,65 @@
 import hashlib
+import logging
 import os
 import uuid
 from datetime import timedelta
 
 from django.utils import timezone
+from django.utils.datastructures import MultiValueDict
 
-from kds_stroy.settings import MAX_UPLOADED_PHOTO_SIZE
-from orders.messages import NEW_ORDER_TG_MSG
+from kds_stroy.settings import (
+    MAX_UPLOADED_PHOTO_SIZE,
+    MAX_UPLOAD_PHOTO_AMOUNT as MAX_PHOTO
+)
+from orders.messages import (
+    NEW_ORDER_TG_MSG,
+    PHOTO_FILE_TYPE_ERROR_MSG,
+    PHOTO_DUPLICATE_ERROR_MSG,
+    PHOTO_MAX_SIZE_ERROR_MSG,
+    PHOTO_EMPTY_ERROR_MSG,
+    PHOTO_AMOUNT_ERROR_MSG
+)
 from users.models import User
 
+logger = logging.getLogger(__name__)
 
-def handle_photos(photos) -> list:
+MByte = 1024 * 1024
+
+
+def handle_order_photos(photos: MultiValueDict) -> list:
+    photos = list(photos.lists())
+    photos_amount = len(photos)
+
+    if photos_amount >= MAX_PHOTO:
+        photos = photos[:MAX_PHOTO]
+        skipped_photos_amount = photos_amount - MAX_PHOTO
+        logger.info(PHOTO_AMOUNT_ERROR_MSG.format(MAX_PHOTO, skipped_photos_amount))
+
+    return get_proper_photo(photos)
+
+
+def get_proper_photo(photos: list) -> list:
     proper_photos = {}
-    errors = []
-    for photo in photos.lists():
+
+    for photo in photos:
         photo = photo[1][0]
         photo_name = f'Файл "{photo.name}"'
-        if len(proper_photos) >= 5:
-            break
         try:
+            if photo.size == 0:
+                raise ValueError(PHOTO_EMPTY_ERROR_MSG.format(photo_name))
             if photo.content_type not in ["image/jpeg", "image/png"]:
-                raise ValueError(
-                    photo_name + "не является поддерживаемым типом изображения"
-                )
-            if photo.size > 1024 * 1024 * MAX_UPLOADED_PHOTO_SIZE:
-                raise ValueError(
-                    photo_name + "превышает максимальный размер в "
-                                 f"{MAX_UPLOADED_PHOTO_SIZE} Мб"
-                )
+                raise ValueError(PHOTO_FILE_TYPE_ERROR_MSG.format(photo_name))
+            if photo.size > MAX_UPLOADED_PHOTO_SIZE * MByte:
+                raise ValueError(PHOTO_MAX_SIZE_ERROR_MSG.format(
+                    photo_name, MAX_UPLOADED_PHOTO_SIZE
+                ))
             file_hash = hashlib.md5(photo.read()).hexdigest()
-            if proper_photos and file_hash in proper_photos:
-                raise ValueError(
-                    photo_name + "является дубликатом другого загружаемого файла"
-                )
+            if file_hash in proper_photos:
+                raise ValueError(PHOTO_DUPLICATE_ERROR_MSG.format(photo_name))
         except ValueError as e:
-            errors.append(str(e))
+            logger.info(e)
         else:
             proper_photos[file_hash] = photo
-    if errors:
-        [print(error) for error in errors]
     return list(proper_photos.values())
 
 

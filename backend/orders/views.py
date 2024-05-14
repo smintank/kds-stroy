@@ -64,9 +64,7 @@ class LocationAutocompleteView(View):
         suggestions = cache.get(cache_key)
 
         if suggestions is None:
-            cities = City.objects.filter(
-                name__icontains=city_name
-            )[:15]
+            cities = City.objects.filter(name__icontains=city_name)[:15]
             suggestions = [str(city) for city in cities]
             cache.set(cache_key, suggestions, timeout=60 * 5)
 

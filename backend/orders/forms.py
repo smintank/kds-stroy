@@ -3,7 +3,7 @@ from django import forms
 
 from .messages import PHONE_MIN_LENGTH_ERROR_MSG, PHONE_MAX_LENGTH_ERROR_MSG
 from .models import Order, City, Region, District, OrderPhoto
-from .utils import handle_photos
+from .utils import handle_order_photos
 
 
 class LocationAutocompleteField(forms.CharField):
@@ -49,12 +49,12 @@ class MultipleFileField(forms.FileField):
 
 
 class OrderCreationForm(forms.ModelForm):
-    photos = MultipleFileField(label="Фото", required=False)
+    photo = MultipleFileField(label="Фото", required=False)
     city = LocationAutocompleteField()
 
     class Meta:
         model = Order
-        fields = ["first_name", "phone_number", "city", "address", "comment", "photos"]
+        fields = ["first_name", "phone_number", "city", "address", "comment", "photo"]
         widgets = {
             "phone_number": forms.TextInput(
                 attrs={
@@ -99,8 +99,9 @@ class OrderCreationForm(forms.ModelForm):
             )
         return cleared_phone_number
 
-    def clean_photos(self):
-        return handle_photos(self.files)
+    def clean_photo(self):
+        photos = handle_order_photos(self.files)
+        return photos
 
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -110,6 +111,6 @@ class OrderCreationForm(forms.ModelForm):
         return instance
 
     def save_photos(self, order):
-        photos = self.cleaned_data.get("photos") or []
+        photos = self.cleaned_data.get("photo") or []
         for photo in photos:
             OrderPhoto.objects.create(order=order, photo=photo)
