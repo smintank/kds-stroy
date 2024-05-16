@@ -27,7 +27,8 @@ services:
 
   redis:
     image: redis:latest
-    container_name: kds-stroy-redis-1
+    env_file: .env
+    container_name: ${REDIS_HOST}
     restart: always
 
   backend:
