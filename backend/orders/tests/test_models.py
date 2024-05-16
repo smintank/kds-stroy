@@ -1,7 +1,7 @@
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 from django.urls import reverse
 
-from orders.models import Order, OrderPhoto, City
+from orders.models import City, Order, OrderPhoto
 
 
 class OrderModelTest(TestCase):

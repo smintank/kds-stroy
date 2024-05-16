@@ -2,8 +2,9 @@ import csv
 import os
 
 from django.core.management.base import BaseCommand
+
 from kds_stroy import settings
-from orders.models import Region, District, City, CityType
+from orders.models import City, CityType, District, Region
 
 DEFAULT_PATH = str(settings.BASE_DIR) + '/data/'
 

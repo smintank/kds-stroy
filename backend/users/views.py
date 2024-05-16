@@ -1,33 +1,21 @@
 import logging
+
+from django.contrib.auth import get_user_model
 from django.db.models import Prefetch
 from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import (
-    UpdateView,
-    DetailView,
-    FormView,
-)
+from django.views.generic import DetailView, FormView, UpdateView
 
 from kds_stroy.settings import MEDIA_URL, PHONE_VERIFICATION_TIME_LIMIT
 from orders.models import Order, OrderPhoto
-from .models import PhoneVerification
-from .utils import (
-    call_api_process,
-    is_phone_change_limit,
-    is_numbers_amount_limit,
-    phone_validation_prepare,
-    is_limited,
-)
+from users.forms import (ChangePhoneNumberForm, PhoneVerificationForm,
+                         UserForm, UserRegistrationForm)
 
-from users.forms import (
-    UserForm,
-    ChangePhoneNumberForm,
-    UserRegistrationForm,
-    PhoneVerificationForm,
-)
-from django.contrib.auth import get_user_model
+from .models import PhoneVerification
+from .utils import (call_api_process, is_limited, is_numbers_amount_limit,
+                    is_phone_change_limit, phone_validation_prepare)
 
 User = get_user_model()
 

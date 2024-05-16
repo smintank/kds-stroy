@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User
-from orders.models import Order
 from django.contrib.auth.models import Group
 from verify_email.admin import LinkCounter
+
+from orders.models import Order
+
+from .models import User
 
 
 class OrderAdmin(admin.TabularInline):

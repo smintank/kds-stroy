@@ -1,6 +1,6 @@
 # from django.contrib.auth.forms import AuthenticationForm
-from django.views.generic import TemplateView
 from django.shortcuts import render
+from django.views.generic import TemplateView
 
 from ads_mailing.forms import SubscribeForm
 from orders.forms import OrderCreationForm

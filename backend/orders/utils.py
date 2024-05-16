@@ -7,18 +7,12 @@ from datetime import timedelta
 from django.utils import timezone
 from django.utils.datastructures import MultiValueDict
 
-from kds_stroy.settings import (
-    MAX_UPLOADED_PHOTO_SIZE,
-    MAX_UPLOAD_PHOTO_AMOUNT as MAX_PHOTO
-)
-from orders.messages import (
-    NEW_ORDER_TG_MSG,
-    PHOTO_FILE_TYPE_ERROR_MSG,
-    PHOTO_DUPLICATE_ERROR_MSG,
-    PHOTO_MAX_SIZE_ERROR_MSG,
-    PHOTO_EMPTY_ERROR_MSG,
-    PHOTO_AMOUNT_ERROR_MSG
-)
+from kds_stroy.settings import MAX_UPLOAD_PHOTO_AMOUNT as MAX_PHOTO
+from kds_stroy.settings import MAX_UPLOADED_PHOTO_SIZE
+from orders.messages import (NEW_ORDER_TG_MSG, PHOTO_AMOUNT_ERROR_MSG,
+                             PHOTO_DUPLICATE_ERROR_MSG, PHOTO_EMPTY_ERROR_MSG,
+                             PHOTO_FILE_TYPE_ERROR_MSG,
+                             PHOTO_MAX_SIZE_ERROR_MSG)
 from users.models import User
 
 logger = logging.getLogger(__name__)

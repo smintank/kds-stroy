@@ -1,10 +1,7 @@
 from django.urls import path
 
-from orders.views import (
-    OrderCreateView,
-    OrderDetailView,
-    LocationAutocompleteView
-)
+from orders.views import (LocationAutocompleteView, OrderCreateView,
+                          OrderDetailView)
 
 app_name = "orders"
 

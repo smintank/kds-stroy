@@ -1,11 +1,11 @@
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 from django.views.generic import TemplateView
 
 from kds_stroy import settings
-from users.views import RegistrationView
 from main.views import MainView, handler404
+from users.views import RegistrationView
 
 urlpatterns = [
     path("", MainView.as_view(), name="home"),

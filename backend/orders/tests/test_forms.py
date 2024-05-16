@@ -1,10 +1,8 @@
 from unittest import TestCase
 
 from orders.forms import OrderCreationForm
-from orders.messages import (
-    PHONE_MIN_LENGTH_ERROR_MSG,
-    PHONE_MAX_LENGTH_ERROR_MSG
-)
+from orders.messages import (PHONE_MAX_LENGTH_ERROR_MSG,
+                             PHONE_MIN_LENGTH_ERROR_MSG)
 
 
 class FormTestCase(TestCase):

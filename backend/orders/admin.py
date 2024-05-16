@@ -3,7 +3,7 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 from .models import Order, OrderPhoto
-from .utils import format_phone_number, format_datetime, format_comment
+from .utils import format_comment, format_datetime, format_phone_number
 
 
 class OrderPhotoInline(admin.TabularInline):

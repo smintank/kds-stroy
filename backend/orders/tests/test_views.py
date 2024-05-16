@@ -1,12 +1,8 @@
-from django.test import TestCase
-
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import Client, TestCase
 from django.urls import reverse
-from django.test import Client
 
-from kds_stroy.settings import (
-    MAX_UPLOADED_PHOTO_SIZE as PHOTO_SIZE
-)
+from kds_stroy.settings import MAX_UPLOADED_PHOTO_SIZE as PHOTO_SIZE
 from orders.messages import ERROR_ORDER_CREATION_MSG
 from orders.models import OrderPhoto
 

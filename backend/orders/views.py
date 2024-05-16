@@ -1,20 +1,18 @@
 from urllib.parse import quote_plus
 
+from django.conf import settings
 from django.core.cache import cache
 from django.http import JsonResponse
 from django.views import View
 from django.views.generic import DetailView
-from django.conf import settings
 
 from .forms import OrderCreationForm
-from .messages import (
-    SUCCESS_ORDER_CREATION_MSG as SUCCESS_MSG,
-    SUCCESS_ORDER_CREATION_SUB_MSG as SUCCESS_TXT,
-    ERROR_ORDER_CREATION_MSG as ERROR_MSG,
-)
-from .models import OrderPhoto, Order, City
-from .utils import get_order_message, get_notified_users
+from .messages import ERROR_ORDER_CREATION_MSG as ERROR_MSG
+from .messages import SUCCESS_ORDER_CREATION_MSG as SUCCESS_MSG
+from .messages import SUCCESS_ORDER_CREATION_SUB_MSG as SUCCESS_TXT
+from .models import City, Order, OrderPhoto
 from .tasks import send_telegram_message_async
+from .utils import get_notified_users, get_order_message
 
 
 class OrderCreateView(View):
