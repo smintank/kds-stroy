@@ -203,6 +203,6 @@ TG_BOT_TOKEN = os.getenv("TG_BOT_TOKEN")
 TG_ADMIN_ID = os.getenv("TG_ADMIN_ID")
 
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://kds-stroy-redis-1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://kds-stroy-redis-1:6379/0'
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
