@@ -1,0 +1,45 @@
+[run]
+# Omitting files from coverage data
+omit =
+    *migrations*
+    *tests*
+    *__init__*
+    *admin.py*
+    *apps.py*
+
+# Including specific directories (ensure paths are correct)
+include =
+    orders/views.py
+    orders/models.py
+    orders/tasks.py
+    orders/tasks.py
+    orders/utils.py
+
+    users/views.py
+    users/models.py
+    users/tasks.py
+    users/authorization.py
+    users/utils.py
+    users/forms.py
+
+    news/views.py
+    news/models.py
+    news/tasks.py
+    news/utils.py
+
+    ads_mailing/views.py
+    ads_mailing/models.py
+    ads_mailing/tasks.py
+    ads_mailing/utils.py
+    ads_mailing/forms.py
+
+    main/views.py
+
+
+[report]
+# Minimum expected coverage percentage
+fail_under = 75
+
+[html]
+# Directory to output the HTML report
+directory = coverage_html_report

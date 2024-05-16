@@ -11,7 +11,9 @@ urlpatterns = [
     path("", MainView.as_view(), name="home"),
     path("admin/", admin.site.urls),
     path("verification/", include("verify_email.urls")),
-    path("auth/registration/", RegistrationView.as_view(), name="registration"),
+    path("auth/registration/",
+         RegistrationView.as_view(),
+         name="registration"),
     path("auth/", include("django.contrib.auth.urls")),
     path("profile/", include("users.urls")),
     path("orders/", include("orders.urls")),
@@ -26,7 +28,8 @@ urlpatterns = [
 
 if settings.DEBUG:
     # import debug_toolbar
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
     # urlpatterns += (path('debug/', include(debug_toolbar.urls)),)
 
 handler404 = handler404

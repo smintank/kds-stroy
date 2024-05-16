@@ -1,17 +1,9 @@
 import re
 from django import forms
 
-from .models import Order, City, Region, District
-
-
-class MultipleFileInput(forms.ClearableFileInput):
-    allow_multiple_selected = True
-
-
-class MultipleFileField(forms.FileField):
-    def __init__(self, *args, **kwargs):
-        kwargs.setdefault("widget", MultipleFileInput())
-        super().__init__(*args, **kwargs)
+from .messages import PHONE_MIN_LENGTH_ERROR_MSG, PHONE_MAX_LENGTH_ERROR_MSG
+from .models import Order, City, Region, District, OrderPhoto
+from .utils import handle_order_photos
 
 
 class LocationAutocompleteField(forms.CharField):
@@ -46,13 +38,24 @@ class LocationAutocompleteField(forms.CharField):
         return attrs
 
 
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+
 class OrderCreationForm(forms.ModelForm):
     photo = MultipleFileField(label="Фото", required=False)
     city = LocationAutocompleteField()
 
     class Meta:
         model = Order
-        fields = ["first_name", "phone_number", "city", "address", "comment", "photo"]
+        fields = ["first_name", "phone_number", "city", "address", "comment",
+                  "photo"]
         widgets = {
             "phone_number": forms.TextInput(
                 attrs={
@@ -89,6 +92,26 @@ class OrderCreationForm(forms.ModelForm):
         cleared_phone_number = re.sub(r"\D", "", phone_number)
         if len(cleared_phone_number) < 11:
             raise forms.ValidationError(
-                "Номер телефона должен содержать не меньше 11 цифр"
+                PHONE_MIN_LENGTH_ERROR_MSG
+            )
+        if len(cleared_phone_number) > 11:
+            raise forms.ValidationError(
+                PHONE_MAX_LENGTH_ERROR_MSG
             )
         return cleared_phone_number
+
+    def clean_photo(self):
+        photos = handle_order_photos(self.files)
+        return photos
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if commit:
+            instance.save()
+            self.save_photos(instance)
+        return instance
+
+    def save_photos(self, order):
+        photos = self.cleaned_data.get("photo") or []
+        for photo in photos:
+            OrderPhoto.objects.create(order=order, photo=photo)

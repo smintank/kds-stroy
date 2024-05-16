@@ -94,7 +94,8 @@ class PhoneVerificationView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["countdown"] = self.kwargs.get("countdown", 0)
-        context["is_attempt_limit"] = self.kwargs.get("is_attempt_limit", False)
+        context["is_attempt_limit"] = self.kwargs.get("is_attempt_limit",
+                                                      False)
         return context
 
     def get(self, request, *args, **kwargs):
@@ -104,7 +105,8 @@ class PhoneVerificationView(FormView):
         is_repeat = True if request.GET.get("repeat_call") == "true" else False
 
         if is_repeat or not last_request_obj.pincode:
-            call_api_process(last_request_obj, last_request_obj.pincode or None)
+            call_api_process(last_request_obj,
+                             last_request_obj.pincode or None)
             countdown = int(PHONE_VERIFICATION_TIME_LIMIT)
             if is_repeat:
                 return JsonResponse({"countdown": countdown})
@@ -164,14 +166,17 @@ class ProfileView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["profile"] = get_object_or_404(self.model, pk=self.request.user.pk)
+        context["profile"] = get_object_or_404(self.model,
+                                               pk=self.request.user.pk)
         context["form"] = self.form_class(instance=context["profile"])
 
         orders_with_photos = Order.objects.filter(
             phone_number=self.request.user.phone_number
         ).prefetch_related(
             Prefetch(
-                "orderphoto_set", queryset=OrderPhoto.objects.all(), to_attr="photos"
+                "orderphoto_set",
+                queryset=OrderPhoto.objects.all(),
+                to_attr="photos"
             )
         )
         context["orders"] = orders_with_photos
@@ -190,7 +195,8 @@ class ProfileEditView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["profile"] = get_object_or_404(self.model, pk=self.request.user.pk)
+        context["profile"] = get_object_or_404(self.model,
+                                               pk=self.request.user.pk)
         context["form"] = self.form_class(instance=context["profile"])
         return context
 
