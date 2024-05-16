@@ -12,7 +12,8 @@ class EmailPhoneUsernameBackend(ModelBackend):
             return None
 
         if bool(
-            re.search(r"^\+7 \(\d{3}\) \d{3}\-\d{2}\-\d{2}$|^\+\d{9,15}$", username)
+            re.search(r"^\+7 \(\d{3}\) \d{3}\-\d{2}\-\d{2}$|^\+\d{9,15}$",
+                      username)
         ):
             # Check if the input is a phone number
             # regex finds '+7 (999) 999-99-99' or '1999999999999' patterns

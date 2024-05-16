@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import AuthenticationForm
+# from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import TemplateView
 from django.shortcuts import render
 
@@ -22,7 +22,8 @@ class MainView(TemplateView):
 
         order_id = self.request.session.get("order_id")
         order = Order.objects.filter(order_id=order_id).first()
-        if order and order.status in [Order.Status.COMPLETED, Order.Status.CANCELED]:
+        if order and order.status in [Order.Status.COMPLETED,
+                                      Order.Status.CANCELED]:
             self.request.session["order_id"] = None
             self.request.session["order_created"] = None
 
@@ -31,7 +32,8 @@ class MainView(TemplateView):
         return context
 
     def render_to_response(self, context, **response_kwargs):
-        response = super(MainView, self).render_to_response(context, **response_kwargs)
+        response = super(MainView, self).render_to_response(context,
+                                                            **response_kwargs)
 
         order_id = self.request.session.get("order_id")
         order_created = 1 if self.request.session.get("order_created") else 0

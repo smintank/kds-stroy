@@ -70,7 +70,8 @@ class OrderAdmin(admin.ModelAdmin):
         return obj.city.short_name() if obj.city else "-"
 
     def formatted_created_at(self, obj):
-        return format_datetime(obj.created_at, raw=True) if obj.created_at else "-"
+        return (format_datetime(obj.created_at, raw=True)
+                if obj.created_at else "-")
 
     def display_photo_preview(self, obj):
         if order_photo := obj.orderphoto_set.all():

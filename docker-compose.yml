@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.8'
 
 volumes:
   pg_data:
@@ -13,6 +13,22 @@ services:
     env_file: .env
     restart: always
 
+  celery:
+    image: smintank/kdsstroy_backend
+    command: celery -A kds_stroy worker --loglevel=info
+    env_file: .env
+    volumes:
+      - static:/app/static/
+      - media:/app/media/
+    depends_on:
+      - backend
+      - redis
+    restart: always
+
+  redis:
+    image: redis:latest
+    restart: always
+
   backend:
     image: smintank/kdsstroy_backend
     env_file: .env
@@ -21,6 +37,7 @@ services:
       - media:/app/media/
     depends_on:
       - db
+      - redis
     restart: always
 
   nginx:

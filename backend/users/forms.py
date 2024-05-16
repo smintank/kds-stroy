@@ -33,7 +33,8 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "middle_name", "email", "phone_number")
+        fields = ("first_name", "last_name", "middle_name", "email",
+                  "phone_number")
         widgets = {
             "phone_number": forms.TextInput(
                 attrs={
@@ -149,7 +150,8 @@ class UserForm(forms.ModelForm):
                 }
             ),
             "address": forms.TextInput(
-                attrs={"placeholder": "Адрес", "autocomplete": "street-address"}
+                attrs={"placeholder": "Адрес",
+                       "autocomplete": "street-address"}
             ),
         }
 
@@ -174,7 +176,9 @@ class ChangePhoneNumberForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["phone_number"].label = "Новый номер телефона"
-        self.fields["phone_number"].widget.attrs.update({"class": "form-control"})
+        self.fields["phone_number"].widget.attrs.update(
+            {"class": "form-control"}
+        )
 
 
 class PhoneVerificationForm(forms.ModelForm):

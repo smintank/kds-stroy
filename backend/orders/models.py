@@ -3,7 +3,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from orders.utils import format_city, get_upload_path, get_unique_uid
+from orders.utils import get_full_city, get_upload_path, get_unique_uid
 
 User = get_user_model()
 
@@ -56,7 +56,7 @@ class City(models.Model):
     longitude = models.FloatField(default=38.98333)
 
     def __str__(self):
-        return format_city(self)
+        return get_full_city(self)
 
     def short_name(self):
         return f"{self.type.short_name} {self.name}"
