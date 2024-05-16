@@ -54,7 +54,8 @@ class OrderCreationForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ["first_name", "phone_number", "city", "address", "comment", "photo"]
+        fields = ["first_name", "phone_number", "city", "address", "comment",
+                  "photo"]
         widgets = {
             "phone_number": forms.TextInput(
                 attrs={

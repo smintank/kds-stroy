@@ -66,17 +66,21 @@ class Command(BaseCommand):
                     if logs and is_region_created:
                         self.print_stdout(f'{region} is loaded')
 
-                    district, is_district_created = District.objects.get_or_create(
-                        name=city_data.get("district"),
-                        region=region,
-                        short_name=city_data.get("district_short")
+                    district, is_district_created = (
+                        District.objects.get_or_create(
+                            name=city_data.get("district"),
+                            region=region,
+                            short_name=city_data.get("district_short")
+                        )
                     )
                     if logs and is_district_created:
                         self.print_stdout(f'{district} is loaded')
 
-                    city_type, is_city_type_created = CityType.objects.get_or_create(
-                        name=city_data.get("type"),
-                        short_name=city_data.get("type_short")
+                    city_type, is_city_type_created = (
+                        CityType.objects.get_or_create(
+                            name=city_data.get("type"),
+                            short_name=city_data.get("type_short")
+                        )
                     )
                     if logs and is_city_type_created:
                         self.print_stdout(f'{city_type} is loaded')

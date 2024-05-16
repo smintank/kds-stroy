@@ -5,8 +5,7 @@ from django.urls import reverse
 from django.test import Client
 
 from kds_stroy.settings import (
-    MAX_UPLOADED_PHOTO_SIZE as PHOTO_SIZE,
-    MAX_UPLOAD_PHOTO_AMOUNT
+    MAX_UPLOADED_PHOTO_SIZE as PHOTO_SIZE
 )
 from orders.messages import ERROR_ORDER_CREATION_MSG
 from orders.models import OrderPhoto
@@ -14,7 +13,8 @@ from orders.models import OrderPhoto
 MByte = 1024 * 1024
 
 
-def get_test_photos(data: bytes, size=int(PHOTO_SIZE/10)) -> SimpleUploadedFile:
+def get_test_photos(data: bytes,
+                    size=int(PHOTO_SIZE / 10)) -> SimpleUploadedFile:
     return SimpleUploadedFile(
         'test.jpg', data * (size * MByte), content_type='image/jpeg'
     )
@@ -82,7 +82,6 @@ class OrderCreateViewTest(TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_create_order_with_more_than_5_photos(self):
-        photo_amount = MAX_UPLOAD_PHOTO_AMOUNT
         response = self.client.post(self.url, {
             'first_name': self.first_name,
             'phone_number': self.phone_number,

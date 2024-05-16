@@ -33,7 +33,8 @@ def handle_order_photos(photos: MultiValueDict) -> list:
     if photos_amount >= MAX_PHOTO:
         photos = photos[:MAX_PHOTO]
         skipped_photos_amount = photos_amount - MAX_PHOTO
-        logger.info(PHOTO_AMOUNT_ERROR_MSG.format(MAX_PHOTO, skipped_photos_amount))
+        logger.info(PHOTO_AMOUNT_ERROR_MSG.format(MAX_PHOTO,
+                                                  skipped_photos_amount))
 
     return get_proper_photo(photos)
 

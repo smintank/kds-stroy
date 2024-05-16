@@ -24,11 +24,12 @@ def send_telegram_message_async(text: str, chat_ids: list[int]):
             logger.error(f"Error while sending message to {chat_id}: {e}")
             failed_ids.add(chat_id)
         except Exception as e:
-            logger.error(f"Unknown error while sending message to {chat_id}: {e}")
+            logger.error(f"Unknown error while sending message "
+                         f"to {chat_id}: {e}")
             failed_ids.add(chat_id)
 
     if failed_ids:
         logger.error(f"Error while sending message to {failed_ids}")
         return "ERRORS"
-    logger.info(f"Telegram messages sent successfully!")
+    logger.info("Telegram messages sent successfully!")
     return "OK"

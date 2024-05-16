@@ -82,7 +82,8 @@ def call_api_request(phone_number: str, pincode: str = None) -> str:
             logger.exception("Bad Request to Zvonok API: " + json, exc_info=e)
         if response.status_code == 429:
             json = response.json()
-            logger.exception("Limit exceeded to Zvonok API: " + json, exc_info=e)
+            logger.exception("Limit exceeded to Zvonok API: " + json,
+                             exc_info=e)
         else:
             logger.exception("HTTP Error: ", exc_info=e)
     except requests.RequestException as e:
@@ -109,14 +110,15 @@ def is_phone_change_limit(number_change_date):
 
 def is_numbers_amount_limit(request):
     """
-    Check if the limit for the number of verification attempts has been reached.
+    Check if the limit for the number of verification attempts has been reached
     """
     frequency_limit = PHONE_CHANGE_FREQUENCY_LIMIT or 30
     attempts_limit = PHONE_VERIFICATION_ATTEMPTS_LIMIT or 3
     start_date = timezone.now() - timezone.timedelta(days=frequency_limit)
 
     last_month_unique_numbers = (
-        PhoneVerification.objects.filter(user=request.user, created_at__gte=start_date)
+        PhoneVerification.objects.filter(user=request.user,
+                                         created_at__gte=start_date)
         .values_list("phone_number", flat=True)
         .distinct()
     )
