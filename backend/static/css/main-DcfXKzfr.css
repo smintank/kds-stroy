@@ -1233,7 +1233,7 @@ a:hover {
   left: 0;
   bottom: 0;
   position: absolute;
-  padding: calc(100vh*0.07) 0;
+  padding: calc(100vh*0.05) 0;
   background: #680a08;
   backdrop-filter: blur(4px);
   opacity: 0.9;
@@ -1241,8 +1241,8 @@ a:hover {
 }
 .hero__footer-list {
   display: grid;
-  gap: 43px 0;
-  grid-template-columns: repeat(4, auto);
+  gap: 25px 0;
+  grid-template-columns: repeat(3, auto);
   justify-content: space-between;
 }
 .hero__footer-list-item {
@@ -1258,9 +1258,7 @@ a:hover {
 .hero__footer-list-item a:hover {
   opacity: 0.5;
 }
-.hero__footer-list-item:nth-child(4n) {
-  text-align: right;
-}
+
 @media (max-width: 1023px) {
   .hero {
     height: auto;
@@ -1437,6 +1435,24 @@ a:hover {
   border-radius: 5px;
   overflow: hidden;
 }
+
+.works__list-item:last-child {
+  max-width: none;
+}
+
+.works__list-item:last-child .works__background {
+  width: 50%;
+}
+
+.works__list-item:last-child .works__list-item-overlay {
+  visibility: visible;
+  opacity: 100%;
+  left: 50%;
+  width: 50%;
+  padding-bottom: 50px;
+}
+
+
 .works__list-item:hover .works__list-item-overlay {
   visibility: visible;
   opacity: 1;
@@ -1463,6 +1479,7 @@ a:hover {
   height: 100%;
   z-index: -1;
 }
+
 .works__background img {
   display: block;
   width: 100%;
@@ -1535,6 +1552,22 @@ a:hover {
     height: max-content;
     transition: opacity 0.3s ease, visibility 0.3s ease;
   }
+  .works__list-item:last-child {
+  max-width: inherit;
+  }
+
+  .works__list-item:last-child .works__background {
+    width: inherit;
+  }
+
+  .works__list-item:last-child .works__list-item-overlay {
+    visibility: inherit;
+    opacity: inherit;
+    left: inherit;
+    width: inherit;
+    padding-bottom: inherit;
+  }
+
   .works__list-item--active {
     display: block;
     visibility: visible;
