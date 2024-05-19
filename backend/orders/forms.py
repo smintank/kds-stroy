@@ -51,7 +51,7 @@ class MultipleFileField(forms.FileField):
 
 class OrderCreationForm(forms.ModelForm):
     photo = MultipleFileField(label="Фото", required=False)
-    city = LocationAutocompleteField()
+    city = LocationAutocompleteField(required=False)
 
     class Meta:
         model = Order

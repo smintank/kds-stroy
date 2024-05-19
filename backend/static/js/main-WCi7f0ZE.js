@@ -245,6 +245,7 @@ const useCitySuggestions = () => {
     return function(...args) {
       const later = () => {
         clearTimeout(timeout);
+        updateDropdownPosition();
         func(...args);
       };
       clearTimeout(timeout);
@@ -255,7 +256,6 @@ const useCitySuggestions = () => {
   function handleAutocomplete(input) {
     const debouncedFetch = debounce(function(event) {
       const term = event.target.value;
-
       if (!term) {
         if (dropdown) dropdown.style.display = 'none';
         return;
