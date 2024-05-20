@@ -233,9 +233,13 @@ const useCitySuggestions = () => {
 
   function updateDropdownPosition() {
     const rect = cityField.getBoundingClientRect();
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+
     if (dropdown) {
-      dropdown.style.top = `${rect.bottom}px`;
-      dropdown.style.left = `${rect.left}px`;
+      dropdown.style.position = 'absolute';
+      dropdown.style.top = `${rect.bottom + scrollTop}px`;
+      dropdown.style.left = `${rect.left + scrollLeft}px`;
       dropdown.style.width = `${rect.width}px`;
     }
   }
@@ -245,7 +249,6 @@ const useCitySuggestions = () => {
     return function(...args) {
       const later = () => {
         clearTimeout(timeout);
-        updateDropdownPosition();
         func(...args);
       };
       clearTimeout(timeout);
