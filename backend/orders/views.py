@@ -18,6 +18,7 @@ from .utils import get_notified_users, get_order_message
 
 logger = logging.getLogger(__name__)
 
+
 class OrderCreateView(View):
     def post(self, request):
         order_form = OrderCreationForm(request.POST, request.FILES)
