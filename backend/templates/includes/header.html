@@ -7,9 +7,9 @@
                 <li class="header__nav-list-item">
                     <a href="{% if view_name != 'MainView' %}{% url 'home' %}{% endif %}#works-section">Услуги</a>
                 </li>
-                <li class="header__nav-list-item">
-                    <a href="{% if view_name != 'MainView' %}{% url 'home' %}{% endif %}#projects-section">Наши работы</a>
-                </li>
+{#                <li class="header__nav-list-item">#}
+{#                    <a href="{% if view_name != 'MainView' %}{% url 'home' %}{% endif %}#projects-section">Наши работы</a>#}
+{#                </li>#}
                 <li class="header__nav-list-item">
                     <a href="{% if view_name != 'MainView' %}{% url 'home' %}{% endif %}#steps-section">Порядок работы</a>
                 </li>
@@ -19,9 +19,9 @@
                 <li class="header__nav-list-item">
                     <a href="{% if view_name != 'MainView' %}{% url 'home' %}{% endif %}#contacts-section">Контакты</a>
                 </li>
-{#                <li class="header__nav-list-item">#}
-{#                    <a href="{% url 'news:list' %}">Новости</a>#}
-{#                </li>#}
+                <li class="header__nav-list-item">
+                    <a href="{% url 'news:list' %}">Новости</a>
+                </li>
             </ul>
         </nav>
         <a class="header__phone" href="tel:+79883872676">+7 988 387 26 76</a>

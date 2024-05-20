@@ -1565,11 +1565,16 @@ a:hover {
   display: flex;
   gap: 33px;
 }
+.news__list-item-content-wrapper{
+  flex: 2;
+}
 .news__list-item-image-wrapper {
   width: 100%;
   max-width: 380px;
+  max-height: 270px;
   border-radius: 5px;
   overflow: hidden;
+  flex: 1;
 }
 .news__list-item-image-wrapper img {
   display: block;
