@@ -15,7 +15,7 @@
       </a>
     <h1 class="single-news__title">{{ news.title }}</h1>
     <div class="single-news__row">
-      <div class="swiper single-news__slider">
+      <div class="swiper single-news__slider" id="photo-container">
         <div class="single-news__date">{{ news.published_date }}</div>
         <div class="swiper-wrapper single-news__slider-wrapper">
           {% for photo in news.photos.all %}
@@ -24,21 +24,21 @@
             </div>
           {% endfor %}
         </div>
+        <div class="swiper-pagination single-news__slider-pagination"></div>
       </div>
-      <div class="swiper-pagination single-news__slider-pagination"></div>
       <div class="single-news__text-wrapper">
         <p class="single-news__text">{{ news.content }}</p>
       </div>
-    </div>
-      <div class="single-news__navigation">
-        <a class="single-news__link" href="#">
-          <span>Предыдущая новость</span>
-        </a>
-        <span class="single-news__navigation-text">Другие новости</span>
-        <a class="single-news__link single-news__link--reverse" href="#">
-          <span>Следующая новость</span>
-        </a>
-      </div>
+{#    </div>#}
+{#      <div class="single-news__navigation">#}
+{#        <a class="single-news__link" href="#">#}
+{#          <span>Предыдущая новость</span>#}
+{#        </a>#}
+{#        <span class="single-news__navigation-text">Другие новости</span>#}
+{#        <a class="single-news__link single-news__link--reverse" href="#">#}
+{#          <span>Следующая новость</span>#}
+{#        </a>#}
+{#      </div>#}
     </div>
   </section>
 </main>

@@ -8,7 +8,7 @@ class NewsListView(ListView):
     context_object_name = "news"
     queryset = News.published.all()
     paginate_by = 10
-    ordering = "-created_at"
+    ordering = "-published_date"
     model = News
 
     def get_context_data(self, *, object_list=None, **kwargs):
