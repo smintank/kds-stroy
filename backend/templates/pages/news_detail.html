@@ -2,8 +2,10 @@
 {% load static %}
 {% block title %}КДС-Строй: Новости{% endblock title %}
 {% block plug_js_css %}
-  <script type="module" crossorigin src="{% static 'js/singleNews-BL7MpO_0.js' %}"></script>
+  <script type="module" crossorigin src="{% static 'js/pages/news-detail-page.js' %}"></script>
   <link rel="stylesheet" crossorigin href="{% static 'css/singleNews-dKyUe2RX.css' %}">
+  <link rel="stylesheet" crossorigin href="{% static 'css/promo_popup.css' %}">
+  <link rel="stylesheet" crossorigin href="{% static 'css/popups.css' %}">
 {% endblock plug_js_css %}
 
 {% block content %}
@@ -27,7 +29,7 @@
         <div class="swiper-pagination single-news__slider-pagination"></div>
       </div>
       <div class="single-news__text-wrapper">
-        <p class="single-news__text">{{ news.content }}</p>
+        <div class="single-news__text">{{ news.content|safe }}</div>
       </div>
 {#    </div>#}
 {#      <div class="single-news__navigation">#}

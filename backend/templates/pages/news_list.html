@@ -2,8 +2,10 @@
 {% load static %}
 {% block title %}КДС-Строй: Новости{% endblock title %}
 {% block plug_js_css %}
-  <script type="module" crossorigin src="{% static 'js/news-vdFL1TXq.js' %}"></script>
+  <script type="module" crossorigin src="{% static 'js/pages/news-list-page.js' %}"></script>
   <link rel="stylesheet" crossorigin href="{% static 'css/news-Iqa5z6dR.css' %}">
+  <link rel="stylesheet" crossorigin href="{% static 'css/promo_popup.css' %}">
+  <link rel="stylesheet" crossorigin href="{% static 'css/popups.css' %}">
 {% endblock plug_js_css %}
 {% block content %}
 
@@ -27,14 +29,17 @@
                 {% for news in page_obj %}
                   <li class="news__list-item">
                     <div class="news__list-item-image-wrapper">
-                        <img href="{% url 'news:detail' news.id %}" src="{{ news.photos.first.photo.url }}" alt="Изображение новости">
+                      <a href="{% url 'news:detail' news.id %}">
+                        <img src="{{ news.photos.first.photo.url }}" alt="Изображение новости">
+                      </a>
                     </div>
                     <div class="news__list-item-content-wrapper">
                         <p class="news__list-item-date">{{ news.published_date }}</p>
                         <a class="news__list-item-link" href="{% url 'news:detail' news.id %}">
                             <h2 class="news__list-item-title">{{ news.title }}</h2>
                         </a>
-                        <p class="news__list-item-text">{{ news.content|truncatechars:700 }}</p>
+                        <div class="news__list-item-text">{{ news.content|truncatechars:400|safe}}</div>
+                        <a href="{% url 'news:detail' news.id %}">Читать&nbsp;статью&nbsp;полностью</a>
                     </div>
                   </li>
                 {% endfor %}
