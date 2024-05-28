@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 from django.utils.safestring import mark_safe
+from django_ckeditor_5.fields import CKEditor5Field
 
 User = get_user_model()
 
@@ -49,7 +50,7 @@ class Category(BaseModel):
 
 class News(BaseModel):
     title = models.CharField("Заголовок", max_length=255)
-    content = models.TextField("Содержание")
+    content = CKEditor5Field('Текст', config_name='extends')
     updated_at = models.DateTimeField("Дата обновления", auto_now=True)
     published_date = models.DateTimeField(
         "Дата и время публикации", default=timezone.now
