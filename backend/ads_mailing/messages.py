@@ -1,0 +1,5 @@
+SUCCESS_SUBSCRIPTION_MSG = "Вы успешно подписались на рассылку!"
+ERROR_SUBSCRIPTION_MSG = "Ошибка подписки на рассылку!"
+ERROR_UNSUBSCRIPTION_MSG = "Ошибка отписки от рассылки!"
+ERROR_ALREADY_SUB_MSG = "Вы уже подписаны на рассылку!"
+ERROR_ALREADY_UNSUB_MSG = "Вы уже отписаны от рассылки!"

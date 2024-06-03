@@ -27,6 +27,8 @@ services:
 
   redis:
     image: redis:latest
+    env_file: .env
+    container_name: ${REDIS_HOST}
     restart: always
 
   backend:

@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+
 from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv())
@@ -28,6 +29,7 @@ INSTALLED_APPS = [
     "ads_mailing.apps.AdsMailingConfig",
     "verify_email.apps.VerifyEmailConfig",
     "sass_processor",
+    "django_ckeditor_5",
 ]
 
 MIDDLEWARE = [
@@ -97,6 +99,15 @@ LOGGING = {
 WSGI_APPLICATION = "kds_stroy.wsgi.application"
 
 if DEBUG:
+    INSTALLED_APPS += [
+        "debug_toolbar",
+    ]
+    MIDDLEWARE += [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ]
+    INTERNAL_IPS = [
+        '127.0.0.1',
+    ]
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -120,7 +131,6 @@ else:
             "PORT": os.getenv("DB_PORT", 5432),
         }
     }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -167,7 +177,7 @@ LOGIN_URL = "login"
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
-EMAIL_PORT = int(os.environ.get("EMAIL_PORT"))
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
 EMAIL_USE_TLS = bool(int(os.getenv("EMAIL_TLS", default=0)))
 EMAIL_USE_SSL = bool(int(os.getenv("EMAIL_SSL", default=0)))
 EMAIL_HOST_USER = os.environ.get("EMAIL_ID")
@@ -194,14 +204,51 @@ PHONE_VERIFICATION_TIME_LIMIT = 300  # in seconds
 PHONE_VERIFICATION_ATTEMPTS_LIMIT = 3  # with one phone number
 PHONE_CHANGE_FREQUENCY_LIMIT = 30  # in days
 
-
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 TG_BOT_TOKEN = os.getenv("TG_BOT_TOKEN")
 TG_ADMIN_ID = os.getenv("TG_ADMIN_ID")
 
+REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+REDIS_PORT = os.getenv("REDIS_PORT", 6379)
+REDIS_DB = os.getenv("REDIS_DB", 0)
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
+CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+customColorPalette = [
+    {
+        'color': 'hsl(4, 90%, 58%)',
+        'label': 'Red'
+    },
+    {
+        'color': 'hsl(340, 82%, 52%)',
+        'label': 'Pink'
+    },
+    {
+        'color': 'hsl(291, 64%, 42%)',
+        'label': 'Purple'
+    },
+    {
+        'color': 'hsl(262, 52%, 47%)',
+        'label': 'Deep Purple'
+    },
+    {
+        'color': 'hsl(231, 48%, 48%)',
+        'label': 'Indigo'
+    },
+    {
+        'color': 'hsl(207, 90%, 54%)',
+        'label': 'Blue'
+    },
+]
+
+CKEDITOR_5_CONFIGS = {
+    'extends': {
+        'toolbar': ['bold', 'italic', 'underline', 'strikethrough', '|',
+                    'bulletedList', 'numberedList', 'todoList', '|',
+                    'link', 'subscript', 'superscript'],
+    },
+}

@@ -1,20 +1,48 @@
+import logging
 from urllib.parse import quote_plus
 
+from django.conf import settings
 from django.core.cache import cache
 from django.http import JsonResponse
 from django.views import View
 from django.views.generic import DetailView
-from django.conf import settings
 
 from .forms import OrderCreationForm
-from .messages import (
-    SUCCESS_ORDER_CREATION_MSG as SUCCESS_MSG,
-    SUCCESS_ORDER_CREATION_SUB_MSG as SUCCESS_TXT,
-    ERROR_ORDER_CREATION_MSG as ERROR_MSG,
-)
-from .models import OrderPhoto, Order, City
-from .utils import get_order_message, get_notified_users
+from .messages import ERROR_ORDER_CREATION_MSG as ERROR_MSG
+from .messages import SUCCESS_ORDER_CREATION_MSG as SUCCESS_MSG
+from .messages import SUCCESS_ORDER_CREATION_SUB_MSG as SUCCESS_TXT
+from .models import City, Order, OrderPhoto
 from .tasks import send_telegram_message_async
+from .utils import get_notified_users, get_order_message
+
+
+logger = logging.getLogger(__name__)
+
+
+class OrderContextMixin:
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["order_form"] = OrderCreationForm()
+
+        order_id = self.request.session.get("order_id")
+        order = Order.objects.filter(order_id=order_id).first()
+        if order and order.status in [Order.Status.COMPLETED,
+                                      Order.Status.CANCELED]:
+            self.request.session["order_id"] = None
+            self.request.session["order_created"] = None
+        # login_form = AuthenticationForm()
+        # context["login_form"] = login_form
+        return context
+
+    def render_to_response(self, context, **response_kwargs):
+        response = super().render_to_response(context, **response_kwargs)
+
+        order_id = self.request.session.get("order_id")
+        order_created = 1 if self.request.session.get("order_created") else 0
+
+        response.set_cookie('order_id', order_id, max_age=360000)
+        response.set_cookie('order_created', order_created, max_age=360000)
+        return response
 
 
 class OrderCreateView(View):
@@ -26,10 +54,13 @@ class OrderCreateView(View):
             request.session["order_created"] = True
             request.session["order_id"] = order.order_id
 
-            send_telegram_message_async.delay(
-                text=get_order_message(order, md_safe=True),
-                chat_ids=get_notified_users()
-            )
+            try:
+                send_telegram_message_async.delay(
+                    text=get_order_message(order, md_safe=True),
+                    chat_ids=get_notified_users()
+                )
+            except Exception as e:
+                logger.error(f"Error while sending message: {e}")
 
             return JsonResponse({"message": SUCCESS_MSG.format(order.order_id),
                                  "text": SUCCESS_TXT.format(order.first_name),

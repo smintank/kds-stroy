@@ -1,8 +1,9 @@
 import re
+
 from django import forms
 
-from .messages import PHONE_MIN_LENGTH_ERROR_MSG, PHONE_MAX_LENGTH_ERROR_MSG
-from .models import Order, City, Region, District, OrderPhoto
+from .messages import PHONE_MAX_LENGTH_ERROR_MSG, PHONE_MIN_LENGTH_ERROR_MSG
+from .models import City, District, Order, OrderPhoto, Region
 from .utils import handle_order_photos
 
 
@@ -50,7 +51,7 @@ class MultipleFileField(forms.FileField):
 
 class OrderCreationForm(forms.ModelForm):
     photo = MultipleFileField(label="Фото", required=False)
-    city = LocationAutocompleteField()
+    city = LocationAutocompleteField(required=False)
 
     class Meta:
         model = Order

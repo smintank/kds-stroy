@@ -2,8 +2,11 @@
 {% load static %}
 {% block title %}КДС-Строй: Главная{% endblock title %}
 {% block plug_js_css %}
-  <script type="module" crossorigin src="{% static 'js/main-WCi7f0ZE.js' %}"></script>
+  <script type="module" crossorigin src="{% static 'js/pages/main-page.js' %}"></script>
   <link rel="stylesheet" crossorigin href="{% static 'css/main-DcfXKzfr.css' %}">
+  <link rel="stylesheet" crossorigin href="{% static 'css/promo_popup.css' %}">
+  <link rel="stylesheet" crossorigin href="{% static 'css/popups.css' %}">
+
 {% endblock plug_js_css %}
 {% block content %}
   <main>
@@ -47,23 +50,27 @@
                         <a class="hero__footer-list-item-link" href="#plumbing" id="plumbing-link">Сантехника</a>
                     </li>
                     <li class="hero__footer-list-item">
-                        <a class="hero__footer-list-item-link" href="#installation" id="installation-link">Монтажные работы</a>
-                    </li>
-                    <li class="hero__footer-list-item">
                         <a class="hero__footer-list-item-link" href="#technique" id="technique-link">Установка техники</a>
                     </li>
                     <li class="hero__footer-list-item">
-                        <a class="hero__footer-list-item-link" href="#repair" id="repair-link">Ремонтные</a>
+                        <a class="hero__footer-list-item-link" href="#repair" id="repair-link">Ремонтные работы</a>
                     </li>
                     <li class="hero__footer-list-item">
-                        <a class="hero__footer-list-item-link" href="#decoration" id="decoration-link">Отделочные</a>
+                        <a class="hero__footer-list-item-link" href="#decoration" id="decoration-link">Отделочные работы</a>
                     </li>
                     <li class="hero__footer-list-item">
-                        <a class="hero__footer-list-item-link" href="#welding" id="welding-link">Сварочные</a>
+                        <a class="hero__footer-list-item-link" href="#cargo-transportation" id="cargo-transportation-link">Грузоперевозки</a>
                     </li>
                     <li class="hero__footer-list-item">
-                        <a class="hero__footer-list-item-link" href="#construction" id="construction-link">Строительство под ключ</a>
+                        <a class="hero__footer-list-item-link" href="#installation" id="installation-link">Монтажные работы</a>
                     </li>
+                    <li class="hero__footer-list-item">
+                        <a class="hero__footer-list-item-link" href="#welding" id="welding-link">Сварочные работы</a>
+                    </li>
+                    <li class="hero__footer-list-item">
+                        <a class="hero__footer-list-item-link" href="#construction" id="construction-link">Строительство под&nbsp;ключ</a>
+                    </li>
+
                 </ul>
             </div>
         </div>
@@ -285,6 +292,28 @@
                         <img src="{% static 'img/construction-l-MPSrfJ.jpg' %}" alt="Фоновое изображение секции">
                     </div>
                 </li>
+                <li class="works__list-item" id="cargo-transportation">
+                    <h4 class="works__list-item-title">Грузоперевозки</h4>
+                    <div class="works__list-item-overlay">
+                        <p class="works__list-item-overlay-text">
+                            Оперативная и&nbsp;бережная транспортировка, услуги грузчика.
+                        </p>
+                        <ul class="works__list-item-overlay-list">
+                            <li class="works__list-item-overlay-list-item">
+                                Организация переезда
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Перевозка крупногабаритных грузов
+                            </li>
+                            <li class="works__list-item-overlay-list-item">
+                                Доставка стройматериалов из&nbsp;магазинов
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="works__background">
+                        <img src="{% static 'img/transportation.jpg' %}" alt="Фоновое изображение секции">
+                    </div>
+                </li>
             </ul>
         </div>
     </section>
@@ -331,6 +360,9 @@
                             </div>
                         </div>
                         <div class="projects__slider-slide swiper-slide">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/plumbing_1.jpeg' %}" data-fancybox="projects-3">
+                                <img class="projects__slide-image" src="{% static 'img/projects/plumbing_1.jpeg' %}" alt="изображение слайда">
+                            </a>
                             <a class="projects__slide-image-wrapper" href="{% static 'img/projects/plumbing_3.jpeg' %}" data-fancybox="projects-3">
                                 <img class="projects__slide-image" src="{% static 'img/projects/plumbing_3.jpeg' %}" alt="изображение слайда">
                             </a>
@@ -366,11 +398,26 @@
                             </div>
                         </div>
                         <div class="projects__slider-slide swiper-slide">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/furniture_6.jpeg' %}" data-fancybox="projects-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/furniture_6.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/furniture_4.jpeg' %}" data-fancybox="projects-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/furniture_4.jpeg' %}" alt="изображение слайда">
+                            </a>
                             <a class="projects__slide-image-wrapper" href="{% static 'img/projects/furniture_3.jpeg' %}" data-fancybox="projects-5">
                                 <img class="projects__slide-image" src="{% static 'img/projects/furniture_3.jpeg' %}" alt="изображение слайда">
                             </a>
-                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/doors_3.jpeg' %}" data-fancybox="projects-5">
-                                <img class="projects__slide-image" src="{% static 'img/projects/doors_3.jpeg' %}" alt="изображение слайда">
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/furniture_10.jpeg' %}" data-fancybox="projects-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/furniture_10.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/furniture_7.jpeg' %}" data-fancybox="projects-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/furniture_7.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/furniture_8.jpeg' %}" data-fancybox="projects-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/furniture_8.jpeg' %}" alt="изображение слайда">
+                            </a>
+                            <a class="projects__slide-image-wrapper" href="{% static 'img/projects/furniture_9.jpeg' %}" data-fancybox="projects-5">
+                                <img class="projects__slide-image" src="{% static 'img/projects/furniture_9.jpeg' %}" alt="изображение слайда">
                             </a>
                             <div class="projects__slide-container">
                                 <h4 class="projects__slide-title">Сборка и&nbsp;установка мебели</h4>

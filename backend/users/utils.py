@@ -1,17 +1,13 @@
-import requests
 import logging
 
+import requests
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
-from kds_stroy.settings import (
-    ZVONOK_API_KEY,
-    ZVONOK_ENDPOINT,
-    ZVONOK_CAMPAIGN_ID,
-    PHONE_VERIFICATION_TIME_LIMIT,
-    PHONE_VERIFICATION_ATTEMPTS_LIMIT,
-    PHONE_CHANGE_FREQUENCY_LIMIT,
-)
+from kds_stroy.settings import (PHONE_CHANGE_FREQUENCY_LIMIT,
+                                PHONE_VERIFICATION_ATTEMPTS_LIMIT,
+                                PHONE_VERIFICATION_TIME_LIMIT, ZVONOK_API_KEY,
+                                ZVONOK_CAMPAIGN_ID, ZVONOK_ENDPOINT)
 from users.models import PhoneVerification
 
 logger = logging.getLogger(__name__)
