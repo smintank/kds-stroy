@@ -47,9 +47,12 @@ class CityType(models.Model):
 
 
 class City(models.Model):
-    district = models.ForeignKey(District, on_delete=models.CASCADE, verbose_name="Район")
-    is_district_shown = models.BooleanField(default=True, verbose_name="Показывать район?")
-    type = models.ForeignKey(CityType, on_delete=models.CASCADE, verbose_name="Тип")
+    district = models.ForeignKey(District, on_delete=models.CASCADE,
+                                 verbose_name="Район")
+    is_district_shown = models.BooleanField(default=True,
+                                            verbose_name="Показывать район?")
+    type = models.ForeignKey(CityType, on_delete=models.CASCADE,
+                             verbose_name="Тип")
     name = models.CharField(max_length=255, verbose_name="Название")
     is_active = models.BooleanField(default=True, verbose_name="Отображать")
     latitude = models.FloatField(default=45.03333, verbose_name="Широта")
