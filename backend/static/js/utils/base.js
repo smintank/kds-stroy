@@ -46,8 +46,12 @@ const useCookieBanner = () => {
   });
 };
 
-const useHeaderOnScroll = () => {
+const useHeaderOnScroll = (isOff) => {
   const header = document.querySelector(".header");
+  if (isOff) {
+    header.classList.add("header--with-border");
+    return;
+  }
   window.addEventListener("scroll", function() {
     const scrollPos = window.scrollY;
     if (scrollPos >= 1) {

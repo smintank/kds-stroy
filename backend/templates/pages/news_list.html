@@ -13,18 +13,21 @@
     <section class="news">
         <div class="container news__container">
             <h1 class="news__title">Новости</h1>
-{#            <div class="news__controls">#}
-{#                <button class="news__controls-date" type="button" id="news-sort-date">Дата</button>#}
-{#                <div class="news__controls-themes select">#}
-{#                    <input class="select__input" type="hidden" name="number">#}
-{#                    <button class="select__current">Тема</button>#}
-{#                    <div class="select__list">#}
-{#                      {% for category in categories %}#}
-{#                        <button class="select__item" data-value="{{ category.slug }}">{{ category.name }}</button>#}
-{#                      {% endfor %}#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
+            <div class="news__controls">
+                <button class="news__controls-date" type="button" id="news-sort-date">Дата</button>
+                <div class="news__controls-themes select">
+                    <input class="select__input" type="hidden" name="number">
+                    <button class="select__current">Все новости</button>
+                    <div class="select__list">
+                        <button class="select__item" data-value="all">Все новости</button>
+                    {% if categories.count != 0 %}
+                      {% for category in categories %}
+                        <button class="select__item" data-value="{{ category.slug }}">{{ category.title }}</button>
+                      {% endfor %}
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
             <ul class="news__list">
                 {% for news in page_obj %}
                   <li class="news__list-item">
@@ -39,7 +42,7 @@
                             <h2 class="news__list-item-title">{{ news.title }}</h2>
                         </a>
                         <div class="news__list-item-text">{{ news.content|truncatechars:400|safe}}</div>
-                        <a href="{% url 'news:detail' news.id %}">Читать&nbsp;статью&nbsp;полностью</a>
+                        <a href="{% url 'news:detail' news.id %}">Читать&nbsp;полностью</a>
                     </div>
                   </li>
                 {% endfor %}

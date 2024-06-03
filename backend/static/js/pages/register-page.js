@@ -5,6 +5,6 @@ import { u as useInputPhoneMask } from "../utils/input-phone-mask.js";
 
 addEventListener("DOMContentLoaded", () => {
   useBurger();
-  useHeaderOnScroll();
+  useHeaderOnScroll(true);
   useInputPhoneMask();
 });

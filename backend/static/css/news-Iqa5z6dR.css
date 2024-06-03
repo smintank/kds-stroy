@@ -614,6 +614,7 @@ a:hover {
   width: 100%;
   overflow: hidden;
   border: none;
+  z-index: 2;
 }
 .select__list--show {
   display: block;
@@ -1376,8 +1377,10 @@ a:hover {
   display: block;
   width: 15px;
   height: 21px;
-  transition: transform 0.3s ease;
   background: url("data:image/svg+xml,%3csvg%20width='16'%20height='21'%20viewBox='0%200%2016%2021'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M7.29289%2020.7071C7.68342%2021.0976%208.31658%2021.0976%208.70711%2020.7071L15.0711%2014.3431C15.4616%2013.9526%2015.4616%2013.3195%2015.0711%2012.9289C14.6805%2012.5384%2014.0474%2012.5384%2013.6569%2012.9289L8%2018.5858L2.34315%2012.9289C1.95262%2012.5384%201.31946%2012.5384%200.928932%2012.9289C0.538408%2013.3195%200.538408%2013.9526%200.928932%2014.3431L7.29289%2020.7071ZM9%2020L9%200H7L7%2020H9Z'%20fill='%23656565'/%3e%3c/svg%3e") center/cover no-repeat;
+}
+.news__controls-date.rotated::after {
+  transform: rotate(180deg);
 }
 .news__controls-date--reverse::after {
   transform: rotate(180deg);
@@ -1392,7 +1395,7 @@ a:hover {
   display: flex;
   gap: 33px;
 }
-.news__list-item-content-wrapper{
+.news__list-item-content-wrapper {
   flex: 2;
 }
 .news__list-item-image-wrapper {

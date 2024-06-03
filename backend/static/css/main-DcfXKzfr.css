@@ -3219,6 +3219,9 @@ a:hover {
     right: auto;
     margin: 0;
   }
+  .footer__logo img {
+    width: 85%;
+  }
 }
 @media (max-width: 639px) {
   .footer {

@@ -8,10 +8,9 @@ import { u as useProjectsRepairsSlider, a as useProjectsBigsSlider, b as useRevi
 import { u as useInputPhoneMask } from "../utils/input-phone-mask.js";
 
 
-const popupNewsSub = new MessagePopup("#popup-news-sub");
-popupNewsSub.setEventListeners();
-
 const useEmailSubscription = () => {
+  const popupNewsSub = new MessagePopup("#popup-news-sub");
+  popupNewsSub.setEventListeners();
   const emailSubscribed = getCookie('email_subscribed');
     if (emailSubscribed) {
         document.getElementById('stocksFormContainer').style.display = 'none';
@@ -22,8 +21,8 @@ const useEmailSubscription = () => {
     e.preventDefault();
     const stocksFormContainer = document.querySelector("#stocksFormContainer");
     fetch("/subs/subscribe/", {
-      method: "POST",
-      body: new FormData(e.target),
+      method: 'POST',
+      body: new FormData(e.target)
     }).then(function(response) {
       if (response.ok) {
         stocksFormContainer.innerHTML = '' +
@@ -36,7 +35,7 @@ const useEmailSubscription = () => {
         throw new Error(response.statusText);
       }
     }).catch(function(error) {
-      popupMessage.open('Ошибка при создании заказа!', 'Не удалось подписаться, попробуйте позже!');
+      popupNewsSub.open('Ошибка при попытке подписаться!', 'Не удалось подписаться, попробуйте позже! ');
     });
   });
 };
@@ -72,7 +71,7 @@ const useCustomAnchorScroll = () => {
       } else if (window.innerWidth < 639) {
         scrollOffset = 60;
       } else {
-        scrollOffset = 84;
+        scrollOffset = 80;
       }
       window.scrollTo(0, element.offsetTop - scrollOffset);
     });

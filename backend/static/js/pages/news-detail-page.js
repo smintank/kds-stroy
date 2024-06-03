@@ -8,7 +8,7 @@ import {uPP as usePromotionPopup} from "../utils/popups.js";
 
 addEventListener("DOMContentLoaded", () => {
   useBurger();
-  useHeaderOnScroll();
+  useHeaderOnScroll(true);
   useSingleNewsSlider();
   useCookieBanner();
   usePromotionPopup();

@@ -2,11 +2,6 @@ import { gC as getCookie, sC as setCookie } from "./base.js";
 import { P as Popup, MP as popupMessage } from "./popups.js";
 
 let cityChosen = false;
-const baseURL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
-console.log(baseURL);
-
-const popupOrder = new Popup("#popup-order");
-popupOrder.setEventListeners();
 
 const useCitySuggestions = () => {
   const cityField = document.getElementById("id_city");
@@ -40,7 +35,6 @@ const useCitySuggestions = () => {
   function handleAutocomplete(input) {
     const debouncedFetch = debounce(function (event) {
       const term = event.target.value;
-      console.log(term);
       if (!term) {
         if (dropdown) dropdown.style.display = 'none';
         return;
@@ -50,7 +44,6 @@ const useCitySuggestions = () => {
       ).then(
         response => response.json()
       ).then(data => {
-        console.log(data);
         if (!dropdown) {
           dropdown = document.createElement('div');
           dropdown.id = 'autocomplete-dropdown';
@@ -95,6 +88,8 @@ const useCitySuggestions = () => {
 };
 
 const useOrderFormWithImages = () => {
+  const popupOrder = new Popup("#popup-order");
+  popupOrder.setEventListeners();
   const formData = new FormData();
   let imageNumbers = 0;
 

@@ -249,3 +249,18 @@ h4 {
     justify-content: center;
     gap: 30px;
 }
+.stock-popup--active p {
+  line-height: unset;
+  margin-bottom: unset;
+}
+.stock-popup--active h3 {
+  padding-top: unset;
+}
+.stock-popup h3 {
+  padding-top: unset;
+}
+
+.stock-popup p {
+  line-height: unset;
+  margin-bottom: unset;
+}
