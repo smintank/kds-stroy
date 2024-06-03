@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.views.generic import FormView
 
 from ads_mailing.forms import SubscribeForm
+from ads_mailing.messages import SUCCESS_SUBSCRIPTION_MSG
 from ads_mailing.models import MailingList
 
 
@@ -17,5 +18,5 @@ class SubscribeView(FormView):
         email = form.cleaned_data["email"]
         MailingList.objects.get_or_create(email=email)
         return JsonResponse(
-            {"message": "Вы успешно подписались на рассылку!"}, status=201
+            {"message": SUCCESS_SUBSCRIPTION_MSG}, status=201
         )
