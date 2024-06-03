@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}КДС-Строй: Новости{% endblock title %}
+{% block plug_js_css %}
+  <script type="module" crossorigin src="{% static 'js/pages/news-detail-page.js' %}"></script>
+  <link rel="stylesheet" crossorigin href="{% static 'css/singleNews-dKyUe2RX.css' %}">
+  <link rel="stylesheet" crossorigin href="{% static 'css/promo_popup.css' %}">
+  <link rel="stylesheet" crossorigin href="{% static 'css/popups.css' %}">
+{% endblock plug_js_css %}
+
+{% block content %}
+<main>
+  <section class="single-news">
+    <div class="container single-news__container">
+      <a class="single-news__link single-news__link--top" href="{% url "news:list" %}">
+        <span>Все новости</span>
+      </a>
+    <h1 class="single-news__title">{{ news.title }}</h1>
+    <div class="single-news__row">
+      <div class="swiper single-news__slider" id="photo-container">
+        <div class="single-news__date">{{ news.published_date }}</div>
+        <div class="swiper-wrapper single-news__slider-wrapper">
+          {% for photo in news.photos.all %}
+            <div class="swiper-slide single-news__slide">
+              <img src="{{ photo.photo.url }}" alt="Изображение новости">
+            </div>
+          {% endfor %}
+        </div>
+        <div class="swiper-pagination single-news__slider-pagination"></div>
+      </div>
+      <div class="single-news__text-wrapper">
+        <div class="single-news__text">{{ news.content|safe }}</div>
+      </div>
+{#    </div>#}
+{#      <div class="single-news__navigation">#}
+{#        <a class="single-news__link" href="#">#}
+{#          <span>Предыдущая новость</span>#}
+{#        </a>#}
+{#        <span class="single-news__navigation-text">Другие новости</span>#}
+{#        <a class="single-news__link single-news__link--reverse" href="#">#}
+{#          <span>Следующая новость</span>#}
+{#        </a>#}
+{#      </div>#}
+    </div>
+  </section>
+</main>
+{% endblock content %}

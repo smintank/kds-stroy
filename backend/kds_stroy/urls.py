@@ -24,12 +24,12 @@ urlpatterns = [
         TemplateView.as_view(template_name="pages/personal_terms.html"),
         name="personal_info_terms",
     ),
+    path("ckeditor5/", include('django_ckeditor_5.urls')),
 ]
 
 if settings.DEBUG:
-    # import debug_toolbar
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
-    # urlpatterns += (path('debug/', include(debug_toolbar.urls)),)
+    import debug_toolbar
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += (path('__debug__/', include(debug_toolbar.urls)),)
 
 handler404 = handler404

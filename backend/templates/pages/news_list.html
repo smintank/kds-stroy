@@ -2,8 +2,10 @@
 {% load static %}
 {% block title %}КДС-Строй: Новости{% endblock title %}
 {% block plug_js_css %}
-  <script type="module" crossorigin src="{% static 'js/news-vdFL1TXq.js' %}"></script>
+  <script type="module" crossorigin src="{% static 'js/pages/news-list-page.js' %}"></script>
   <link rel="stylesheet" crossorigin href="{% static 'css/news-Iqa5z6dR.css' %}">
+  <link rel="stylesheet" crossorigin href="{% static 'css/promo_popup.css' %}">
+  <link rel="stylesheet" crossorigin href="{% static 'css/popups.css' %}">
 {% endblock plug_js_css %}
 {% block content %}
 
@@ -15,81 +17,51 @@
                 <button class="news__controls-date" type="button" id="news-sort-date">Дата</button>
                 <div class="news__controls-themes select">
                     <input class="select__input" type="hidden" name="number">
-                    <button class="select__current">Тема</button>
+                    <button class="select__current">Все новости</button>
                     <div class="select__list">
-                        <button class="select__item" data-value="about">О компании</button>
-                        <button class="select__item" data-value="projects">Проекты</button>
-                        <button class="select__item" data-value="useful">Полезное</button>
+                        <button class="select__item" data-value="all">Все новости</button>
+                    {% if categories.count != 0 %}
+                      {% for category in categories %}
+                        <button class="select__item" data-value="{{ category.slug }}">{{ category.title }}</button>
+                      {% endfor %}
+                    {% endif %}
                     </div>
                 </div>
             </div>
             <ul class="news__list">
-                <li class="news__list-item">
+                {% for news in page_obj %}
+                  <li class="news__list-item">
                     <div class="news__list-item-image-wrapper">
-                        <img src="{% static 'img/slider-bigs_1-goIsYxKN.png' %}" alt="Изображение новости">
+                      <a href="{% url 'news:detail' news.id %}">
+                        <img src="{{ news.photos.first.photo.url }}" alt="Изображение новости">
+                      </a>
                     </div>
                     <div class="news__list-item-content-wrapper">
-                        <p class="news__list-item-date">01.02.2024</p>
-                        <a class="news__list-item-link" href="#">
-                            <h2 class="news__list-item-title">Сделали ремонт помещения для открытия новой аптеки Апрель в Краснодаре</h2>
+                        <p class="news__list-item-date">{{ news.published_date }}</p>
+                        <a class="news__list-item-link" href="{% url 'news:detail' news.id %}">
+                            <h2 class="news__list-item-title">{{ news.title }}</h2>
                         </a>
-                        <p class="news__list-item-text">
-                            г.Краснодар, ул. Строителей, д. 5<br>Площадь помещения 50 м2</p>
-                        <p class="news__list-item-text">
-                            Подключение насоса. Монтаж систем отопления, канализации
-                            и подачи воды.
-                        </p>
+                        <div class="news__list-item-text">{{ news.content|truncatechars:400|safe}}</div>
+                        <a href="{% url 'news:detail' news.id %}">Читать&nbsp;полностью</a>
                     </div>
-                </li>
-                <li class="news__list-item">
-                    <div class="news__list-item-image-wrapper">
-                        <img src="{% static 'img/slider-bigs_1-goIsYxKN.png' %}" alt="Изображение новости">
-                    </div>
-                    <div class="news__list-item-content-wrapper">
-                        <p class="news__list-item-date">01.02.2024</p>
-                        <a class="news__list-item-link" href="#">
-                            <h2 class="news__list-item-title">Сделали ремонт помещения для открытия новой аптеки Апрель в Краснодаре</h2>
-                        </a>
-                        <p class="news__list-item-text">
-                            г.Краснодар, ул. Строителей, д. 5<br>Площадь помещения 50 м2
-                        </p>
-                        <p class="news__list-item-text">
-                            Подключение насоса. Монтаж систем отопления,
-                            канализации и подачи воды.
-                        </p>
-                    </div>
-                </li>
-                <li class="news__list-item">
-                    <div class="news__list-item-image-wrapper">
-                        <img src="{% static 'img/slider-bigs_1-goIsYxKN.png' %}" alt="Изображение новости">
-                    </div>
-                    <div class="news__list-item-content-wrapper">
-                        <p class="news__list-item-date">01.02.2024</p>
-                        <a class="news__list-item-link" href="#">
-                            <h2 class="news__list-item-title">
-                                Сделали ремонт помещения для открытия новой
-                                аптеки Апрель в Краснодаре
-                            </h2>
-                        </a>
-                        <p class="news__list-item-text">
-                            г.Краснодар, ул. Строителей, д. 5<br>Площадь помещения 50 м2
-                        </p>
-                        <p class="news__list-item-text">
-                            Подключение насоса. Монтаж систем отопления,
-                            канализации и подачи воды.
-                        </p>
-                    </div>
-                </li>
+                  </li>
+                {% endfor %}
             </ul>
-            <div class="news__pagination">
-                <a class="news__pagination__item" href="#">&laquo;</a>
-                <a class="news__pagination__item news__pagination__item--active" href="#">1 </a>
-                <a class="news__pagination__item" href="#">2</a>
-                <a class="news__pagination__item" href="#">3</a>
-                <span class="news__pagination__item">...</span>
-                <a class="news__pagination__item" href="#">6</a>
-                <a class="news__pagination__item" href="#">&raquo;</a>
-            </div>
+            {% if page_obj.has_other_pages %}
+              <div class="news__pagination">
+                {% if page_obj.has_previous %}
+                  <a class="news__pagination__item" href="?page=1">&laquo;</a>
+                  <a class="news__pagination__item" href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+                {% endif %}
+                {% for i in page_obj.paginator.page_range %}
+                    <a class="news__pagination__item{% if page_obj.number == i %} news__pagination__item--active{% endif %}" href="?page={{ i }}">{{ i }}</a>
+                {% endfor %}
+                {% if page_obj.has_next %}
+                  <a class="news__pagination__item" href="?page={{ page_obj.next_page_number }}">&gt;</a>
+                  <a class="news__pagination__item" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
+                {% endif %}
+              </div>
+            {% endif %}
         </div>
     </section>
 </main>

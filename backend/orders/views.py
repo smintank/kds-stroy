@@ -19,6 +19,32 @@ from .utils import get_notified_users, get_order_message
 logger = logging.getLogger(__name__)
 
 
+class OrderContextMixin:
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["order_form"] = OrderCreationForm()
+
+        order_id = self.request.session.get("order_id")
+        order = Order.objects.filter(order_id=order_id).first()
+        if order and order.status in [Order.Status.COMPLETED,
+                                      Order.Status.CANCELED]:
+            self.request.session["order_id"] = None
+            self.request.session["order_created"] = None
+        # login_form = AuthenticationForm()
+        # context["login_form"] = login_form
+        return context
+
+    def render_to_response(self, context, **response_kwargs):
+        response = super().render_to_response(context, **response_kwargs)
+
+        order_id = self.request.session.get("order_id")
+        order_created = 1 if self.request.session.get("order_created") else 0
+
+        response.set_cookie('order_id', order_id, max_age=360000)
+        response.set_cookie('order_created', order_created, max_age=360000)
+        return response
+
+
 class OrderCreateView(View):
     def post(self, request):
         order_form = OrderCreationForm(request.POST, request.FILES)

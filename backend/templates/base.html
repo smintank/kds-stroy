@@ -14,11 +14,13 @@
     <meta name="msapplication-TileColor" content="#00a300">
     <meta name="theme-color" content="#ffffff">
     {% block plug_js_css %}{% endblock %}
-    <link rel="modulepreload" crossorigin href="{% static 'js/modulepreload-polyfill-BoyGcPDr.js' %}">
-    <link rel="modulepreload" crossorigin href="{% static 'js/headerOnScroll-BsQcXGBC.js' %}">
-    <link rel="modulepreload" crossorigin href="{% static 'js/showcaseModal-BGg2r-Tz.js' %}">
-    <link rel="modulepreload" crossorigin href="{% static 'js/sliders-C0i03PCH.js' %}">
-    <link rel="modulepreload" crossorigin href="{% static 'js/useInputPhoneMask-CE77khD0.js' %}">
+    <link rel="modulepreload" crossorigin href="{% static 'js/utils/modulepreload-polyfill.js' %}">
+    <link rel="modulepreload" crossorigin href="{% static 'js/utils/orders.js' %}">
+    <link rel="modulepreload" crossorigin href="{% static 'js/utils/base.js' %}">
+    <link rel="modulepreload" crossorigin href="{% static 'js/utils/popups.js' %}">
+    <link rel="modulepreload" crossorigin href="{% static 'js/utils/showcase-modal.js' %}">
+    <link rel="modulepreload" crossorigin href="{% static 'js/utils/sliders.js' %}">
+    <link rel="modulepreload" crossorigin href="{% static 'js/utils/input-phone-mask.js' %}">
     <link rel="stylesheet" crossorigin href="{% static 'css/showcaseModal-DZwIPjuC.css' %}">
     <link rel="stylesheet" crossorigin href="{% static 'css/sliders-4DNxUV-Y.css' %}">
   </head>
@@ -29,8 +31,8 @@
     {% include "includes/order_popup.html" with form=order_form %}
     {% include "includes/status_message_popup.html" %}
     {% include "includes/cookie_banner.html" %}
-    {% if view_name == 'MainView' %}
-        {% include "includes/promotion_banner.html" %}
+    {% include "includes/promotion_banner.html" %}
+    {% if request.resolver_match.view_name == 'home' %}
         {% include "includes/news_subscribe_popup.html" %}
     {% endif %}
 {#    {% if not user.is_authenticated %}#}

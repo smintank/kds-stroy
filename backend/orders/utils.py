@@ -62,6 +62,10 @@ def get_proper_photo(photos: list) -> list:
 
 def format_phone_number(phone: str) -> str:
     """Format phone number to human-readable format."""
+    if phone[0] == '+':
+        phone = phone[1:]
+    if phone[0] in ['7', '8']:
+        phone = phone[1:]
     return f'+7 ({phone[:3]}) {phone[3:6]}-{phone[6:8]}-{phone[8:]}'
 
 

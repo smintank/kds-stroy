@@ -1,9 +1,11 @@
+from django import forms
 from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
-from .models import Order, OrderPhoto
+from .models import Order, OrderPhoto, City
 from .utils import format_comment, format_datetime, format_phone_number
+from .forms import OrderCreationForm
 
 
 class OrderPhotoInline(admin.TabularInline):
@@ -19,9 +21,17 @@ class OrderPhotoInline(admin.TabularInline):
         return mark_safe(html_block)
 
 
+class OrderForm(OrderCreationForm):
+    class Meta:
+        widgets = {
+            'city': forms.Select(attrs={'class': 'my-autocomplete'}),
+        }
+
+
 class OrderAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['city']
     list_display = ("order_id", "first_name", "formatted_phone_number",
-                    "formatted_comment", "formatted_city", "status",
+                    "formatted_comment", "city", "status",
                     "formatted_created_at", "display_photo_preview")
     list_filter = ("status", "created_at")
     list_display_links = ("order_id", "first_name", )
@@ -66,9 +76,6 @@ class OrderAdmin(admin.ModelAdmin):
     def formatted_comment(self, obj):
         return format_comment(obj.comment)
 
-    def formatted_city(self, obj):
-        return obj.city.short_name() if obj.city else "-"
-
     def formatted_created_at(self, obj):
         return (format_datetime(obj.created_at, raw=True)
                 if obj.created_at else "-")
@@ -84,11 +91,15 @@ class OrderAdmin(admin.ModelAdmin):
         return "-"
 
     formatted_discount.short_description = 'Скидка в рублях'
-    formatted_city.short_description = 'Город'
     formatted_comment.short_description = 'Комментарий'
     display_photo_preview.short_description = 'Фото'
     formatted_phone_number.short_description = 'Телефонный номер'
     formatted_created_at.short_description = 'Создан'
 
 
+class CityAdmin(admin.ModelAdmin):
+    search_fields = ['name']
+
+
 admin.site.register(Order, OrderAdmin)
+admin.site.register(City, CityAdmin)
