@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     "ads_mailing.apps.AdsMailingConfig",
     "verify_email.apps.VerifyEmailConfig",
     "sass_processor",
-    'django_ckeditor_5',
+    "django_ckeditor_5",
 ]
 
 MIDDLEWARE = [
@@ -99,6 +99,15 @@ LOGGING = {
 WSGI_APPLICATION = "kds_stroy.wsgi.application"
 
 if DEBUG:
+    INSTALLED_APPS += [
+        "debug_toolbar",
+    ]
+    MIDDLEWARE += [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ]
+    INTERNAL_IPS = [
+        '127.0.0.1',
+    ]
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
