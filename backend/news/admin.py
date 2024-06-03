@@ -1,5 +1,16 @@
 from django.contrib import admin
+from django.core.exceptions import ValidationError
+from django.forms import BaseInlineFormSet
+
 from .models import News, Category, NewsPhoto
+
+
+class RequiredInlineFormSet(BaseInlineFormSet):
+    def clean(self):
+        super().clean()
+        if any(form.cleaned_data and not form.cleaned_data.get('DELETE', False) for form in self.forms):
+            return
+        raise ValidationError('Добавьте хотя бы одно изображение.')
 
 
 class NewsPhotoInline(admin.TabularInline):
@@ -7,6 +18,7 @@ class NewsPhotoInline(admin.TabularInline):
     extra = 0
     fields = ('photo', 'photo_preview')
     readonly_fields = ('photo_preview',)
+    formset = RequiredInlineFormSet
 
 
 class NewsAdmin(admin.ModelAdmin):

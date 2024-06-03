@@ -77,12 +77,12 @@ class NewsPhoto(models.Model):
     news = models.ForeignKey(
         News, on_delete=models.CASCADE, related_name="photos"
     )
-    photo = models.ImageField(upload_to="news_photos/")
+    photo = models.ImageField(upload_to="news_photos/", blank=False, null=False)
 
     def photo_preview(self):
         if self.photo:
             return mark_safe(
-                f'<img src="{self.photo.url}" width="150">')
+                f'<img src="{self.photo.url}" width="200">')
         return "No image"
 
     photo_preview.short_description = 'Photo Preview'
