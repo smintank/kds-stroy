@@ -916,6 +916,25 @@ a:hover {
   border-bottom: 2px solid;
   padding-bottom: 5px;
 }
+.header__account {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+.header__account a {
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  color: #333333;
+}
+.header__account a:hover {
+  color: #8f8f8f;
+}
+.header__account img {
+  height: 30px;
+}
+.header__account img:hover {
+  opacity: 0.5;
+}
 .header__burger-wrapper {
   background-color: #680a08;
   display: none;
@@ -1029,6 +1048,15 @@ a:hover {
   .header__signin::after {
     margin-left: 11px;
   }
+  .header__account {
+    position: absolute;
+    top: 95px;
+    right: 38px;
+  }
+  .header__account::after {
+    margin-left: 11px;
+  }
+
   .header__burger-wrapper {
     display: flex;
   }
@@ -1084,6 +1112,14 @@ a:hover {
     left: 18px;
   }
   .header__signin::after {
+    margin-left: 3px;
+  }
+  .header__account {
+    font-size: 20px;
+    top: 374px;
+    left: 18px;
+  }
+  .header__account::after {
     margin-left: 3px;
   }
 }

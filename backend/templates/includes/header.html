@@ -6,9 +6,6 @@
             <ul class="header__nav-list">
             {% with request.resolver_match.view_name as view_name %}
                 <li class="header__nav-list-item">
-                    <a href="{% if view_name != 'home' %}{% url 'home' %}{% endif %}#works-section">Услуги</a>
-                </li>
-                <li class="header__nav-list-item">
                     <a href="{% if view_name != 'home' %}{% url 'home' %}{% endif %}#steps-section">Порядок работы</a>
                 </li>
                 <li class="header__nav-list-item">
@@ -35,13 +32,13 @@
         <div class="header__burger-wrapper">
             <button class="header__burger burger" aria-label="Burger menu"><span class="burger__line"></span></button>
         </div>
-{#        {% if user.is_authenticated %}#}
-{#          <div class="header_account {% if view_name == 'users:profile' %}header_underline{% endif %}">#}
-{#              <a href="{% url 'users:profile' %}">{{ user.first_name }}</a>#}
-{#              <img id="show_logout_popup" class="exit_img" alt="Exit" src="{% static 'img/logout.png' %}">#}
-{#          </div>#}
-{#        {% else %}#}
-{#          <button class="header__signin" id="signIn">Войти ></button>#}
-{#        {% endif %}#}
+        {% if user.is_authenticated %}
+          <div class="header__account {% if view_name == 'users:profile' %}header_underline{% endif %}">
+              <a href="{% url 'users:profile' %}">{{ user.first_name }}</a>
+              <img id="show_logout_popup" class="exit_img" alt="Exit" src="{% static 'img/logout.png' %}">
+          </div>
+        {% else %}
+          <button class="header__signin" id="signIn">Войти ></button>
+        {% endif %}
     </div>
 </header>
