@@ -60,6 +60,7 @@ class OrderCreationForm(forms.ModelForm):
         widgets = {
             "phone_number": forms.TextInput(
                 attrs={
+                    "id": "order_phone_number",
                     "type": "tel",
                     "autocomplete": "tel",
                     "class": "order__form-input",
@@ -68,6 +69,7 @@ class OrderCreationForm(forms.ModelForm):
             ),
             "first_name": forms.TextInput(
                 attrs={
+                    "id": "order_first_name",
                     "placeholder": "Имя*",
                     "autocomplete": "given-name",
                     "class": "order__form-input",

@@ -1,14 +1,14 @@
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from django.views.generic import TemplateView
 
 from kds_stroy import settings
-from main.views import MainView, handler404
+from main.views import MainView, TermsView, handler404
 from users.views import RegistrationView
 
 urlpatterns = [
     path("", MainView.as_view(), name="home"),
+    path("terms/", TermsView.as_view(), name="personal_info_terms"),
     path("admin/", admin.site.urls),
     path("verification/", include("verify_email.urls")),
     path("auth/registration/",
@@ -19,11 +19,6 @@ urlpatterns = [
     path("orders/", include("orders.urls")),
     path("news/", include("news.urls")),
     path("subs/", include("ads_mailing.urls")),
-    path(
-        "terms/",
-        TemplateView.as_view(template_name="pages/personal_terms.html"),
-        name="personal_info_terms",
-    ),
     path("ckeditor5/", include('django_ckeditor_5.urls')),
 ]
 

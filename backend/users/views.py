@@ -10,6 +10,7 @@ from django.views.generic import DetailView, FormView, UpdateView
 
 from kds_stroy.settings import MEDIA_URL, PHONE_VERIFICATION_TIME_LIMIT
 from orders.models import Order, OrderPhoto
+from orders.views import OrderContextMixin
 from users.forms import (ChangePhoneNumberForm, PhoneVerificationForm,
                          UserForm, UserRegistrationForm)
 
@@ -22,7 +23,7 @@ User = get_user_model()
 logger = logging.getLogger(__name__)
 
 
-class RegistrationView(FormView):
+class RegistrationView(OrderContextMixin, FormView):
     template_name = "account/register.html"
     form_class = UserRegistrationForm
     success_url = "/registration_done/"
