@@ -111,6 +111,8 @@ class UserForm(forms.ModelForm):
             "middle_name",
             "email",
             "phone_number",
+            "city",
+            "address",
         )
         widgets = {
             "phone_number": forms.TextInput(
@@ -147,6 +149,13 @@ class UserForm(forms.ModelForm):
                     "placeholder": "Отчество",
                     "text-name-input": "",
                     "autocomplete": "additional-name",
+                }
+            ),
+            "city": forms.TextInput(
+                attrs={
+                    "placeholder": "Город",
+                    "autocomplete": "address-level2",
+                    'data-autocomplete-url': 'orders/autocomplete/location/',
                 }
             ),
             "address": forms.TextInput(

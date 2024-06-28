@@ -26,6 +26,12 @@ class User(AbstractUser):
     )
     is_phone_verified = models.BooleanField("Телефон подтвержден",
                                             default=False)
+    city = models.ForeignKey(
+        "orders.City",
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name="Город проживания",
+    )
     address = models.ForeignKey(
         "orders.Address",
         on_delete=models.SET_NULL,

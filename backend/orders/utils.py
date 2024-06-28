@@ -4,6 +4,7 @@ import os
 import uuid
 from datetime import timedelta
 
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.utils.datastructures import MultiValueDict
 
@@ -13,7 +14,8 @@ from orders.messages import (NEW_ORDER_TG_MSG, PHOTO_AMOUNT_ERROR_MSG,
                              PHOTO_DUPLICATE_ERROR_MSG, PHOTO_EMPTY_ERROR_MSG,
                              PHOTO_FILE_TYPE_ERROR_MSG,
                              PHOTO_MAX_SIZE_ERROR_MSG)
-from users.models import User
+
+User = get_user_model()
 
 logger = logging.getLogger(__name__)
 
