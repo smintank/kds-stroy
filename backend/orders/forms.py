@@ -32,8 +32,9 @@ class LocationAutocompleteField(forms.CharField):
 
     def widget_attrs(self, widget):
         attrs = super().widget_attrs(widget)
-        attrs['data-autocomplete-url'] = 'orders/autocomplete/location/'
-        attrs["class"] = "order__form-input"
+        attrs['id'] = 'orderCity'
+        attrs['autocomplete-url'] = '/orders/autocomplete/location/'
+        attrs["class"] = "order__form-input city-input"
         attrs["placeholder"] = "Город"
         attrs["autocomplete"] = "address-level2"
         return attrs

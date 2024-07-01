@@ -3,19 +3,29 @@ import {MP as popupMessage, P as Popup} from "./popups.js";
 
 
 class DropdownMenu {
-  constructor(input, endpoint) {
+  constructor(
+    input,
+    term = 'term=',
+    className = 'autocomplete-dropdown',
+    endpointAttrName = 'autocomplete-url',
+    itemStyle = 'flex',
+    debounceTimeout = 300
+  ) {
     this.isShown = false;
     this.isChoosen = false;
-    this._endpoint = endpoint;
+    this.className = className;
+    this.itemStyle = itemStyle;
     this._input = input;
-    this.className = 'autocomplete-dropdown';
-    this.itemStyle = 'flex';
-    this._debounceTimeout = 300;
     this._menu = null;
+    this._term = term;
+    this._endpointAttrName = endpointAttrName;
+    this._endpoint = this._getEndpoint();
+    this._debounceTimeout = debounceTimeout;
 
     this._updatePosition = this._updatePosition.bind(this);
     this._debounce = this._debounce.bind(this);
     this.getDropdownMenu = this._debounce(this.getDropdownMenu.bind(this), this._debounceTimeout);
+    this.addEventListeners()
   }
 
   setVisible() {
@@ -31,45 +41,36 @@ class DropdownMenu {
   getDropdownMenu() {
     this.isChoosen = false;
     const term = this._input.value;
-    if (!term) {
+    if (term) {
+      this._createMenu(term);
+      this.setVisible();
+    } else {
       this.setHidden();
-      return;
     }
-    this._createMenu(term);
   }
 
   _createMenu(term) {
-    if (!this._menu) {
-      this._menu = document.body.appendChild(this._createMenuHTML());
-    }
+    if (!this._menu) this._menu = document.body.appendChild(this._createDiv());
     this._updatePosition();
     this._fetchItems(term).then(data => {
       this._menu.innerHTML = '';
-      data.forEach(item => {
-        const menuItem = this._createMenuItemHTML(item);
-        menuItem.addEventListener('click', () => this._setInputValue(item));
-        this._menu.appendChild(menuItem);
-      });
       if (data.length === 0) {
-        this._menu.appendChild(this._createMenuItemHTML('Ничего не найдено'));
+        this._menu.appendChild(this._createDiv(`${this.className}-item`, 'Ничего не найдено'));
+      } else {
+        data.forEach(item => {
+          const menuItem = this._createDiv(`${this.className}-item`, item);
+          menuItem.addEventListener('click', () => this._setInputValue(item));
+          this._menu.appendChild(menuItem);
+        });
       }
-      this.setVisible();
     });
   }
 
-  _createMenuHTML() {
+  _createDiv(className = this.className, text = '', role = '') {
     const div = document.createElement('div');
-    div.className = this.className;
-    div.textContent = '';
-    div.setAttribute('role', 'menu');
-    return div;
-  }
-
-  _createMenuItemHTML(item, onClickFunc) {
-    const div = document.createElement('div');
-    div.className = `${this.className}-item`;
-    div.textContent = item;
-    div.setAttribute('role', 'menuitem');
+    div.className = className;
+    div.textContent = text;
+    div.setAttribute('role', role);
     return div;
   }
 
@@ -113,6 +114,11 @@ class DropdownMenu {
     this.isChoosen = true;
   }
 
+  _getEndpoint() {
+    const url = this._input.getAttribute(this._endpointAttrName) || '';
+    return `${url}?${this._term}`;
+  }
+
   addEventListeners () {
     window.addEventListener('resize', this._updatePosition);
     window.addEventListener('scroll', this._updatePosition);
@@ -126,11 +132,8 @@ class DropdownMenu {
 }
 
 const useCitySuggestions = () => {
-  const endpoint = '/orders/autocomplete/location/?term='
-  const inputs = document.querySelectorAll('[data-autocomplete-url]');
-  inputs.forEach(input => {
-    const dropdown = new DropdownMenu(input, endpoint);
-    dropdown.addEventListeners()
+  document.querySelectorAll(".city-input").forEach(input => {
+    new DropdownMenu(input);
   });
 }
 

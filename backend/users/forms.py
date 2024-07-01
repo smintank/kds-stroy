@@ -153,9 +153,11 @@ class UserForm(forms.ModelForm):
             ),
             "city": forms.TextInput(
                 attrs={
+                    "id": "AccountCity",
                     "placeholder": "Город",
                     "autocomplete": "address-level2",
-                    'data-autocomplete-url': 'orders/autocomplete/location/',
+                    'autocomplete-url': '/orders/autocomplete/location/',
+                    "class": "form-input city-input",
                 }
             ),
             "address": forms.TextInput(
