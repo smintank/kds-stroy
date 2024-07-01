@@ -15,7 +15,7 @@ class DropdownMenu {
 
     this._updatePosition = this._updatePosition.bind(this);
     this._debounce = this._debounce.bind(this);
-    this._createMenu = this._debounce(this._createMenu.bind(this), this._debounceTimeout);
+    this.getDropdownMenu = this._debounce(this.getDropdownMenu.bind(this), this._debounceTimeout);
   }
 
   setVisible() {
@@ -24,51 +24,53 @@ class DropdownMenu {
   }
 
   setHidden() {
-    this._menu.style.display = 'none'
+    this._menu.style.display = 'none';
     this.isShown = false;
   }
 
   getDropdownMenu() {
     this.isChoosen = false;
-    return (event) => {
-      const term = event.target.value;
-      if (!term) {
-        this.setHidden();
-        return;
-      }
-      this._createMenu(term);
-    };
+    const term = this._input.value;
+    if (!term) {
+      this.setHidden();
+      return;
+    }
+    this._createMenu(term);
   }
 
   _createMenu(term) {
-    if (!this._menu) this._createMenuHTML();
+    if (!this._menu) {
+      this._menu = document.body.appendChild(this._createMenuHTML());
+    }
+    this._updatePosition();
     this._fetchItems(term).then(data => {
       this._menu.innerHTML = '';
       data.forEach(item => {
-        this._createMenuItemHTML(this.className + '-item', item, this._setInputValue.bind(this));
+        const menuItem = this._createMenuItemHTML(item);
+        menuItem.addEventListener('click', () => this._setInputValue(item));
+        this._menu.appendChild(menuItem);
       });
       if (data.length === 0) {
-        const item = 'Ничего не найдено';
-        this._createMenuItemHTML(this.className + '-item', item);
+        this._menu.appendChild(this._createMenuItemHTML('Ничего не найдено'));
       }
       this.setVisible();
     });
   }
 
   _createMenuHTML() {
-    this._menu = document.createElement('div');
-    this._menu.id = this.className;
-    this._menu.classList.add(this.className);
-    document.body.appendChild(this._menu);
-    this._updatePosition();
+    const div = document.createElement('div');
+    div.className = this.className;
+    div.textContent = '';
+    div.setAttribute('role', 'menu');
+    return div;
   }
 
-  _createMenuItemHTML(className, item, onClickFunc) {
+  _createMenuItemHTML(item, onClickFunc) {
     const div = document.createElement('div');
-    div.className = 'autocomplete-dropdown-item';
+    div.className = `${this.className}-item`;
     div.textContent = item;
-    if (onClickFunc) div.onclick = () => onClickFunc(item);
-    this._menu.appendChild(div);
+    div.setAttribute('role', 'menuitem');
+    return div;
   }
 
   _updatePosition() {
@@ -112,115 +114,26 @@ class DropdownMenu {
   }
 
   addEventListeners () {
-    window.addEventListener('resize', this._menu._updatePosition);
-    window.addEventListener('scroll', this._menu._updatePosition);
-    window.addEventListener('orientationchange', this._menu._updatePosition);
+    window.addEventListener('resize', this._updatePosition);
+    window.addEventListener('scroll', this._updatePosition);
+    window.addEventListener('orientationchange', this._updatePosition);
     document.addEventListener('click', function(event) {
-      if (event.target.closest(`#${this.className}, #${this._input.id}`)) return;
+      // if (event.target.closest(`#${this.className}, #${this._input.id}`)) return;
       if (this._menu) this._menu.setHidden();
     });
-    this._input._addEventListener('input', this.getDropdownMenu())
+    this._input.addEventListener('input', this.getDropdownMenu)
   }
 }
 
-const useInputSuggestions = () => {
+const useCitySuggestions = () => {
   const endpoint = '/orders/autocomplete/location/?term='
   const inputs = document.querySelectorAll('[data-autocomplete-url]');
   inputs.forEach(input => {
-    const dropdown = DropdownMenu(input, endpoint);
+    const dropdown = new DropdownMenu(input, endpoint);
     dropdown.addEventListeners()
   });
 }
 
-
-const useCitySuggestions = () => {
-  function updateDropdownPosition(input) {
-    const dropdown = input.dropdown
-    if (!input || !dropdown) return;
-    const rect = input.getBoundingClientRect();
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
-
-    dropdown.style.position = 'absolute';
-    dropdown.style.top = `${rect.bottom + scrollTop}px`;
-    dropdown.style.left = `${rect.left + scrollLeft}px`;
-    dropdown.style.width = `${rect.width}px`;
-  }
-
-  function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
-  }
-
-  function handleAutocomplete(input) {
-    input.dropdown = null; // Initialize dropdown as a property of the input element
-
-    const debouncedFetch = debounce(function (event) {
-      const term = event.target.value;
-      if (!term) {
-        if (input.dropdown) input.dropdown.style.display = 'none';
-        return;
-      }
-      fetch(
-        '/orders/autocomplete/location/?term=' + encodeURIComponent(term)
-      ).then(
-        response => response.json()
-      ).then(data => {
-        if (!input.dropdown) {
-          input.dropdown = document.createElement('div');
-          input.dropdown.id = 'autocomplete-dropdown';
-          input.dropdown.classList.add('autocomplete-dropdown');
-          document.body.appendChild(input.dropdown);
-          updateDropdownPosition(input);
-        }
-        input.dropdown.innerHTML = '';
-        data.forEach(item => {
-          const div = document.createElement('div');
-          div.className = 'autocomplete-dropdown-item';
-          div.textContent = item;
-          div.onclick = () => setCity(item, input);
-          input.dropdown.appendChild(div);
-        });
-        if (data.length === 0) {
-          const div = document.createElement('div');
-          div.className = 'autocomplete-dropdown-item';
-          div.textContent = 'Ничего не найдено';
-          input.dropdown.appendChild(div);
-        }
-        input.dropdown.style.display = 'flex';
-      }).catch(error => {
-        console.error('Error fetching autocomplete suggestions:', error);
-      });
-    }, 300);
-
-    window.setCity = function (item, cityInput) {
-      const dropdown = cityInput.dropdown;
-      cityInput.value = item;
-      if (dropdown) dropdown.style.display = 'none';
-    };
-
-    input.addEventListener('input', debouncedFetch);
-  }
-
-  const inputs = document.querySelectorAll('[data-autocomplete-url]');
-  inputs.forEach(input => {
-    window.addEventListener('resize', updateDropdownPosition.bind(null, input));
-    window.addEventListener('scroll', updateDropdownPosition.bind(null, input));
-    window.addEventListener('orientationchange', updateDropdownPosition.bind(null, input));
-    document.addEventListener('click', function(event) {
-      if (event.target.closest("#id_city, #autocomplete-dropdown")) return;
-      if (input.dropdown) input.dropdown.style.display = 'none';
-    });
-    handleAutocomplete(input);
-  });
-};
 
 const useOrderFormWithImages = () => {
   const popupOrder = new Popup("#popup-order");
