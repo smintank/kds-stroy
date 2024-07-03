@@ -73,7 +73,7 @@ class DropdownMenu {
   }
 
   _updatePosition() {
-    if (this._menu === '') return;
+    if (!this._menu) return;
     const rect = this._input.getBoundingClientRect();
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
