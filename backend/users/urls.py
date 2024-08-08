@@ -1,13 +1,15 @@
 from django.urls import path
 
-from users.views import (ChangePhoneNumberView, PhoneVerificationView,
-                         ProfileEditView, ProfileView)
+from users.views import (
+    ChangePhoneNumberView,
+    PhoneVerificationView,
+    ProfileView
+)
 
 app_name = "users"
 
 urlpatterns = [
     path("", ProfileView.as_view(), name="profile"),
-    path("edit/", ProfileEditView.as_view(), name="profile_edit"),
     path(
         "phone_verification/",
         PhoneVerificationView.as_view(),
