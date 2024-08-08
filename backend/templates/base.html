@@ -36,7 +36,7 @@
     {% include "includes/order_popup.html" with form=order_form %}
     {% include "includes/status_message_popup.html" %}
     {% include "includes/cookie_banner.html" %}
-    {% include "includes/promotion_banner.html" %}
+{#    {% include "includes/promotion_banner.html" %}#}
     {% if request.resolver_match.view_name == 'home' %}
         {% include "includes/news_subscribe_popup.html" %}
     {% endif %}
