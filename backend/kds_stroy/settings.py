@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "orders.apps.OrdersConfig",
     "main.apps.MainConfig",
     "ads_mailing.apps.AdsMailingConfig",
+    "locations.apps.LocationsConfig",
     "verify_email.apps.VerifyEmailConfig",
     "sass_processor",
     "django_ckeditor_5",
