@@ -14,6 +14,7 @@ from orders.messages import (NEW_ORDER_TG_MSG, PHOTO_AMOUNT_ERROR_MSG,
                              PHOTO_DUPLICATE_ERROR_MSG, PHOTO_EMPTY_ERROR_MSG,
                              PHOTO_FILE_TYPE_ERROR_MSG,
                              PHOTO_MAX_SIZE_ERROR_MSG)
+from users.utils.phone_number import format_phone_number
 
 User = get_user_model()
 
@@ -60,15 +61,6 @@ def get_proper_photo(photos: list) -> list:
         else:
             proper_photos[file_hash] = photo
     return list(proper_photos.values())
-
-
-def format_phone_number(phone: str) -> str:
-    """Format phone number to human-readable format."""
-    if phone[0] == '+':
-        phone = phone[1:]
-    if phone[0] in ['7', '8']:
-        phone = phone[1:]
-    return f'+7 ({phone[:3]}) {phone[3:6]}-{phone[6:8]}-{phone[8:]}'
 
 
 def format_comment(comment: str, length: int = 50) -> str:

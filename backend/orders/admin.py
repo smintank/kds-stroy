@@ -4,8 +4,9 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 from .models import Order, OrderPhoto, City
-from .utils import format_comment, format_datetime, format_phone_number
+from .utils import format_comment, format_datetime
 from .forms import OrderCreationForm
+from users.utils.phone_number import format_phone_number
 
 
 class OrderPhotoInline(admin.TabularInline):

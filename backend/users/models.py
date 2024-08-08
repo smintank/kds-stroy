@@ -3,6 +3,8 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from .utils.phone_number import clean_phone_number, format_phone_number
+
 
 class User(AbstractUser):
     first_name = models.CharField(

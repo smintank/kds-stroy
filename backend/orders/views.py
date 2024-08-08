@@ -32,7 +32,8 @@ class OrderContextMixin:
             self.request.session["order_id"] = None
             self.request.session["order_created"] = None
         login_form = AuthenticationForm()
-        context["login_form"] = login_form
+        if not self.request.user.is_authenticated:
+            context["login_form"] = login_form
         return context
 
     def render_to_response(self, context, **response_kwargs):
