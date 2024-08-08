@@ -144,17 +144,15 @@ class PhoneVerificationView(FormView):
         return super().form_invalid(form)
 
 
-class ProfileView(OrderContextMixin, DetailView):
+class ProfileView(OrderContextMixin, FormView):
     model = User
     template_name = "account/account.html"
     form_class = UserForm
 
-    def get_object(self, queryset=None):
-        return self.model.objects.get(pk=self.request.user.pk)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["profile"] = get_object_or_404(self.model, pk=self.request.user.pk)
+        context["profile"] = self.request.user
+        context["profile"].phone_number = self.request.user.formatted_phone_number
         context["form"] = self.form_class(instance=context["profile"])
 
         orders_with_photos = Order.objects.filter(
@@ -163,7 +161,7 @@ class ProfileView(OrderContextMixin, DetailView):
             Prefetch("orderphoto_set", queryset=OrderPhoto.objects.all(), to_attr="photos")
         )
         context["orders"] = orders_with_photos
-        context["MEDIA_URL"] = MEDIA_URL
+        # context["MEDIA_URL"] = MEDIA_URL
         return context
 
     def post(self, request, *args, **kwargs):
