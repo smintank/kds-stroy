@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+    {% extends 'base.html' %}
 {% load static %}
 {% load widget_tweaks %}
 {% block title %}КДС-Строй: Личный кабинет{% endblock %}
@@ -11,47 +11,37 @@
     <section class="account">
         <div class="container account__container">
             <h2 class="account__title">Личный кабинет</h2>
-            <form class="account__form" id="formAccount">
+            <form method="post" action="{% url 'users:profile' %}" class="account__form" id="formAccount" enctype="multipart/form-data">
                 <div class="account__data">
                     <p class="account__data-text account__data-text--date">Дата регистрации: {{ profile.date_joined }}</p>
                     <p class="account__data-text">Login: {{ profile }}</p>
                     <a class="account__data-link" href="{% url 'password_change' %}">Изменить пароль</a>
                 </div>
                 <div class="account__form-container">
-                  <form method="post" action="{% url 'registration' %}" enctype="multipart/form-data" class="register__form">
-                    <div class="register__form-container">
-                      {% csrf_token %}
-                      {% for field in form %}
-                        {{ field|add_class:"account__form-input" }}
-                        {% if field.errors %}<p>{{ field.errors }}</p>{% endif %}
-                      {% endfor %}
-                        {% if error %}<p>{{ error }}</p>{% endif %}
+                    {% csrf_token %}
+                    {{ form.first_name|add_class:"account__form-input" }}
+                    <div class="account__row account__row--name">
+                        {{ form.last_name|add_class:"account__form-input" }}
+                        {{ form.middle_name|add_class:"account__form-input" }}
                     </div>
-                  </form>
+                    <div class="account__row account__row--contacts">
+                        {{ form.phone_number|add_class:"account__form-input" }}
+                        {{ form.email|add_class:"account__form-input" }}
+                    </div>
+                    <div class="account__row account__row--location">
+                        {{ form.region|add_class:"account__form-input" }}
+                        {{ form.city|add_class:"account__form-input account__form-input--wide" }}
+                    </div>
+                    {{ form.address|add_class:"account__form-input" }}
                 </div>
-{#                    <input class="account__form-input" type="text" name="name" placeholder="Имя*" required>#}
-{#                    <div class="account__row account__row--name">#}
-{#                        <input class="account__form-input" type="text" name="surname" placeholder="Фамилия">#}
-{#                        <input class="account__form-input" type="text" name="second-surname" placeholder="Отчество">#}
-{#                    </div>#}
-{#                    <div class="account__row account__row--contacts">#}
-{#                        <input class="account__form-input" type="tel" name="tel" placeholder="Телефон*" required>#}
-{#                        <input class="account__form-input" type="email" name="email" placeholder="E-mail*" required>#}
-{#                    </div>#}
-{#                    <div class="account__row account__row--location">#}
-{#                        <input class="account__form-input" type="text" name="region" placeholder="Регион">#}
-{#                        <input class="account__form-input" type="text" name="city" placeholder="Город">#}
-{#                    </div>#}
-{#                    <input class="account__form-input account__form-input--wide" type="text" name="address" placeholder="Адрес">#}
-{#                </div>#}
                 <label class="account__form-agreement checkbox">
-                    <input type="checkbox" name="account-checkbox">
-                    <span class="checkmark"></span> Соглашаюсь получать письма на свой электронный адрес об акциях и новостях компании.
+                    {{ form.is_notify }}
+                    <span class="checkmark"></span>
+                    Соглашаюсь получать письма на свой электронный адрес об акциях и новостях компании.
                 </label>
                 <div class="account__form-buttons">
                     <button class="account__form-button-delete" type="button">Удалить аккаунт</button>
-                    <button class="account__form-button-edit button" type="button">Редактировать</button>
-                    <button disabled class="account__form-button-save account__form-button-save--disabled button" type="submit">Сохранить</button>
+                    <button class="account__form-button-save account__form-button-save button" type="submit">Сохранить</button>
                 </div>
             </form>
         </div>

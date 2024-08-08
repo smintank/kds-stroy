@@ -32,12 +32,14 @@ class User(AbstractUser):
         "orders.City",
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         verbose_name="Город проживания",
     )
     address = models.ForeignKey(
         "orders.Address",
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         verbose_name="Адрес проживания",
     )
     is_notify = models.BooleanField(
