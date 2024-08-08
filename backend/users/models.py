@@ -29,14 +29,14 @@ class User(AbstractUser):
     is_phone_verified = models.BooleanField("Телефон подтвержден",
                                             default=False)
     city = models.ForeignKey(
-        "orders.City",
+        "locations.City",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         verbose_name="Город проживания",
     )
     address = models.ForeignKey(
-        "orders.Address",
+        "locations.Address",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

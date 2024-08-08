@@ -3,8 +3,9 @@ import re
 from django import forms
 
 from .messages import PHONE_MAX_LENGTH_ERROR_MSG, PHONE_MIN_LENGTH_ERROR_MSG
-from .models import City, District, Order, OrderPhoto, Region
+from .models import Order, OrderPhoto
 from .utils import handle_order_photos
+from locations.models import City, District, Region
 
 
 class LocationAutocompleteField(forms.CharField):
@@ -33,7 +34,7 @@ class LocationAutocompleteField(forms.CharField):
     def widget_attrs(self, widget):
         attrs = super().widget_attrs(widget)
         attrs['id'] = 'orderCity'
-        attrs['autocomplete-url'] = '/orders/autocomplete/location/'
+        attrs['autocomplete-url'] = '/locations/autocomplete/'
         attrs["class"] = "order__form-input"
         attrs["placeholder"] = "Город"
         attrs["autocomplete"] = "address-level2"

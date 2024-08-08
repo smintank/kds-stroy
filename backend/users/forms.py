@@ -3,8 +3,8 @@ import re
 from django import forms
 from django.contrib.auth import get_user_model
 
-from orders.models import City, Region, District
 from users.models import PhoneVerification
+from locations.models import City, District, Region
 
 User = get_user_model()
 
@@ -35,7 +35,7 @@ class LocationAutocompleteField(forms.CharField):
     def widget_attrs(self, widget):
         attrs = super().widget_attrs(widget)
         attrs['id'] = 'accountCity'
-        attrs['autocomplete-url'] = '/orders/autocomplete/location/'
+        attrs['autocomplete-url'] = '/locations/autocomplete'
         attrs["class"] = "city-input"
         attrs["placeholder"] = "Город"
         attrs["autocomplete"] = "address-level2"

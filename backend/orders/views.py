@@ -1,9 +1,7 @@
 import logging
-from urllib.parse import quote_plus
 
 from django.conf import settings
 from django.contrib.auth.forms import AuthenticationForm
-from django.core.cache import cache
 from django.http import JsonResponse
 from django.views import View
 from django.views.generic import DetailView
@@ -12,7 +10,7 @@ from .forms import OrderCreationForm
 from .messages import ERROR_ORDER_CREATION_MSG as ERROR_MSG
 from .messages import SUCCESS_ORDER_CREATION_MSG as SUCCESS_MSG
 from .messages import SUCCESS_ORDER_CREATION_SUB_MSG as SUCCESS_TXT
-from .models import City, Order, OrderPhoto
+from .models import Order, OrderPhoto
 from .tasks import send_telegram_message_async
 from .utils import get_notified_users, get_order_message
 
@@ -84,21 +82,3 @@ class OrderDetailView(DetailView):
         context["photos"] = OrderPhoto.objects.filter(order=self.object)
         context["MEDIA_URL"] = settings.MEDIA_URL
         return context
-
-
-class LocationAutocompleteView(View):
-    def get(self, request):
-        text_input = request.GET.get('term', '').strip().replace(", ", ",")
-        if not text_input:
-            return JsonResponse([], safe=False)
-
-        city_name = text_input.split()[-1]
-        cache_key = f'autocomplete:{quote_plus(city_name)}'
-        suggestions = cache.get(cache_key)
-
-        if suggestions is None:
-            cities = City.objects.filter(name__icontains=city_name)[:15]
-            suggestions = [str(city) for city in cities]
-            cache.set(cache_key, suggestions, timeout=60 * 5)
-
-        return JsonResponse(suggestions, safe=False)
