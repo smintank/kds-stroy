@@ -5,40 +5,6 @@ from django import forms
 from .messages import PHONE_MAX_LENGTH_ERROR_MSG, PHONE_MIN_LENGTH_ERROR_MSG
 from .models import Order, OrderPhoto
 from .utils import handle_order_photos
-from locations.models import City, District, Region
-
-
-class LocationAutocompleteField(forms.CharField):
-    def __init__(self, *args, **kwargs):
-        self.model_mapping = {
-            'region': Region,
-            'district': District,
-            'city': City,
-        }
-        super().__init__(*args, **kwargs)
-
-    def get_suggestions(self, value):
-        suggestions = []
-        for model_name, model in self.model_mapping.items():
-            queryset = model.objects.filter(name__icontains=value)
-            if queryset.exists():
-                suggestions.extend(queryset.values_list('name', flat=True))
-        return suggestions
-
-    def clean(self, value):
-        if not value:
-            return value
-        value = value.split(", ")[-1].split()[-1]
-        return City.objects.filter(name=value).first()
-
-    def widget_attrs(self, widget):
-        attrs = super().widget_attrs(widget)
-        attrs['id'] = 'orderCity'
-        attrs['autocomplete-url'] = '/locations/autocomplete/'
-        attrs["class"] = "order__form-input"
-        attrs["placeholder"] = "Город"
-        attrs["autocomplete"] = "address-level2"
-        return attrs
 
 
 class MultipleFileInput(forms.ClearableFileInput):
@@ -53,12 +19,10 @@ class MultipleFileField(forms.FileField):
 
 class OrderCreationForm(forms.ModelForm):
     photo = MultipleFileField(label="Фото", required=False)
-    city = LocationAutocompleteField(required=False)
 
     class Meta:
         model = Order
-        fields = ["first_name", "phone_number", "city", "address", "comment",
-                  "photo"]
+        fields = ["first_name", "phone_number", "city", "address", "comment", "photo"]
         widgets = {
             "phone_number": forms.TextInput(
                 attrs={
@@ -75,6 +39,15 @@ class OrderCreationForm(forms.ModelForm):
                     "placeholder": "Имя*",
                     "autocomplete": "given-name",
                     "class": "order__form-input",
+                }
+            ),
+            "city": forms.TextInput(
+                attrs={
+                    "id": "orderCity",
+                    "autocomplete-url": "/locations/autocomplete/",
+                    "class": "order__form-input",
+                    "placeholder": "Город",
+                    "autocomplete": "address-level2",
                 }
             ),
             "address": forms.TextInput(
