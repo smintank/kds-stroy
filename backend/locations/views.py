@@ -19,7 +19,7 @@ class LocationAutocompleteView(View):
 
         if suggestions is None:
             cities = City.objects.filter(name__icontains=city_name)[:15]
-            suggestions = [str(city) for city in cities]
+            suggestions = [[city.id, str(city)] for city in cities]
             cache.set(cache_key, suggestions, timeout=60 * 5)
 
         return JsonResponse(suggestions, safe=False)
