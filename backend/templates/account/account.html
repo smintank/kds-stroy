@@ -1,5 +1,6 @@
-{% extends 'base.html' %}
+    {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 {% block title %}КДС-Строй: Личный кабинет{% endblock %}
 {% block plug_js_css %}
     <script type="module" crossorigin src="{% static 'js/pages/account-page.js' %}"></script>
@@ -10,36 +11,37 @@
     <section class="account">
         <div class="container account__container">
             <h2 class="account__title">Личный кабинет</h2>
-            <form class="account__form" id="formAccount">
+            <form method="post" action="{% url 'users:profile' %}" class="account__form" id="formAccount" enctype="multipart/form-data">
                 <div class="account__data">
-                    <p class="account__data-text account__data-text--date">Дата регистрации {{ user.created_at }}</p>
-                    <p class="account__data-text">Login: {{ user.user_id }}</p>
+                    <p class="account__data-text account__data-text--date">Дата регистрации: {{ profile.date_joined }}</p>
+                    <p class="account__data-text">Login: {{ profile }}</p>
                     <a class="account__data-link" href="{% url 'password_change' %}">Изменить пароль</a>
                 </div>
                 <div class="account__form-container">
-                    <input class="account__form-input" type="text" name="name" placeholder="Имя*" required>
+                    {% csrf_token %}
+                    {{ form.first_name|add_class:"account__form-input" }}
                     <div class="account__row account__row--name">
-                        <input class="account__form-input" type="text" name="surname" placeholder="Фамилия">
-                        <input class="account__form-input" type="text" name="second-surname" placeholder="Отчество">
+                        {{ form.last_name|add_class:"account__form-input" }}
+                        {{ form.middle_name|add_class:"account__form-input" }}
                     </div>
                     <div class="account__row account__row--contacts">
-                        <input class="account__form-input" type="tel" name="tel" placeholder="Телефон*" required>
-                        <input class="account__form-input" type="email" name="email" placeholder="E-mail*" required>
+                        {{ form.phone_number|add_class:"account__form-input" }}
+                        {{ form.email|add_class:"account__form-input" }}
                     </div>
                     <div class="account__row account__row--location">
-                        <input class="account__form-input" type="text" name="region" placeholder="Регион">
-                        <input class="account__form-input" type="text" name="city" placeholder="Город">
+                        {{ form.region|add_class:"account__form-input" }}
+                        {{ form.city|add_class:"account__form-input account__form-input--wide" }}
                     </div>
-                    <input class="account__form-input account__form-input--wide" type="text" name="address" placeholder="Адрес">
+                    {{ form.address|add_class:"account__form-input" }}
                 </div>
                 <label class="account__form-agreement checkbox">
-                    <input type="checkbox" name="account-checkbox">
-                    <span class="checkmark"></span> Соглашаюсь получать письма на свой электронный адрес об акциях и новостях компании.
+                    {{ form.is_notify }}
+                    <span class="checkmark"></span>
+                    Соглашаюсь получать письма на свой электронный адрес об акциях и новостях компании.
                 </label>
                 <div class="account__form-buttons">
                     <button class="account__form-button-delete" type="button">Удалить аккаунт</button>
-                    <button class="account__form-button-edit button" type="button">Редактировать</button>
-                    <button disabled class="account__form-button-save account__form-button-save--disabled button" type="submit">Сохранить</button>
+                    <button class="account__form-button-save account__form-button-save button" type="submit">Сохранить</button>
                 </div>
             </form>
         </div>
@@ -73,14 +75,14 @@
                     <div class="applications__list-item-photos">
                         <ul class="applications__list-item-photos-list">
                             <li class="applications__list-item-photo">
-                                <a href="{% static 'img/slider-repairs_1-CtSvx8MV.jpg' %}" data-fancybox="application-1">
+                                <a href="{% static 'img/decoration-DJa75fdA.jpg' %}" data-fancybox="application-1">
                                     <span class="applications__list-item-photos-count">5</span>
-                                    <img src="{% static 'img/slider-repairs_1-CtSvx8MV.jpg' %}" alt="изображение слайда">
+                                    <img src="{% static 'img/decoration-DJa75fdA.jpg' %}" alt="изображение слайда">
                                 </a>
                             </li>
                             <li class="applications__list-item-photo">
-                                <a href="{% static 'img/slider-repairs_1-CtSvx8MV.jpg' %}" data-fancybox="application-1">
-                                    <img src="{% static 'img/slider-repairs_1-CtSvx8MV.jpg' %}" alt="изображение слайда">
+                                <a href="{% static 'img/decoration-DJa75fdA.jpg' %}" data-fancybox="application-1">
+                                    <img src="{% static 'img/decoration-DJa75fdA.jpg' %}" alt="изображение слайда">
                                 </a>
                             </li>
                         </ul>
@@ -103,14 +105,14 @@
                     <div class="applications__list-item-photos">
                         <ul class="applications__list-item-photos-list">
                             <li class="applications__list-item-photo">
-                                <a href="{% static 'img/slider-repairs_2-CmJH2yaQ.jpg' %}" data-fancybox="application-2">
+                                <a href="{% static 'img/decoration-DJa75fdA.jpg' %}" data-fancybox="application-2">
                                     <span class="applications__list-item-photos-count">5</span>
-                                    <img src="{% static 'img/slider-repairs_2-CmJH2yaQ.jpg' %}" alt="изображение слайда">
+                                    <img src="{% static 'img/decoration-DJa75fdA.jpg' %}" alt="изображение слайда">
                                 </a>
                             </li>
                             <li class="applications__list-item-photo">
-                                <a href="{% static 'img/slider-repairs_2-CmJH2yaQ.jpg' %}" data-fancybox="application-2">
-                                    <img src="{% static 'img/slider-repairs_2-CmJH2yaQ.jpg' %}" alt="изображение слайда">
+                                <a href="{% static 'img/decoration-DJa75fdA.jpg' %}" data-fancybox="application-2">
+                                    <img src="{% static 'img/decoration-DJa75fdA.jpg' %}" alt="изображение слайда">
                                 </a>
                             </li>
                         </ul>
@@ -132,14 +134,14 @@
                     <div class="applications__list-item-photos">
                         <ul class="applications__list-item-photos-list">
                             <li class="applications__list-item-photo">
-                                <a href=".{% static 'img/slider-repairs_3-qdjkkuhA.jpg' %}" data-fancybox="application-3">
+                                <a href=".{% static 'img/decoration-DJa75fdA.jpg' %}" data-fancybox="application-3">
                                     <span class="applications__list-item-photos-count">5</span>
-                                    <img src="{% static 'img/slider-repairs_3-qdjkkuhA.jpg' %}" alt="изображение слайда">
+                                    <img src="{% static 'img/decoration-DJa75fdA.jpg' %}" alt="изображение слайда">
                                 </a>
                             </li>
                             <li class="applications__list-item-photo">
-                                <a href="{% static 'img/slider-repairs_3-qdjkkuhA.jpg' %}" data-fancybox="application-3">
-                                    <img src="{% static 'img/slider-repairs_3-qdjkkuhA.jpg' %}" alt="изображение слайда">
+                                <a href="{% static 'img/decoration-DJa75fdA.jpg' %}" data-fancybox="application-3">
+                                    <img src="{% static 'img/decoration-DJa75fdA.jpg' %}" alt="изображение слайда">
                                 </a>
                             </li>
                         </ul>

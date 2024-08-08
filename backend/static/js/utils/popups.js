@@ -83,16 +83,17 @@ class PromotionPopup {
 }
 
 const popupMessage = new MessagePopup("#popup-message");
+if (document.querySelector("#popup-message")) popupMessage.setEventListeners();
+
 const promotionPopup = new PromotionPopup("#popup-promotion");
 
-promotionPopup.setEventListeners();
-popupMessage.setEventListeners();
-
 const usePromotionPopup = () => {
+  if (document.querySelector("#popup-promotion")) {
     if (getCookie("promo_popup_hide") === 'true') {
-    promotionPopup.close();
-  } else {
-    promotionPopup.open();
+      promotionPopup.close();
+    } else {
+      promotionPopup.open();
+    }
   }
 };
 

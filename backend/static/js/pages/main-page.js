@@ -6,6 +6,7 @@ import { uOP as useOrderPopup} from "../utils/orders.js";
 import { u as useShowcaseModal } from "../utils/showcase-modal.js";
 import { u as useProjectsRepairsSlider, a as useProjectsBigsSlider, b as useReviewsSlider } from "../utils/sliders.js";
 import { u as useInputPhoneMask } from "../utils/input-phone-mask.js";
+import { Au as useAuthPopup } from "../utils/auth.js";
 
 
 const useEmailSubscription = () => {
@@ -137,6 +138,7 @@ addEventListener("DOMContentLoaded", () => {
   useCookieBanner();
   useEmailSubscription();
   usePromotionPopup();
+  useAuthPopup();
 });
 
 

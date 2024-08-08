@@ -32,7 +32,8 @@ class LocationAutocompleteField(forms.CharField):
 
     def widget_attrs(self, widget):
         attrs = super().widget_attrs(widget)
-        attrs['data-autocomplete-url'] = 'orders/autocomplete/location/'
+        attrs['id'] = 'orderCity'
+        attrs['autocomplete-url'] = '/orders/autocomplete/location/'
         attrs["class"] = "order__form-input"
         attrs["placeholder"] = "Город"
         attrs["autocomplete"] = "address-level2"
@@ -60,6 +61,7 @@ class OrderCreationForm(forms.ModelForm):
         widgets = {
             "phone_number": forms.TextInput(
                 attrs={
+                    "id": "order_phone_number",
                     "type": "tel",
                     "autocomplete": "tel",
                     "class": "order__form-input",
@@ -68,6 +70,7 @@ class OrderCreationForm(forms.ModelForm):
             ),
             "first_name": forms.TextInput(
                 attrs={
+                    "id": "order_first_name",
                     "placeholder": "Имя*",
                     "autocomplete": "given-name",
                     "class": "order__form-input",

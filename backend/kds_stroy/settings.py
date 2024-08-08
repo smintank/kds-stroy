@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "verify_email.apps.VerifyEmailConfig",
     "sass_processor",
     "django_ckeditor_5",
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

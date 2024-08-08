@@ -5,6 +5,7 @@ import {
 } from "../utils/base.js";
 import { c as useSingleNewsSlider } from "../utils/sliders.js";
 import {uPP as usePromotionPopup} from "../utils/popups.js";
+import { Au as useAuthPopup } from "../utils/auth.js";
 
 addEventListener("DOMContentLoaded", () => {
   useBurger();
@@ -13,4 +14,5 @@ addEventListener("DOMContentLoaded", () => {
   useCookieBanner();
   usePromotionPopup();
   useOrderPopup();
+  useAuthPopup();
 });

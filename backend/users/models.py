@@ -3,6 +3,8 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from .utils.phone_number import clean_phone_number, format_phone_number
+
 
 class User(AbstractUser):
     first_name = models.CharField(
@@ -26,10 +28,18 @@ class User(AbstractUser):
     )
     is_phone_verified = models.BooleanField("Телефон подтвержден",
                                             default=False)
+    city = models.ForeignKey(
+        "orders.City",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Город проживания",
+    )
     address = models.ForeignKey(
         "orders.Address",
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         verbose_name="Адрес проживания",
     )
     is_notify = models.BooleanField(
@@ -50,6 +60,8 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ["first_name", "username", "phone_number"]
 
     def save(self, *args, **kwargs):
+        if self.phone_number:
+            self.phone_number = clean_phone_number(self.phone_number)
         if not self.id:
             is_unique = False
             while not is_unique:
@@ -59,6 +71,10 @@ class User(AbstractUser):
                     is_unique = True
                     self.username = unique_username
         super().save(*args, **kwargs)
+
+    @property
+    def formatted_phone_number(self):
+        return format_phone_number(self.phone_number)
 
     def __str__(self):
         return f"{self.email}"

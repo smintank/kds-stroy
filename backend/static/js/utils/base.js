@@ -1,3 +1,5 @@
+import {dM as DropdownMenu} from "./dropdown-menu.js";
+
 function setCookie(name, value, days, path, domain, secure) {
     let expires = "";
 
@@ -62,10 +64,17 @@ const useHeaderOnScroll = (isOff) => {
   });
 };
 
+const useCitySuggestions = () => {
+  document.querySelectorAll(".city-input").forEach(input => {
+    new DropdownMenu(input);
+  });
+};
+
 export {
   useHeaderOnScroll as a,
   useBurger as u,
   setCookie as sC,
   getCookie as gC,
-  useCookieBanner as c
+  useCookieBanner as c,
+  useCitySuggestions as uCS
 };

@@ -2,6 +2,7 @@ import logging
 from urllib.parse import quote_plus
 
 from django.conf import settings
+from django.contrib.auth.forms import AuthenticationForm
 from django.core.cache import cache
 from django.http import JsonResponse
 from django.views import View
@@ -30,8 +31,9 @@ class OrderContextMixin:
                                       Order.Status.CANCELED]:
             self.request.session["order_id"] = None
             self.request.session["order_created"] = None
-        # login_form = AuthenticationForm()
-        # context["login_form"] = login_form
+        login_form = AuthenticationForm()
+        if not self.request.user.is_authenticated:
+            context["login_form"] = login_form
         return context
 
     def render_to_response(self, context, **response_kwargs):

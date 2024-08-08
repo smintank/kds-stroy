@@ -4,25 +4,25 @@ from django.contrib.auth import get_user_model
 from django.db.models import Prefetch
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import DetailView, FormView, UpdateView
+from django.views.generic import FormView
 
 from kds_stroy.settings import MEDIA_URL, PHONE_VERIFICATION_TIME_LIMIT
 from orders.models import Order, OrderPhoto
+from orders.views import OrderContextMixin
 from users.forms import (ChangePhoneNumberForm, PhoneVerificationForm,
                          UserForm, UserRegistrationForm)
 
 from .models import PhoneVerification
-from .utils import (call_api_process, is_limited, is_numbers_amount_limit,
-                    is_phone_change_limit, phone_validation_prepare)
+from .utils.base import (call_api_process, is_limited, is_numbers_amount_limit,
+                         is_phone_change_limit, phone_validation_prepare)
 
 User = get_user_model()
 
 logger = logging.getLogger(__name__)
 
 
-class RegistrationView(FormView):
+class RegistrationView(OrderContextMixin, FormView):
     template_name = "account/register.html"
     form_class = UserRegistrationForm
     success_url = "/registration_done/"
@@ -144,54 +144,29 @@ class PhoneVerificationView(FormView):
         return super().form_invalid(form)
 
 
-class ProfileView(DetailView):
+class ProfileView(OrderContextMixin, FormView):
     model = User
     template_name = "account/account.html"
     form_class = UserForm
 
-    def get_object(self, queryset=None):
-        return self.model.objects.get(pk=self.request.user.pk)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["profile"] = get_object_or_404(self.model,
-                                               pk=self.request.user.pk)
+        context["profile"] = self.request.user
+        context["profile"].phone_number = self.request.user.formatted_phone_number
         context["form"] = self.form_class(instance=context["profile"])
 
         orders_with_photos = Order.objects.filter(
             phone_number=self.request.user.phone_number
         ).prefetch_related(
-            Prefetch(
-                "orderphoto_set",
-                queryset=OrderPhoto.objects.all(),
-                to_attr="photos"
-            )
+            Prefetch("orderphoto_set", queryset=OrderPhoto.objects.all(), to_attr="photos")
         )
         context["orders"] = orders_with_photos
-        context["MEDIA_URL"] = MEDIA_URL
+        # context["MEDIA_URL"] = MEDIA_URL
         return context
 
-
-class ProfileEditView(UpdateView):
-    model = User
-    form_class = UserForm
-    template_name = "pages/profile_edit.html"
-    success_url = reverse_lazy("users:profile")
-
-    def get_object(self, queryset=None):
-        return self.model.objects.get(pk=self.request.user.pk)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["profile"] = get_object_or_404(self.model,
-                                               pk=self.request.user.pk)
-        context["form"] = self.form_class(instance=context["profile"])
-        return context
-
-    def form_valid(self, form):
-        if "phone_number" in form.changed_data:
-            form.changed_data.remove("phone_number")
-        if "email" in form.changed_data:
-            user = form.save(commit=False)
-            user.is_email_verified = False
-        return super().form_valid(form)
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("users:profile")
+        return render(request, self.template_name, {"form": form})

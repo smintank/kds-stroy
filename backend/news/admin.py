@@ -8,7 +8,8 @@ from .models import News, Category, NewsPhoto
 class RequiredInlineFormSet(BaseInlineFormSet):
     def clean(self):
         super().clean()
-        if any(form.cleaned_data and not form.cleaned_data.get('DELETE', False) for form in self.forms):
+        if any(form.cleaned_data and not form.cleaned_data.get('DELETE', False)
+               for form in self.forms):
             return
         raise ValidationError('Добавьте хотя бы одно изображение.')
 

@@ -1,8 +1,45 @@
 import re
 
 from django import forms
+from django.contrib.auth import get_user_model
 
-from users.models import PhoneVerification, User
+from orders.models import City, Region, District
+from users.models import PhoneVerification
+
+User = get_user_model()
+
+
+class LocationAutocompleteField(forms.CharField):
+    def __init__(self, *args, **kwargs):
+        self.model_mapping = {
+            'region': Region,
+            'district': District,
+            'city': City,
+        }
+        super().__init__(*args, **kwargs)
+
+    def get_suggestions(self, value):
+        suggestions = []
+        for model_name, model in self.model_mapping.items():
+            queryset = model.objects.filter(name__icontains=value)
+            if queryset.exists():
+                suggestions.extend(queryset.values_list('name', flat=True))
+        return suggestions
+
+    def clean(self, value):
+        if not value:
+            return None
+        value = value.split(", ")[-1].split()[-1]
+        return City.objects.filter(name=value).first()
+
+    def widget_attrs(self, widget):
+        attrs = super().widget_attrs(widget)
+        attrs['id'] = 'accountCity'
+        attrs['autocomplete-url'] = '/orders/autocomplete/location/'
+        attrs["class"] = "city-input"
+        attrs["placeholder"] = "Город"
+        attrs["autocomplete"] = "address-level2"
+        return attrs
 
 
 class UserRegistrationForm(forms.ModelForm):
@@ -103,6 +140,8 @@ class UserRegistrationForm(forms.ModelForm):
 
 
 class UserForm(forms.ModelForm):
+    city = LocationAutocompleteField(required=False)
+
     class Meta:
         model = User
         fields = (
@@ -111,6 +150,10 @@ class UserForm(forms.ModelForm):
             "middle_name",
             "email",
             "phone_number",
+            # "region",
+            "city",
+            "address",
+            "is_notify",
         )
         widgets = {
             "phone_number": forms.TextInput(

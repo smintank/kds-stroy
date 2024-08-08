@@ -16,3 +16,7 @@ class MainView(OrderContextMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context["subscribe_form"] = SubscribeForm()
         return context
+
+
+class TermsView(OrderContextMixin, TemplateView):
+    template_name = "pages/personal_terms.html"

@@ -24,8 +24,8 @@ class BaseModel(models.Model):
 
 class PublishManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(is_published=True,
-                                             published_date__lte=timezone.now())
+        return super().get_queryset().filter(
+            is_published=True, published_date__lte=timezone.now())
 
 
 class Category(BaseModel):
@@ -59,7 +59,8 @@ class News(BaseModel):
         User, on_delete=models.CASCADE, verbose_name="Автор"
     )
     category = models.ForeignKey(
-        Category, on_delete=models.SET_NULL, verbose_name="Категория", null=True
+        Category, on_delete=models.SET_NULL,
+        verbose_name="Категория", null=True
     )
 
     objects = models.Manager()
@@ -77,7 +78,8 @@ class NewsPhoto(models.Model):
     news = models.ForeignKey(
         News, on_delete=models.CASCADE, related_name="photos"
     )
-    photo = models.ImageField(upload_to="news_photos/", blank=False, null=False)
+    photo = models.ImageField(upload_to="news_photos/",
+                              blank=False, null=False)
 
     def photo_preview(self):
         if self.photo:
