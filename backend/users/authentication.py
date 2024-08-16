@@ -15,8 +15,6 @@ class EmailPhoneUsernameBackend(ModelBackend):
             re.search(r"^\+7 \(\d{3}\) \d{3}\-\d{2}\-\d{2}$|^\+\d{9,15}$",
                       username)
         ):
-            # Check if the input is a phone number
-            # regex finds '+7 (999) 999-99-99' or '1999999999999' patterns
             username = re.sub(r"\D", "", username)
             try:
                 user = User.objects.get(phone_number=username)
@@ -28,12 +26,6 @@ class EmailPhoneUsernameBackend(ModelBackend):
                 user = User.objects.get(email=username.lower())
             except User.DoesNotExist:
                 return None
-        # elif username.startswith("user-"):
-        #     # Check if the input is a username
-        #     try:
-        #         user = User.objects.get(username=username.capitalize())
-        #     except User.DoesNotExist:
-        #         return None
         else:
             return None
 

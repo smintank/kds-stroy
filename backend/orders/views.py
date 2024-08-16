@@ -18,20 +18,20 @@ from .utils import get_notified_users, get_order_message
 logger = logging.getLogger(__name__)
 
 
-class OrderContextMixin:
+class ContextMixin:
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["order_form"] = OrderCreationForm()
 
         order_id = self.request.session.get("order_id")
         order = Order.objects.filter(order_id=order_id).first()
-        if order and order.status in [Order.Status.COMPLETED,
-                                      Order.Status.CANCELED]:
+        # order = Order.objects.get(order_id=order_id) if order_id else None
+        if order and order.status in [Order.Status.COMPLETED, Order.Status.CANCELED]:
             self.request.session["order_id"] = None
             self.request.session["order_created"] = None
-        login_form = AuthenticationForm()
+
         if not self.request.user.is_authenticated:
-            context["login_form"] = login_form
+            context["login_form"] = AuthenticationForm()
         return context
 
     def render_to_response(self, context, **response_kwargs):
