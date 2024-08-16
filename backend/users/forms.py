@@ -107,60 +107,11 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = (
-            "first_name",
-            "last_name",
-            "middle_name",
-            "email",
-            "phone_number",
-            # "region",
-            "city",
-            "address",
-            "is_notify",
+            "first_name", "last_name", "middle_name", "email", "phone_number", "city", "address", "is_notify",
         )
         widgets = {
-            "phone_number": forms.TextInput(
-                attrs={
-                    "type": "tel",
-                    "autocomplete": "tel",
-                    # "placeholder": "Номер телефона*",
-                    "data-tel-input": "",
-                }
-            ),
-            "email": forms.TextInput(
-                attrs={
-                    # "placeholder": "Электронная почта*",
-                    "type": "email",
-                    "autocomplete": "email",
-                }
-            ),
-            "first_name": forms.TextInput(
-                attrs={
-                    "placeholder": "Имя*",
-                    "autocomplete": "given-name",
-                }
-            ),
-            "last_name": forms.TextInput(
-                attrs={
-                    "autocomplete": "family-name",
-                }
-            ),
-            "middle_name": forms.TextInput(
-                attrs={
-                    "autocomplete": "additional-name",
-                }
-            ),
-            "city": forms.TextInput(
-                attrs={
-                    "autocomplete-url": "/locations/autocomplete/",
-                    "autocomplete": "address-level2",
-                    "class": "city-input",
-                    "id": "accountCity",
-                }
-            ),
-            "address": forms.TextInput(
-                attrs={
-                    "autocomplete": "street-address"}
-            ),
+            "city": forms.TextInput(),
+            "address": forms.TextInput(),
         }
 
     def __init__(self, *args, **kwargs):
