@@ -4,42 +4,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 
 from users.models import PhoneVerification
-from locations.models import City, District, Region
 
 User = get_user_model()
-
-
-class LocationAutocompleteField(forms.CharField):
-    def __init__(self, *args, **kwargs):
-        self.model_mapping = {
-            'region': Region,
-            'district': District,
-            'city': City,
-        }
-        super().__init__(*args, **kwargs)
-
-    def get_suggestions(self, value):
-        suggestions = []
-        for model_name, model in self.model_mapping.items():
-            queryset = model.objects.filter(name__icontains=value)
-            if queryset.exists():
-                suggestions.extend(queryset.values_list('name', flat=True))
-        return suggestions
-
-    def clean(self, value):
-        if not value:
-            return None
-        value = value.split(", ")[-1].split()[-1]
-        return City.objects.filter(name=value).first()
-
-    def widget_attrs(self, widget):
-        attrs = super().widget_attrs(widget)
-        attrs['id'] = 'accountCity'
-        attrs['autocomplete-url'] = '/locations/autocomplete'
-        attrs["class"] = "city-input"
-        attrs["placeholder"] = "Город"
-        attrs["autocomplete"] = "address-level2"
-        return attrs
 
 
 class UserRegistrationForm(forms.ModelForm):
@@ -92,7 +58,6 @@ class UserRegistrationForm(forms.ModelForm):
             "last_name": forms.TextInput(
                 attrs={
                     "class": "register__form-input",
-                    "text-name-input": "true",
                     "autocomplete": "family-name",
                     "placeholder": "Фамилия",
                 }
@@ -100,7 +65,6 @@ class UserRegistrationForm(forms.ModelForm):
             "first_name": forms.TextInput(
                 attrs={
                     "class": "register__form-input",
-                    "text-name-input": "true",
                     "autocomplete": "given-name",
                     "placeholder": "Имя*",
                 }
@@ -108,7 +72,6 @@ class UserRegistrationForm(forms.ModelForm):
             "middle_name": forms.TextInput(
                 attrs={
                     "class": "register__form-input",
-                    "text-name-input": "true",
                     "autocomplete": "additional-name",
                     "placeholder": "Отчество",
                 }
@@ -140,7 +103,6 @@ class UserRegistrationForm(forms.ModelForm):
 
 
 class UserForm(forms.ModelForm):
-    city = LocationAutocompleteField(required=False)
 
     class Meta:
         model = User
@@ -160,13 +122,13 @@ class UserForm(forms.ModelForm):
                 attrs={
                     "type": "tel",
                     "autocomplete": "tel",
-                    "placeholder": "Номер телефона*",
+                    # "placeholder": "Номер телефона*",
                     "data-tel-input": "",
                 }
             ),
             "email": forms.TextInput(
                 attrs={
-                    "placeholder": "Электронная почта*",
+                    # "placeholder": "Электронная почта*",
                     "type": "email",
                     "autocomplete": "email",
                 }
@@ -175,28 +137,38 @@ class UserForm(forms.ModelForm):
                 attrs={
                     "placeholder": "Имя*",
                     "autocomplete": "given-name",
-                    "text-name-input": "",
                 }
             ),
             "last_name": forms.TextInput(
                 attrs={
-                    "placeholder": "Фамилия",
                     "autocomplete": "family-name",
-                    "text-name-input": "",
                 }
             ),
             "middle_name": forms.TextInput(
                 attrs={
-                    "placeholder": "Отчество",
-                    "text-name-input": "",
                     "autocomplete": "additional-name",
                 }
             ),
+            "city": forms.TextInput(
+                attrs={
+                    "autocomplete-url": "/locations/autocomplete/",
+                    "autocomplete": "address-level2",
+                    "class": "city-input",
+                    "id": "accountCity",
+                }
+            ),
             "address": forms.TextInput(
-                attrs={"placeholder": "Адрес",
-                       "autocomplete": "street-address"}
+                attrs={
+                    "autocomplete": "street-address"}
             ),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({'placeholder': field.label})
+        if self.instance and self.instance.city_id:
+            self.fields['city'].widget.attrs.update({'city-id': self.instance.city_id})
 
 
 class ChangeEmailForm(forms.ModelForm):

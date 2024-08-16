@@ -13,12 +13,12 @@ class DropdownMenu {
     this.className = className;
     this.idName = idName;
     this.itemStyle = itemStyle;
-    this.chosenId = null;
     this._input = input;
     this._menu = null;
     this._term = term;
     this._endpointAttrName = endpointAttrName;
     this._endpoint = this._getEndpoint();
+    this.chosenId = this._getCityId(input);
     this._debounceTimeout = debounceTimeout;
 
     this._updatePosition = this._updatePosition.bind(this);
@@ -28,10 +28,12 @@ class DropdownMenu {
   }
 
   setVisible() {
+    if (!this._menu) return;
     this._menu.style.display = this.itemStyle;
   }
 
   setHidden() {
+    if (!this._menu) return;
     this._menu.style.display = 'none';
   }
 
@@ -45,7 +47,6 @@ class DropdownMenu {
       this.setHidden();
     }
   }
-
   _createMenu(term) {
     if (!this._menu) this._menu = document.body.appendChild(this._createDiv());
     this._updatePosition();
@@ -116,6 +117,15 @@ class DropdownMenu {
   _getEndpoint() {
     const url = this._input.getAttribute(this._endpointAttrName) || '/autocomplete/';
     return `${url}?${this._term}`;
+  }
+
+  _getCityId(input) {
+    const cityId = input.getAttribute('city-id');
+    if (cityId) {
+      return cityId;
+    } else {
+      return null;
+    }
   }
 
   addEventListeners () {

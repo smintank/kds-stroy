@@ -66,7 +66,15 @@ const useHeaderOnScroll = (isOff) => {
 
 const useCitySuggestions = () => {
   document.querySelectorAll(".city-input").forEach(input => {
-    new DropdownMenu(input);
+    const dropdown = new DropdownMenu(input);
+    input.form.addEventListener('submit', function(event) {
+      if (dropdown.chosenId === null) {
+        input.value = '';
+      } else {
+        console.log(dropdown.chosenId);
+        input.value = dropdown.chosenId;
+      }
+    });
   });
 };
 

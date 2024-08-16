@@ -7,9 +7,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.generic import FormView
 
-from kds_stroy.settings import MEDIA_URL, PHONE_VERIFICATION_TIME_LIMIT
+from kds_stroy.settings import PHONE_VERIFICATION_TIME_LIMIT
 from orders.models import Order, OrderPhoto
-from orders.views import OrderContextMixin
+from orders.views import ContextMixin
 from users.forms import (ChangePhoneNumberForm, PhoneVerificationForm,
                          UserForm, UserRegistrationForm)
 
@@ -22,7 +22,7 @@ User = get_user_model()
 logger = logging.getLogger(__name__)
 
 
-class RegistrationView(OrderContextMixin, FormView):
+class RegistrationView(ContextMixin, FormView):
     template_name = "account/register.html"
     form_class = UserRegistrationForm
     success_url = "/registration_done/"
@@ -144,24 +144,25 @@ class PhoneVerificationView(FormView):
         return super().form_invalid(form)
 
 
-class ProfileView(OrderContextMixin, FormView):
+class ProfileView(ContextMixin, FormView):
     model = User
     template_name = "account/account.html"
     form_class = UserForm
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["profile"] = self.request.user
-        context["profile"].phone_number = self.request.user.formatted_phone_number
-        context["form"] = self.form_class(instance=context["profile"])
+        user = self.request.user
 
-        orders_with_photos = Order.objects.filter(
-            phone_number=self.request.user.phone_number
+        context = super().get_context_data(**kwargs)
+
+        city = user.city or ""
+        context["form"] = self.form_class(instance=user, initial={
+            "phone_number": user.formatted_phone_number, "city": str(city)
+        })
+        context["orders"] = Order.objects.filter(
+            phone_number=user.phone_number
         ).prefetch_related(
             Prefetch("orderphoto_set", queryset=OrderPhoto.objects.all(), to_attr="photos")
         )
-        context["orders"] = orders_with_photos
-        # context["MEDIA_URL"] = MEDIA_URL
         return context
 
     def post(self, request, *args, **kwargs):
