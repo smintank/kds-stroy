@@ -68,7 +68,7 @@ const useInputPhoneMask = () => {
             formattedInputValue = formatInput(inputNumbersValue);
 
         } else {
-            formattedInputValue = "+" + inputNumbersValue.substring(0, 16);
+            formattedInputValue = "+" + inputNumbersValue.substring(0, 11);
         }
 
         input.value = formattedInputValue;

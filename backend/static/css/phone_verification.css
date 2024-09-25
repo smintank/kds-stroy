@@ -1,0 +1,21 @@
+.ds_input {
+    height: 60px;
+    width: 200px;
+    margin: 30px;
+    text-align: center;
+    font-size: 26px;
+    letter-spacing: 20px;
+}
+
+.pv_title {
+    font-weight: 500;
+    font-size: 35px;
+    letter-spacing: -0.03em;
+    margin-bottom: 70px;
+}
+input {
+font-size: 1.5rem;
+height: 2rem;
+text-align: center;
+width: 3rem;
+}
