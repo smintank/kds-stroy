@@ -1,11 +1,11 @@
 .register {
-  padding: 150px 0 120px 0;
+  padding: 110px 0 50px 0;
 }
 .register__title {
   font-weight: 500;
   font-size: 35px;
   letter-spacing: -0.03em;
-  margin-bottom: 70px;
+  margin-bottom: 40px;
 }
 .register__form {
   display: flex;
@@ -46,12 +46,11 @@
   display: flex;
   flex-direction: column;
   gap: 31px;
-  margin: 31px 0 15px 0;
+  margin: 31px 0;
 }
 .register__form__submit {
   color: rgba(0, 0, 0, 0.6);
   background-color: transparent;
-  margin-left: auto;
   max-width: 222px;
   padding: 17px;
   font-weight: 500;
@@ -62,17 +61,8 @@
   color: #fff;
 }
 @media (max-width: 1023px) {
-  .register {
-    padding: 120px 0 120px 0;
-  }
-  .register__title {
-    margin-bottom: 50px;
-  }
   .register__form-container {
     max-width: 401px;
-  }
-  .register__form-input {
-    max-width: 197px;
   }
   .register__form-input--wide {
     max-width: 100%;
@@ -89,19 +79,14 @@
   }
   .register__checkboxes {
     gap: 15px;
-    margin: 20px 0 45px 0;
   }
   .register__form__submit {
     max-width: 272px;
   }
 }
 @media (max-width: 639px) {
-  .register {
-    padding: 120px 0 55px 0;
-  }
   .register__title {
     font-size: 24px;
-    margin-bottom: 45px;
   }
   .register__form-container {
     max-width: 270px;
@@ -110,7 +95,7 @@
   .register__form-input {
     max-width: 100%;
     font-size: 15px;
-    padding-bottom: 21px 20px 6px 20px;
+    padding-bottom: 21px;
   }
   .register__form-input--wide {
     margin-bottom: 20px;
@@ -130,8 +115,7 @@
     font-size: 14px;
   }
   .register__checkboxes {
-    gap: 14px;
-    margin: 20px 0 35px 0;
+    margin: 20px 0;
   }
   .register__form__submit {
     font-size: 15px;
