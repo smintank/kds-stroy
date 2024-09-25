@@ -1,93 +1,9 @@
-import { gC as getCookie, sC as setCookie } from "./base.js";
-import { P as Popup, MP as popupMessage } from "./popups.js";
-
-let cityChosen = false;
-
-const useCitySuggestions = () => {
-  const cityField = document.getElementById("id_city");
-  let dropdown;
-
-  function updateDropdownPosition() {
-    const rect = cityField.getBoundingClientRect();
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
-
-    if (dropdown) {
-      dropdown.style.position = 'absolute';
-      dropdown.style.top = `${rect.bottom + scrollTop}px`;
-      dropdown.style.left = `${rect.left + scrollLeft}px`;
-      dropdown.style.width = `${rect.width}px`;
-    }
-  }
-
-  function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
-  }
-
-  function handleAutocomplete(input) {
-    const debouncedFetch = debounce(function (event) {
-      const term = event.target.value;
-      if (!term) {
-        if (dropdown) dropdown.style.display = 'none';
-        return;
-      }
-      fetch(
-        '/orders/autocomplete/location/?term=' + encodeURIComponent(term)
-      ).then(
-        response => response.json()
-      ).then(data => {
-        if (!dropdown) {
-          dropdown = document.createElement('div');
-          dropdown.id = 'autocomplete-dropdown';
-          dropdown.classList.add('autocomplete-dropdown');
-          document.body.appendChild(dropdown);
-          updateDropdownPosition();
-        }
-        dropdown.innerHTML = data.map(item => `
-            <div class="autocomplete-dropdown-item" onclick="setCity('${item}')">
-              ${item}
-            </div>
-          `).join('') || '<div class="autocomplete-dropdown-item">Ничего не найдено</div>';
-        dropdown.style.display = 'flex';
-      }).catch(error => {
-        console.error('Error fetching autocomplete suggestions:', error);
-      });
-    }, 300);
-
-    window.setCity = function (item) {
-      cityField.value = item;
-      dropdown.style.display = 'none';
-      cityChosen = true;
-    };
-
-    input.addEventListener('input', debouncedFetch);
-  }
-  const inputs = document.querySelectorAll('[data-autocomplete-url]');
-  inputs.forEach(input => handleAutocomplete(input));
-
-  function addEventListeners() {
-    window.addEventListener('resize', updateDropdownPosition);
-    window.addEventListener('scroll', updateDropdownPosition);
-    window.addEventListener('orientationchange', updateDropdownPosition);
-  }
-
-  document.addEventListener('click', function(event) {
-    if (event.target.closest("#id_city, #autocomplete-dropdown")) return;
-    if (dropdown) dropdown.style.display = 'none';
-  });
-
-  addEventListeners();
-};
+import {gC as getCookie, sC as setCookie} from "./base.js";
+import {MP as popupMessage, P as Popup} from "./popups.js";
+import {dM as DropdownMenu} from "./dropdown-menu.js";
 
 const useOrderFormWithImages = () => {
+  const dropdownMenu = new DropdownMenu(document.getElementById("orderCity"));
   const popupOrder = new Popup("#popup-order");
   popupOrder.setEventListeners();
   const formData = new FormData();
@@ -159,8 +75,10 @@ const useOrderFormWithImages = () => {
     for (const [key, value] of formData.entries()) {
       originFormData.append(key, value);
     }
-    if (!cityChosen) {
+    if (dropdownMenu.chosenId === null) {
        originFormData.delete("city");
+    } else {
+      originFormData.set("city", dropdownMenu.chosenId);
     }
 
     this.reset();
@@ -195,7 +113,6 @@ const useOrderFormWithImages = () => {
       }
     });
   });
-  useCitySuggestions();
 };
 
 export {

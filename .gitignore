@@ -179,3 +179,5 @@ cython_debug/
 .idea/
 /.env
 ../docker-compose-local.yml
+
+/frontend

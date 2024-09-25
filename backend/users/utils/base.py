@@ -75,11 +75,10 @@ def call_api_request(phone_number: str, pincode: str = None) -> str:
     except requests.exceptions.HTTPError as e:
         if response.status_code == 400:
             json = response.json()
-            logger.exception("Bad Request to Zvonok API: " + json, exc_info=e)
+            logger.exception("Zvonok API HTTP Error: " + json.get('data'), exc_info=e)
         if response.status_code == 429:
             json = response.json()
-            logger.exception("Limit exceeded to Zvonok API: " + json,
-                             exc_info=e)
+            logger.exception("Limit exceeded to Zvonok API: " + json.get('data'), exc_info=e)
         else:
             logger.exception("HTTP Error: ", exc_info=e)
     except requests.RequestException as e:

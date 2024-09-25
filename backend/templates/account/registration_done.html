@@ -1,7 +1,14 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}КДС-Строй: Регистрация{% endblock %}
+{% block plug_js_css %}
+    <script type="module" crossorigin src="{% static 'js/pages/register-page.js' %}"></script>
+    <link rel="stylesheet" crossorigin href="{% static 'css/simple_page.css' %}">
+{% endblock %}
 {% block content %}
-  <div class="container">
+<main>
+  <section>
+    <div class="container">
       <h4>{{ new_user.first_name }}, ваш аккаунт успешно зарегистрирован</h4>
       <p>
           Теперь вы можете авторизоваться.
@@ -13,5 +20,7 @@
       <br>
       <div><p><a href="{% url 'login' %}">Войти</a></p></div>
       <div><p><a href="{% url 'home' %}">На главную</a></p></div>
-  </div>
+    </div>
+  </section>
+</main>
 {% endblock %}
