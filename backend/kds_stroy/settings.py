@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "news.apps.NewsConfig",
     "orders.apps.OrdersConfig",
+    "locations.apps.LocationsConfig",
     "main.apps.MainConfig",
     "ads_mailing.apps.AdsMailingConfig",
     "verify_email.apps.VerifyEmailConfig",
@@ -174,7 +175,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
-LOGIN_URL = "login"
+LOGIN_URL = "home"
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.environ.get("EMAIL_HOST")

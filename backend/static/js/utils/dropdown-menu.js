@@ -5,19 +5,20 @@ class DropdownMenu {
     input,
     term = 'term=',
     className = 'autocomplete-dropdown',
+    idName = 'item-id',
     endpointAttrName = 'autocomplete-url',
     itemStyle = 'flex',
     debounceTimeout = 300
   ) {
-    this.isShown = false;
-    this.isChoosen = false;
     this.className = className;
+    this.idName = idName;
     this.itemStyle = itemStyle;
     this._input = input;
     this._menu = null;
     this._term = term;
     this._endpointAttrName = endpointAttrName;
     this._endpoint = this._getEndpoint();
+    this.chosenId = this._getCityId(input);
     this._debounceTimeout = debounceTimeout;
 
     this._updatePosition = this._updatePosition.bind(this);
@@ -27,17 +28,17 @@ class DropdownMenu {
   }
 
   setVisible() {
+    if (!this._menu) return;
     this._menu.style.display = this.itemStyle;
-    this.isShown = true;
   }
 
   setHidden() {
+    if (!this._menu) return;
     this._menu.style.display = 'none';
-    this.isShown = false;
   }
 
   getDropdownMenu() {
-    this.isChoosen = false;
+    this.idName = null;
     const term = this._input.value;
     if (term) {
       this._createMenu(term);
@@ -46,7 +47,6 @@ class DropdownMenu {
       this.setHidden();
     }
   }
-
   _createMenu(term) {
     if (!this._menu) this._menu = document.body.appendChild(this._createDiv());
     this._updatePosition();
@@ -56,8 +56,10 @@ class DropdownMenu {
         this._menu.appendChild(this._createDiv(`${this.className}-item`, 'Ничего не найдено'));
       } else {
         data.forEach(item => {
-          const menuItem = this._createDiv(`${this.className}-item`, item);
-          menuItem.addEventListener('click', () => this._setInputValue(item));
+          let [item_key, item_value] = item
+          const menuItem = this._createDiv(`${this.className}-item`, item_value);
+          menuItem.setAttribute(this.idName, item_key);
+          menuItem.addEventListener('click', () => this._setInputValue(item_key, item_value));
           this._menu.appendChild(menuItem);
         });
       }
@@ -106,15 +108,24 @@ class DropdownMenu {
     }
   }
 
-  _setInputValue(data) {
+  _setInputValue(id, data) {
     this._input.value = String(data);
     this.setHidden();
-    this.isChoosen = true;
+    this.chosenId = id;
   }
 
   _getEndpoint() {
     const url = this._input.getAttribute(this._endpointAttrName) || '/autocomplete/';
     return `${url}?${this._term}`;
+  }
+
+  _getCityId(input) {
+    const cityId = input.getAttribute('city-id');
+    if (cityId) {
+      return cityId;
+    } else {
+      return null;
+    }
   }
 
   addEventListeners () {

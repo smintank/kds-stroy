@@ -7,9 +7,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.generic import FormView
 
-from kds_stroy.settings import MEDIA_URL, PHONE_VERIFICATION_TIME_LIMIT
+from kds_stroy.settings import PHONE_VERIFICATION_TIME_LIMIT
 from orders.models import Order, OrderPhoto
-from orders.views import OrderContextMixin
+from orders.views import ContextMixin
 from users.forms import (ChangePhoneNumberForm, PhoneVerificationForm,
                          UserForm, UserRegistrationForm)
 
@@ -22,7 +22,7 @@ User = get_user_model()
 logger = logging.getLogger(__name__)
 
 
-class RegistrationView(OrderContextMixin, FormView):
+class RegistrationView(ContextMixin, FormView):
     template_name = "account/register.html"
     form_class = UserRegistrationForm
     success_url = "/registration_done/"
@@ -74,7 +74,7 @@ class ChangePhoneNumberView(FormView):
         return redirect("users:phone_verification")
 
 
-class PhoneVerificationView(FormView):
+class PhoneVerificationView(ContextMixin, FormView):
     model = PhoneVerification
     template_name = "account/phone_verification_form.html"
     form_class = PhoneVerificationForm
@@ -82,8 +82,7 @@ class PhoneVerificationView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["countdown"] = self.kwargs.get("countdown", 0)
-        context["is_attempt_limit"] = self.kwargs.get("is_attempt_limit",
-                                                      False)
+        context["is_attempt_limit"] = self.kwargs.get("is_attempt_limit", False)
         return context
 
     def get(self, request, *args, **kwargs):
@@ -93,8 +92,7 @@ class PhoneVerificationView(FormView):
         is_repeat = True if request.GET.get("repeat_call") == "true" else False
 
         if is_repeat or not last_request_obj.pincode:
-            call_api_process(last_request_obj,
-                             last_request_obj.pincode or None)
+            call_api_process(last_request_obj, last_request_obj.pincode or None)
             countdown = int(PHONE_VERIFICATION_TIME_LIMIT)
             if is_repeat:
                 return JsonResponse({"countdown": countdown})
@@ -132,7 +130,7 @@ class PhoneVerificationView(FormView):
         del self.request.session["phone_number"]
 
         return render(
-            self.request, "account/registration_done.html", {"new_user": user}
+            self.request, "account/registration_done.html", {"new_user": user, **self.get_context_data()}
         )
 
     def form_invalid(self, form):
@@ -144,24 +142,25 @@ class PhoneVerificationView(FormView):
         return super().form_invalid(form)
 
 
-class ProfileView(OrderContextMixin, FormView):
+class ProfileView(ContextMixin, FormView):
     model = User
     template_name = "account/account.html"
     form_class = UserForm
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["profile"] = self.request.user
-        context["profile"].phone_number = self.request.user.formatted_phone_number
-        context["form"] = self.form_class(instance=context["profile"])
+        user = self.request.user
 
-        orders_with_photos = Order.objects.filter(
-            phone_number=self.request.user.phone_number
+        context = super().get_context_data(**kwargs)
+
+        city = user.city or ""
+        context["form"] = self.form_class(instance=user, initial={
+            "phone_number": user.formatted_phone_number, "city": str(city)
+        })
+        context["orders"] = Order.objects.filter(
+            phone_number=user.phone_number
         ).prefetch_related(
             Prefetch("orderphoto_set", queryset=OrderPhoto.objects.all(), to_attr="photos")
         )
-        context["orders"] = orders_with_photos
-        # context["MEDIA_URL"] = MEDIA_URL
         return context
 
     def post(self, request, *args, **kwargs):

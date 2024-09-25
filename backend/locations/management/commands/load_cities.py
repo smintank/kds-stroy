@@ -4,9 +4,12 @@ import os
 from django.core.management.base import BaseCommand
 
 from kds_stroy import settings
-from orders.models import City, CityType, District, Region
+from locations.models import City, CityType, District, Region
 
 DEFAULT_PATH = str(settings.BASE_DIR) + '/data/'
+
+
+# python manage.py load_cities -all
 
 
 class Command(BaseCommand):

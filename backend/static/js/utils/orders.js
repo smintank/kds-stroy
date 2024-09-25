@@ -75,8 +75,10 @@ const useOrderFormWithImages = () => {
     for (const [key, value] of formData.entries()) {
       originFormData.append(key, value);
     }
-    if (!dropdownMenu.isChoosen) {
+    if (dropdownMenu.chosenId === null) {
        originFormData.delete("city");
+    } else {
+      originFormData.set("city", dropdownMenu.chosenId);
     }
 
     this.reset();
