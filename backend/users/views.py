@@ -74,7 +74,7 @@ class ChangePhoneNumberView(FormView):
         return redirect("users:phone_verification")
 
 
-class PhoneVerificationView(FormView):
+class PhoneVerificationView(ContextMixin, FormView):
     model = PhoneVerification
     template_name = "account/phone_verification_form.html"
     form_class = PhoneVerificationForm
@@ -82,8 +82,7 @@ class PhoneVerificationView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["countdown"] = self.kwargs.get("countdown", 0)
-        context["is_attempt_limit"] = self.kwargs.get("is_attempt_limit",
-                                                      False)
+        context["is_attempt_limit"] = self.kwargs.get("is_attempt_limit", False)
         return context
 
     def get(self, request, *args, **kwargs):
@@ -93,8 +92,7 @@ class PhoneVerificationView(FormView):
         is_repeat = True if request.GET.get("repeat_call") == "true" else False
 
         if is_repeat or not last_request_obj.pincode:
-            call_api_process(last_request_obj,
-                             last_request_obj.pincode or None)
+            call_api_process(last_request_obj, last_request_obj.pincode or None)
             countdown = int(PHONE_VERIFICATION_TIME_LIMIT)
             if is_repeat:
                 return JsonResponse({"countdown": countdown})
@@ -132,7 +130,7 @@ class PhoneVerificationView(FormView):
         del self.request.session["phone_number"]
 
         return render(
-            self.request, "account/registration_done.html", {"new_user": user}
+            self.request, "account/registration_done.html", {"new_user": user, **self.get_context_data()}
         )
 
     def form_invalid(self, form):

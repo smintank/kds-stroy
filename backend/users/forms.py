@@ -99,6 +99,10 @@ class UserRegistrationForm(forms.ModelForm):
             raise forms.ValidationError(
                 "Номер телефона должен содержать не меньше 11 цифр"
             )
+        if cleared_phone_number[:2] == "77":
+            raise forms.ValidationError(
+                "Номера Республики Казахстан (+77) - не поддерживаются"
+            )
         return cleared_phone_number
 
 
@@ -152,7 +156,7 @@ class PhoneVerificationForm(forms.ModelForm):
     class Meta:
         model = PhoneVerification
         fields = ("pincode",)
-        widgets = {"pincode": forms.TextInput(attrs={"class": "ds_input"})}
+        widgets = {"pincode": forms.TextInput(attrs={"class": "ds_input", "hidden": ""})}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -161,6 +165,8 @@ class PhoneVerificationForm(forms.ModelForm):
 
     def clean_pincode(self):
         pincode = self.cleaned_data.get("pincode")
+        if not pincode:
+            raise forms.ValidationError("Пин-код не может быть пустым")
         if not re.match(r"^\d{4}$", pincode) or not pincode.isnumeric():
             raise forms.ValidationError("Пин-код должен состоять из 4-x цифр")
         return pincode
