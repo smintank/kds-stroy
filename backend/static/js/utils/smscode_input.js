@@ -1,4 +1,4 @@
-const form = document.querySelector('[name="verifyForm"]');
+const form = document.getElementById('verifyForm');
 const inputs = form.querySelectorAll('.inputs input');
 const formData = new FormData();
 

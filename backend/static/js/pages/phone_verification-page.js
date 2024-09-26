@@ -43,6 +43,10 @@ const useSMSVerificationTimer = () => {
         countdownDuration = data.countdown;
         countdownBlock.style.display = 'block';
         repeatButton.style.display = 'none';
+        document.querySelectorAll('.inputs input').forEach((input) => {
+          input.disabled = false
+        });
+        document.querySelector('.errorlist').style.display = "none"
         startTimer();
       })
       .catch(error => {

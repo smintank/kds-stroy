@@ -202,9 +202,10 @@ ZVONOK_API_KEY = os.getenv("ZVONOK_API_KEY")
 ZVONOK_ENDPOINT = os.getenv("ZVONOK_ENDPOINT")
 ZVONOK_CAMPAIGN_ID = os.getenv("ZVONOK_CAMPAIGN_ID")
 
-PHONE_VERIFICATION_TIME_LIMIT = 300  # in seconds
-PHONE_VERIFICATION_ATTEMPTS_LIMIT = 3  # with one phone number
-PHONE_CHANGE_FREQUENCY_LIMIT = 30  # in days
+PHONE_VERIFICATION_TIME_LIMIT = 300  # seconds between current and next call requests
+PHONE_VERIFICATION_ATTEMPTS_LIMIT = 3  # call requests with one phone number
+PHONE_CHANGE_FREQUENCY_LIMIT = 30  # days between two attempts of phone number changing
+PINCODE_INPUT_LIMIT = 5  # trys to input pincode for every call request
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
