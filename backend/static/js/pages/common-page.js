@@ -5,10 +5,9 @@ import {
   c as useCookieBanner
 } from "../utils/base.js";
 import { u as useInputPhoneMask } from "../utils/input-phone-mask.js";
-import { uOP as useOrderPopup} from "../utils/orders.js";
-import { uPP as usePromotionPopup} from "../utils/popups.js";
-import { Au as useAuthPopup} from "../utils/auth.js";
-
+import { uOP as useOrderPopup } from "../utils/orders.js";
+import { uPP as usePromotionPopup } from "../utils/popups.js";
+import { Au as useAuthPopup } from "../utils/auth.js";
 
 addEventListener("DOMContentLoaded", () => {
   useBurger();

@@ -138,7 +138,7 @@ class PhoneVerificationView(ContextMixin, FormView):
         return render(
             self.request,
             "account/registration_done.html",
-            {"new_user": user, **self.get_context_data()}
+            {"new_user": user, **self.get_context_data(**self.kwargs)}
         )
 
     def form_invalid(self, form):
