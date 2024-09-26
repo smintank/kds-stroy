@@ -14,14 +14,14 @@
             Для завершения вам нужно подтвердить ваш номер телефона.<br>
             Введите последние 4 цифры номера из входящего звонка.<br>
         </p>
-        <form method="post" action="{% url 'users:phone_verification' %}" name="verifyForm">
+        <form method="post" action="{% url 'users:phone_verification' %}" id="verifyForm">
           {% csrf_token %}
             <div class="pincode_area">
               <div class="inputs">
-                <input type="text" name="n1" maxLength="1" autocomplete="off" autofocus>
-                <input type="text" name="n2" maxLength="1" autocomplete="off">
-                <input type="text" name="n3" maxLength="1" autocomplete="off">
-                <input type="text" name="n4" maxLength="1" autocomplete="off">
+                <input type="text" name="n1" maxLength="1" autocomplete="off" autofocus {% if pincode_limit %}disabled{% endif %}>
+                <input type="text" name="n2" maxLength="1" autocomplete="off" {% if pincode_limit %}disabled{% endif %}>
+                <input type="text" name="n3" maxLength="1" autocomplete="off" {% if pincode_limit %}disabled{% endif %}>
+                <input type="text" name="n4" maxLength="1" autocomplete="off" {% if pincode_limit %}disabled{% endif %}>
               </div>
               {% for field in form %}
                 {{ field }}
@@ -32,12 +32,15 @@
               <div class="countdown_area">
                 {% if not is_attempt_limit %}
                   <div id="countdownBlock">
-                    <p id="countdownDescription" class="repeat_request">Запросить повторный звонок можно через:</p>
+                    <p id="countdownDescription" class="repeat_request">Запросить повторный звонок через:</p>
                     <span id="countdown" class="countdown" data-countdown-duration="{{ countdown }}"></span>
                   </div>
                   <button id="repeatCallButton" class="repeat_request_button button">Запросить повторно</button>
                 {% else %}
-                  <p>Вы исчерпали количество попыток для подтверждения номера. Попробуйте позже.</p>
+                  <p>Вы исчерпали все попыток подтверждения номера. 
+                      <br>Попробуйте позже или напишите в нашу поддержку 
+                      <a href="mailto:support@kdsstroy.ru">support@kdsstroy.ru</a>.
+                  </p>
                 {% endif %}
               </div>
             </div>

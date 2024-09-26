@@ -85,15 +85,12 @@ class User(AbstractUser):
 
 
 class PhoneVerification(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, verbose_name="Пользователь"
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
     phone_number = models.CharField("Номер телефона", max_length=18)
     pincode = models.CharField("Пин-код", max_length=4, blank=True, null=True)
-    last_call = models.DateTimeField(
-        "Время последнего запроса звонка", blank=True, null=True
-    )
+    last_call = models.DateTimeField("Время последнего запроса звонка", blank=True, null=True)
     created_at = models.DateTimeField("Время создания", auto_now_add=True)
+    attempts_amount = models.IntegerField("Количество попыток", default=0)
 
     def __str__(self):
         return f"{self.phone_number}: {self.pincode}"
@@ -101,8 +98,7 @@ class PhoneVerification(models.Model):
     @classmethod
     def verify_code(cls, user, phone_number, pincode):
         try:
-            cls.objects.get(user=user, phone_number=phone_number,
-                            pincode=pincode)
+            cls.objects.get(user=user, phone_number=phone_number, pincode=pincode)
             return True
         except cls.DoesNotExist:
             return False

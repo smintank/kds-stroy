@@ -24,8 +24,8 @@ def phone_validation_prepare(phone_number, session, user):
     session["request_id"] = phone_validation_request.id
 
 
-def is_limited(obj, kwargs):
-    if is_attempt_limit(obj.user):
+def get_countdown(obj, kwargs):
+    if is_call_attempt_limit(obj.user):
         kwargs["is_attempt_limit"] = True
         return 0
     if is_time_limit(obj.last_call):
@@ -94,7 +94,7 @@ def call_api_request(phone_number: str, pincode: str = None) -> str:
     return pincode
 
 
-def is_phone_change_limit(number_change_date):
+def is_phone_change_limit(number_change_date) -> bool:
     """
     Check if the phone number change limit has been reached.
     """
@@ -103,7 +103,7 @@ def is_phone_change_limit(number_change_date):
     return number_change_date > start_date
 
 
-def is_numbers_amount_limit(request):
+def is_numbers_amount_limit(request) -> bool:
     """
     Check if the limit for the number of verification attempts has been reached
     """
@@ -121,7 +121,7 @@ def is_numbers_amount_limit(request):
     return len(last_month_unique_numbers) > attempts_limit
 
 
-def is_attempt_limit(user) -> bool:
+def is_call_attempt_limit(user) -> bool:
     """
     Check if the user has reached the verification attempts limit.
     """
