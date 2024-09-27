@@ -1,0 +1,39 @@
+p {
+    margin-top: 16px;
+}
+
+section {
+    padding-top: 110px;
+}
+
+.simple_button {
+    text-align: center;
+    outline: none;
+    border: 2px solid #c82027;
+    border-radius: 9px;
+    background-color: #ffffff00;
+    color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding: 10px 30px;
+    margin: 30px 0;
+}
+
+.simple_button:hover {
+    color: #fff;
+    background-color: #c82027;
+}
+
+.title {
+    font-weight: 500;
+    font-size: 35px;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    font-weight: 300;
+    font-size: 22px;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+}
