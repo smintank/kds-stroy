@@ -6,14 +6,9 @@
         <h2 class="popup__title">Вход в личный кабинет</h2>
         <form class="popup__form" action="{% url 'login' %}" id="formAuth" method="post">
             {% csrf_token %}
-                <input class="popup__form-input" type="username" placeholder="Email или Номер телефона" required>
-                    {% if field.errors %}
-                        <div class="popup__form-error">{{ field.errors }}</div>
-                    {% endif %}
-                <input class="popup__form-input" type="password" placeholder="Пароль" required>
-                    {% if field.errors %}
-                        <div class="popup__form-error">{{ field.errors }}</div>
-                    {% endif %}
+            {% for field in form %}
+                {% render_field field class="popup__form-input" placeholder=field.label %}
+            {% endfor %}
             <div class="popup__form-buttons">
                 <button class="popup__form-submit button" id="loginButton" type="submit" autofocus>Войти</button>
                 <a class="popup__form-signup-link" href="{% url 'registration' %}">Зарегистрироваться</a>

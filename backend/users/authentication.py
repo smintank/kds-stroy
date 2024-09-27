@@ -28,8 +28,9 @@ class EmailPhoneUsernameBackend(ModelBackend):
             case _:
                 return
 
-        if user.check_password(password) and self.user_can_authenticate(user):
+        if user is not None and user.check_password(password) and self.user_can_authenticate(user):
             return user
+        return None
 
     def get_user(self, user_id):
         return self._get_user_by_field("id", user_id)
