@@ -54,11 +54,14 @@ class OrderCreateView(View):
             request.session["order_created"] = True
             request.session["order_id"] = order.order_id
 
-            if not request.user.is_staff:
-                send_telegram_message_async.delay(
-                    text=get_order_message(order, md_safe=True),
-                    chat_ids=get_notified_users()
-                )
+            try:
+                if not request.user.is_staff:
+                    send_telegram_message_async.delay(
+                        text=get_order_message(order, md_safe=True),
+                        chat_ids=get_notified_users()
+                    )
+            except Exception as e:
+                logger.error(e)
 
             return JsonResponse({"message": SUCCESS_MSG.format(order.order_id),
                                  "text": SUCCESS_TXT.format(order.first_name),
