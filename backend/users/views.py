@@ -162,6 +162,7 @@ class ProfileView(ContextMixin, FormView):
         user = self.request.user
 
         context = super().get_context_data(**kwargs)
+        context["profile"] = user
 
         city = user.city or ""
         context["form"] = self.form_class(instance=user, initial={
