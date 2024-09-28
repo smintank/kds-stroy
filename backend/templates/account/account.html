@@ -13,7 +13,7 @@
             <h2 class="account__title">Личный кабинет</h2>
             <form method="post" action="{% url 'users:profile' %}" class="account__form" id="accountForm" enctype="multipart/form-data">
                 <div class="account__data">
-                    <p class="account__data-text account__data-text--date">Дата регистрации: {{ profile.date_joined }}</p>
+                    <p class="account__data-text account__data-text--date">Дата регистрации: {{ profile.date_joined|date:"d.m.Y H:i" }}</p>
                     <p class="account__data-text">Login: {{ profile }}</p>
                     <a class="account__data-link" href="{% url 'password_change' %}">Изменить пароль</a>
                 </div>
@@ -61,112 +61,54 @@
             </div>
         </div>
         <ul class="applications__list">
-            <li class="applications__list-item applications__list-item--open">
-                <div class="applications__list-item-container container">
-                    <div class="applications__list-item-id">1550</div>
-                    <div class="applications__list-item-date">01.01.2024</div>
-                    <div class="applications__list-item-description">
-                        Первые две строчки - порядка 50 символов, как здесь...
-                        Первые две строчки - порядка 50 символов, как здесь...
-                        Первые две строчки - порядка 50 символов, как здесь...
-                        Первые две строчки - порядка 50 символов, как здесь...
-                    </div>
-                    <div class="applications__list-item-photos">
+            {% for order in orders %}
+                <li class="applications__list-item">
+                    <div class="applications__list-item-container container">
+                        <div class="applications__list-item-id">{{ order.order_id }}</div>
+                        <div class="applications__list-item-date">{{ order.created_at|date:"d.m.Y" }}</div>
+                        <div class="applications__list-item-description">{{ order.comment|default:"Нет комментария" }}</div>
+                        <div class="applications__list-item-photos">
                         <ul class="applications__list-item-photos-list">
-                            <li class="applications__list-item-photo">
-                                <a href="{% static 'img/decoration-DJa75fdA.jpg' %}" data-fancybox="application-1">
-                                    <span class="applications__list-item-photos-count">5</span>
-                                    <img src="{% static 'img/decoration-DJa75fdA.jpg' %}" alt="изображение слайда">
-                                </a>
-                            </li>
-                            <li class="applications__list-item-photo">
-                                <a href="{% static 'img/decoration-DJa75fdA.jpg' %}" data-fancybox="application-1">
-                                    <img src="{% static 'img/decoration-DJa75fdA.jpg' %}" alt="изображение слайда">
-                                </a>
-                            </li>
+                            {% for photo in order.photos %}
+                                <li class="applications__list-item-photo">
+                                    <a href="{{ photo.photo.url }}" data-fancybox="application-{{ forloop.parentloop.counter }}">
+                                        <img src="{{ photo.photo.url }}" alt="изображение слайда">
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            {% if order.photos|length == 0 %}
+                                <span class="applications__list-item-photos-empty">Нет фото</span>
+                            {% else %}
+                                <span class="applications__list-item-photos-count">{{ order.photos|length }}</span>
+                            {% endif %}
                         </ul>
                     </div>
-                    <div class="applications__list-item-price">-</div>
-                    <div class="applications__list-item-status">
-                        Зарегистрирован
-                        <a class="applications__list-item-status-link" href="#">Оставить отзыв</a>
-                    </div>
+                        <div class="applications__list-item-price">{% if order.final_cost != 0 %}{{ order.final_cost|floatformat:"2" }} руб.{% if order.discount != 0 %}<br>Скидка {{ order.discount }}%{% endif %}{% else %}-{% endif %}</div>
+                        <div class="applications__list-item-status">{{ order.status }}
+{#                            <a class="applications__list-item-status-link" href="#">Оставить отзыв</a>#}
+                        </div>
+                    </div>  
+                </li>
+            {% empty %}
+                <div class="container">
+                    <div class="applications__empty-list">Нет заказов</div>
                 </div>
-            </li>
-            <li class="applications__list-item">
-                <div class="applications__list-item-container container">
-                    <div class="applications__list-item-id">1551</div>
-                    <div class="applications__list-item-date">01.01.2024</div>
-                    <div class="applications__list-item-description">
-                        Первые две строчки - порядка 50 символов, как здесь...
-                        Первые две строчки - порядка 50 символов
-                    </div>
-                    <div class="applications__list-item-photos">
-                        <ul class="applications__list-item-photos-list">
-                            <li class="applications__list-item-photo">
-                                <a href="{% static 'img/decoration-DJa75fdA.jpg' %}" data-fancybox="application-2">
-                                    <span class="applications__list-item-photos-count">5</span>
-                                    <img src="{% static 'img/decoration-DJa75fdA.jpg' %}" alt="изображение слайда">
-                                </a>
-                            </li>
-                            <li class="applications__list-item-photo">
-                                <a href="{% static 'img/decoration-DJa75fdA.jpg' %}" data-fancybox="application-2">
-                                    <img src="{% static 'img/decoration-DJa75fdA.jpg' %}" alt="изображение слайда">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="applications__list-item-price">-</div>
-                    <div class="applications__list-item-status">
-                        Ожидание мастера
-                        <a class="applications__list-item-status-link" href="#">Оставить отзыв</a>
-                    </div>
-                </div>
-            </li>
-            <li class="applications__list-item applications__list-item--completed">
-                <div class="applications__list-item-container container">
-                    <div class="applications__list-item-id">1552</div>
-                    <div class="applications__list-item-date">01.01.2024</div>
-                    <div class="applications__list-item-description">
-                        Первые две строчки - порядка 50 символов,
-                    </div>
-                    <div class="applications__list-item-photos">
-                        <ul class="applications__list-item-photos-list">
-                            <li class="applications__list-item-photo">
-                                <a href=".{% static 'img/decoration-DJa75fdA.jpg' %}" data-fancybox="application-3">
-                                    <span class="applications__list-item-photos-count">5</span>
-                                    <img src="{% static 'img/decoration-DJa75fdA.jpg' %}" alt="изображение слайда">
-                                </a>
-                            </li>
-                            <li class="applications__list-item-photo">
-                                <a href="{% static 'img/decoration-DJa75fdA.jpg' %}" data-fancybox="application-3">
-                                    <img src="{% static 'img/decoration-DJa75fdA.jpg' %}" alt="изображение слайда">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="applications__list-item-price">15 000,00 руб.</div>
-                    <div class="applications__list-item-status applications__list-item-status--completed">
-                        Выполнена
-                        <a class="applications__list-item-status-link" href="#">Оставить отзыв</a>
-                    </div>
-                </div>
-            </li>
+            {% endfor %}
         </ul>
-        <div class="applications__bottom">
-            <div class="applications__bottom-container container">
-                <div class="applications__pagination">
-                    <a class="applications__pagination__item" href="#">&laquo;</a>
-                    <a class="applications__pagination__item applications__pagination__item--active" href="#">1 </a>
-                    <a class="applications__pagination__item" href="#">2</a>
-                    <a class="applications__pagination__item" href="#">3</a>
-                    <span class="applications__pagination__item">...</span>
-                    <a class="applications__pagination__item" href="#">6</a>
-                    <a class="applications__pagination__item" href="#">&raquo;</a>
-                </div>
-                <button class="applications__button button">Все заявки</button>
-            </div>
-        </div>
+{#        <div class="applications__bottom">#}
+{#            <div class="applications__bottom-container container">#}
+{#                <div class="applications__pagination">#}
+{#                    <a class="applications__pagination__item" href="#">&laquo;</a>#}
+{#                    <a class="applications__pagination__item applications__pagination__item--active" href="#">1 </a>#}
+{#                    <a class="applications__pagination__item" href="#">2</a>#}
+{#                    <a class="applications__pagination__item" href="#">3</a>#}
+{#                    <span class="applications__pagination__item">...</span>#}
+{#                    <a class="applications__pagination__item" href="#">6</a>#}
+{#                    <a class="applications__pagination__item" href="#">&raquo;</a>#}
+{#                </div>#}
+{#                <button class="applications__button button">Все заявки</button>#}
+{#            </div>#}
+{#        </div>#}
     </section>
 </main>
 {% endblock %}
