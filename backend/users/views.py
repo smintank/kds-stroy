@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.http import urlsafe_base64_decode
 from django.views import View
-from django.views.generic import FormView, TemplateView
+from django.views.generic import FormView, TemplateView, DeleteView
 
 from kds_stroy.settings import PHONE_VERIFICATION_TIME_LIMIT, PINCODE_INPUT_LIMIT
 from orders.models import Order, OrderPhoto
@@ -210,3 +210,10 @@ class ProfileView(ContextMixin, FormView):
             form.save()
             return redirect("users:profile")
         return render(request, self.template_name, {"form": form})
+
+
+class DeleteProfileView(ContextMixin, DeleteView):
+    template_name = "account/delete_account.html"
+    success_url = 'home'
+
+
