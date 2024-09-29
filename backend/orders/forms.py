@@ -93,3 +93,13 @@ class OrderCreationForm(forms.ModelForm):
         photos = self.cleaned_data.get("photo") or []
         for photo in photos:
             OrderPhoto.objects.create(order=order, photo=photo)
+
+    def __init__(self, *args, **kwargs):
+        initial = kwargs.get('initial')
+        city_id = None
+        if initial and "city_id" in initial:
+            city_id = initial.pop("city_id")
+        super().__init__(*args, **kwargs)
+        if city_id:
+            self.fields['city'].widget.attrs.update({'city-id': city_id})
+
