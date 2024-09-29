@@ -1,11 +1,11 @@
 .account {
-  padding-top: 193px;
+  padding-top: 130px;
 }
 .account__title {
   font-weight: 500;
   font-size: 35px;
   letter-spacing: -0.03em;
-  margin-bottom: 70px;
+  margin-bottom: 50px;
 }
 .account__form {
   position: relative;
@@ -13,11 +13,9 @@
   flex-direction: column;
 }
 .account__data {
-  position: absolute;
-  top: 21px;
-  right: 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  padding-bottom: 30px;
   gap: 38px;
 }
 .account__data-text {
@@ -25,8 +23,10 @@
   color: rgba(0, 0, 0, 0.6);
 }
 .account__data-link {
+  font-size: 15px;
+  margin-left: 200px;
   letter-spacing: -0.03em;
-  text-decoration: underline;
+  text-decoration: none;
   color: #656565;
 }
 .account__form-container {
@@ -37,11 +37,10 @@
 }
 .account__form-input {
   width: 100%;
-  max-width: 350px;
   background-color: #fff;
   border: none;
   outline: none;
-  padding: 21px 17px 10px 17px;
+  padding: 19px 17px 15px 17px;
   border-radius: 5px;
   color: #333333;
 }
@@ -58,7 +57,7 @@
 .account__form-agreement {
   letter-spacing: -0.03em;
   color: rgba(0, 0, 0, 0.6);
-  margin: 40px auto 50px auto;
+  margin: 40px 0;
 }
 .account__form-buttons {
   display: flex;
@@ -118,15 +117,8 @@
     letter-spacing: -0.03em;
     color: rgba(0, 0, 0, 0.6);
   }
-  .account__data-text--date {
-    font-size: 15px;
-    max-width: 129px;
-  }
-  .account__form-container {
-    max-width: 401px;
-  }
-  .account__form-input {
-    max-width: 197px;
+  .account__data-link {
+    margin-left: 50px;
   }
   .account__form-input--wide {
     max-width: 100%;
@@ -149,7 +141,7 @@
 }
 @media (max-width: 639px) {
   .account {
-    padding: 80px 0 55px 0;
+    padding: 100px 0 55px 0;
   }
   .account__title {
     font-size: 24px;
@@ -157,28 +149,21 @@
   }
   .account__data {
     gap: 22px;
+    justify-content: space-between;
+    flex-direction: column;
   }
   .account__data-text {
-    font-size: 12px;
     color: #656565;
   }
-  .account__data-text--date {
-    max-width: 101px;
-  }
   .account__data-link {
-    font-size: 12px;
-  }
-  .account__form-container {
-    max-width: 197px;
-    gap: 5px;
+    margin-left: 0;
+    margin-top: 40px;
   }
   .account__form-input {
     max-width: 100%;
-    padding: 21px 20px 6px 20px;
   }
   .account__form-input--wide {
     max-width: 100%;
-    padding-top: 37px;
   }
   .account__row {
     flex-direction: column;
@@ -199,17 +184,12 @@
   }
   .account__form-buttons {
     font-size: 15px;
-    display: grid;
-    gap: 30px 26px;
-    grid-template-columns: repeat(2, auto);
+    display: contents;
   }
   .account__form-button-delete {
-    width: 100%;
-    justify-self: end;
-    font-size: 12px;
+    font-size: 15px;
     padding: 0;
-    text-align: right;
-    grid-area: 2/2/3/3;
+    margin-top: 30px;
   }
   .account__form-button-edit {
     padding: 12px;
@@ -275,9 +255,7 @@
   max-height: 200px;
   overflow-y: scroll;
   letter-spacing: -0.03em;
-  /*border: 1px solid #656565;*/
   padding: 10px 3px;
-  background-color: #fff;
 }
 .applications__list-item-photos {
   position: relative;
@@ -293,13 +271,6 @@
   padding: 2px 5px;
   background-color: rgba(255, 255, 255, 0.7);
 }
-.applications__list-item-photos-empty {
-  /*letter-spacing: -0.03em;*/
-  /*position: absolute;*/
-  /*top: 15px;*/
-  /*left: 50%;*/
-  /*line-height: 25px;*/
-}
 .applications__list-item-photo {
   display: block;
   margin: 0 auto;
@@ -307,7 +278,6 @@
   top: 0;
   left: 0;
   z-index: -1;
-  display: block;
   width: 0;
   height: 0;
 }

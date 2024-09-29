@@ -168,9 +168,10 @@ class ProfileView(ContextMixin, FormView):
         context["form"] = self.form_class(instance=user, initial={
             "phone_number": user.formatted_phone_number, "city": str(city)
         })
+
         context["orders"] = Order.objects.filter(
             phone_number=user.phone_number
-        ).prefetch_related(
+        ).order_by("-created_at").prefetch_related(
             Prefetch("orderphoto_set", queryset=OrderPhoto.objects.all(), to_attr="photos")
         )
         return context

@@ -13,17 +13,16 @@
             <h2 class="account__title">Личный кабинет</h2>
             <form method="post" action="{% url 'users:profile' %}" class="account__form" id="accountForm" enctype="multipart/form-data">
                 <div class="account__data">
+                    <p class="account__data-text">Логин: {{ profile }}</p>
                     <p class="account__data-text account__data-text--date">Дата регистрации: {{ profile.date_joined|date:"d.m.Y H:i" }}</p>
-                    <p class="account__data-text">Login: {{ profile }}</p>
-                    <a class="account__data-link" href="{% url 'password_change' %}">Изменить пароль</a>
                 </div>
                 <div class="account__form-container">
                     {% csrf_token %}
-                    {% render_field form.first_name class="account__form-input" autocomplete="given-name" required="" %}
                     <div class="account__row account__row--name">
-                      {% render_field form.last_name class="account__form-input" autocomplete="family-name" %}
+                      {% render_field form.first_name class="account__form-input" autocomplete="given-name" required="" %}
                       {% render_field form.middle_name class="account__form-input" autocomplete="additional-name" %}
                     </div>
+                    {% render_field form.last_name class="account__form-input" autocomplete="family-name" %}
                     <div class="account__row account__row--contacts">
                       {% render_field form.phone_number class="account__form-input" autocomplete="tel" type="tel" data-tel-input="" required="" %}
                       {% render_field form.email class="account__form-input" autocomplete="email" type="email" required="" %}
@@ -31,7 +30,7 @@
                     <div class="account__row account__row--location">
                       {% render_field form.city class="account__form-input account__form-input--wide city-input" autocomplete="address-level"  autocomplete-url="/locations/autocomplete/" id="accountCity" %}
                     </div>
-                    {% render_field form.address class="account__form-input" autocomplete="street-address" %}
+                    {% render_field form.address class="account__form-input account__form-input--wide" autocomplete="street-address" %}
                 </div>
                 <label class="account__form-agreement checkbox">
                     {{ form.is_notify }}
@@ -39,8 +38,9 @@
                     Соглашаюсь получать письма на свой электронный адрес об акциях и новостях компании.
                 </label>
                 <div class="account__form-buttons">
-                    <button class="account__form-button-delete" type="button">Удалить аккаунт</button>
                     <button class="account__form-button-save account__form-button-save button" type="submit">Сохранить</button>
+                    <a class="account__data-link" href="{% url 'password_change' %}">Изменить пароль</a>
+                    <button class="account__form-button-delete" type="button">Удалить аккаунт</button>
                 </div>
             </form>
         </div>
@@ -84,9 +84,7 @@
                         </ul>
                     </div>
                         <div class="applications__list-item-price">{% if order.final_cost != 0 %}{{ order.final_cost|floatformat:"2" }} руб.{% if order.discount != 0 %}<br>Скидка {{ order.discount }}%{% endif %}{% else %}-{% endif %}</div>
-                        <div class="applications__list-item-status">{{ order.status }}
-{#                            <a class="applications__list-item-status-link" href="#">Оставить отзыв</a>#}
-                        </div>
+                        <div class="applications__list-item-status">{{ order.status }}</div>
                     </div>  
                 </li>
             {% empty %}
@@ -95,20 +93,6 @@
                 </div>
             {% endfor %}
         </ul>
-{#        <div class="applications__bottom">#}
-{#            <div class="applications__bottom-container container">#}
-{#                <div class="applications__pagination">#}
-{#                    <a class="applications__pagination__item" href="#">&laquo;</a>#}
-{#                    <a class="applications__pagination__item applications__pagination__item--active" href="#">1 </a>#}
-{#                    <a class="applications__pagination__item" href="#">2</a>#}
-{#                    <a class="applications__pagination__item" href="#">3</a>#}
-{#                    <span class="applications__pagination__item">...</span>#}
-{#                    <a class="applications__pagination__item" href="#">6</a>#}
-{#                    <a class="applications__pagination__item" href="#">&raquo;</a>#}
-{#                </div>#}
-{#                <button class="applications__button button">Все заявки</button>#}
-{#            </div>#}
-{#        </div>#}
     </section>
 </main>
 {% endblock %}
