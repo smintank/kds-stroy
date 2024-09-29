@@ -1,7 +1,7 @@
 .footer {
   padding: 70px 0 60px 0;
   background-color: #656565;
-  min-height: 460px;
+  min-height: 370px;
   display: flex;
   flex-direction: column;
 }
@@ -123,8 +123,7 @@
 }
 .footer__logo img {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 70%;
   margin: 0 auto;
   object-fit: cover;
 }
