@@ -83,9 +83,19 @@
                             {% endif %}
                         </ul>
                     </div>
-                        <div class="applications__list-item-price">{% if order.final_cost != 0 %}{{ order.final_cost|floatformat:"2" }} руб.{% if order.discount != 0 %}<br>Скидка {{ order.discount }}%{% endif %}{% else %}-{% endif %}</div>
+                        <div class="applications__list-item-price">
+                            {% if order.final_cost != 0 %}
+                                {{ order.cost|floatformat}} &#8381;
+                                {% if order.discount != 0 %}
+                                    <br>- {{ order.discount }}% скидка
+                                    <br>Итог: {{ order.final_cost|floatformat }} &#8381;
+                                {% endif %}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </div>
                         <div class="applications__list-item-status">{{ order.status }}</div>
-                    </div>  
+                    </div>
                 </li>
             {% empty %}
                 <div class="container">
