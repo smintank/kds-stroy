@@ -259,6 +259,13 @@
 .popup__form-forgot-link:hover {
   opacity: 0.5;
 }
+.confirm_logout {
+  padding: 17px;
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  max-width: 180px;
+}
 @media (max-width: 1023px) {
   .popup__container {
     max-width: 560px;
@@ -300,13 +307,24 @@
     font-size: 15px;
     max-width: 136px;
   }
+  .confirm_logout {
+    padding: 17px;
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.03em;
+    max-width: 180px;
+  }
   .popup__form-signup-link {
     font-size: 15px;
   }
   .popup__form-forgot-link {
     font-size: 15px;
   }
+  .logout_buttons {
+    flex-direction: row;
+  }
 }
+
 
 .autocomplete-dropdown {
   position: fixed;

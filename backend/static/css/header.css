@@ -96,7 +96,6 @@
   max-width: 190px;
   background-color: #c82027;
   color: #fff;
-  border: none;
   padding: 10px 10px 8px 10px;
   border-radius: 9px;
   cursor: pointer;
@@ -289,7 +288,7 @@
     padding-bottom: 3px;
   }
   .header--active {
-    padding-bottom: 370px;
+    padding-bottom: 430px;
   }
   .header__container {
     gap: 19px;
@@ -326,11 +325,15 @@
     display: block;
   }
   .header__callback {
-    display: none;
+    position: absolute;
+    top: 365px;
+    font-size: 18px;
+    padding: 10px;
+    max-width: 80%;
   }
   .header__signin {
     font-size: 20px;
-    top: 374px;
+    top: 440px;
     left: 18px;
   }
   .header__signin::after {
@@ -338,7 +341,7 @@
   }
   .header__account {
     font-size: 20px;
-    top: 374px;
+    top: 440px;
     left: 18px;
   }
   .header__account::after {

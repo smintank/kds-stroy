@@ -5,8 +5,8 @@
         <h2 class="popup__title">Вы уверены, что хотите выйти?</h2>
         <form class="popup__form" action="{% url 'logout' %}" method="post">
             {% csrf_token %}
-            <div class="popup__form-buttons">
-                <button class="popup__form-submit button" id="logoutButton" type="submit" autofocus>Да</button>
+            <div class="popup__form-buttons logout_buttons">
+                <button class="confirm_logout button" id="logoutButton" type="submit" autofocus>Да</button>
                 <button class="cancel_logout button" id="logoutCancelButton" type="button">Нет</button>
             </div>
         </form>
