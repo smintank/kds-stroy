@@ -3,14 +3,22 @@ import logging
 import requests
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.urls import reverse
 
-from kds_stroy.settings import (PHONE_CHANGE_FREQUENCY_LIMIT,
-                                PHONE_VERIFICATION_ATTEMPTS_LIMIT,
-                                PHONE_VERIFICATION_TIME_LIMIT, ZVONOK_API_KEY,
-                                ZVONOK_CAMPAIGN_ID, ZVONOK_ENDPOINT)
+from kds_stroy.settings import (PHONE_CHANGE_FREQUENCY_LIMIT, PHONE_VERIFICATION_ATTEMPTS_LIMIT,
+                                PHONE_VERIFICATION_TIME_LIMIT, ZVONOK_API_KEY, ZVONOK_CAMPAIGN_ID,
+                                ZVONOK_ENDPOINT, DEFAULT_FROM_EMAIL)
 from users.models import PhoneVerification
 
 logger = logging.getLogger(__name__)
+
+
+token_generator = default_token_generator
 
 
 def phone_validation_prepare(phone_number, session, user):
@@ -141,3 +149,24 @@ def is_time_limit(timestamp) -> bool:
     limit_seconds = PHONE_VERIFICATION_TIME_LIMIT or 360
     passed_seconds = int((timezone.now() - timestamp).total_seconds())
     return passed_seconds <= limit_seconds
+
+
+def send_verification_email(request, user):
+    token = token_generator.make_token(user)
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+
+    verification_url = request.build_absolute_uri(
+        reverse('users:email_verification', kwargs={'uidb64': uid, 'token': token})
+    )
+
+    subject = 'Верификация Email'
+    message = render_to_string('account/email_verification.html', {
+        'user': user,
+        'verification_url': verification_url,
+    })
+
+    try:
+        send_mail(subject, message, DEFAULT_FROM_EMAIL, [user.email])
+        print("Email sent successfully")
+    except Exception as e:
+        print(f"Error sending email: {e}")

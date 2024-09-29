@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}КДС-Строй: Подтверждение Email{% endblock %}
+{% block plug_js_css %}
+    <script type="module" crossorigin src="{% static 'js/pages/common-page.js' %}"></script>
+    <link rel="stylesheet" crossorigin href="{% static 'css/common-page.css' %}">
+{% endblock %}
+{% block content %}
+<main>
+  <section>
+    <div class="container">
+      <h1 class="title">Подтверждение Email</h1>
+      <p>
+        Ваш email успешно подтвержден!
+      </p>
+      <br>
+      <div><p><a href="{% url 'home' %}">На главную</a></p></div>
+    </div>
+  </section>
+</main>
+{% endblock %}

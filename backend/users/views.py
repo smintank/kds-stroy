@@ -5,7 +5,9 @@ from django.db.models import Prefetch
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-from django.views.generic import FormView
+from django.utils.http import urlsafe_base64_decode
+from django.views import View
+from django.views.generic import FormView, TemplateView
 
 from kds_stroy.settings import PHONE_VERIFICATION_TIME_LIMIT, PINCODE_INPUT_LIMIT
 from orders.models import Order, OrderPhoto
@@ -15,7 +17,7 @@ from users.forms import (ChangePhoneNumberForm, PhoneVerificationForm,
 
 from .models import PhoneVerification
 from .utils.base import (call_api_process, get_countdown, is_numbers_amount_limit,
-                         is_phone_change_limit, phone_validation_prepare)
+                         is_phone_change_limit, phone_validation_prepare, send_verification_email, token_generator)
 
 User = get_user_model()
 
@@ -135,6 +137,8 @@ class PhoneVerificationView(ContextMixin, FormView):
         user.save()
         del self.request.session["phone_number"]
 
+        send_verification_email(self.request, user)
+
         return render(
             self.request,
             "account/registration_done.html",
@@ -151,6 +155,30 @@ class PhoneVerificationView(ContextMixin, FormView):
         self.kwargs["countdown"] = get_countdown(last_call_obj, self.kwargs)
         # form.cleaned_data["pincode"] = ""
         return super().form_invalid(form)
+
+
+class EmailVerificationView(ContextMixin, View):
+    def get(self, request, uidb64, token, *args, **kwargs):
+        try:
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = get_object_or_404(User, pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+
+        if user is not None and token_generator.check_token(user, token):
+            user.is_email_verified = True
+            user.save()
+            return redirect('users:email_verification_success')
+        else:
+            return redirect('users:email_verification_failed')
+
+
+class EmailVerificationFailedView(ContextMixin, TemplateView):
+    template_name = 'account/email_verification_failed.html'
+
+
+class EmailVerificationSuccessView(ContextMixin, TemplateView):
+    template_name = 'account/email_verification_success.html'
 
 
 class ProfileView(ContextMixin, FormView):
