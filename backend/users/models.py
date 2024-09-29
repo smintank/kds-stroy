@@ -8,8 +8,7 @@ from .utils.phone_number import clean_phone_number, format_phone_number
 
 class User(AbstractUser):
     first_name = models.CharField(
-        "Имя", max_length=150, blank=False, null=False,
-        help_text="Обязательное поле"
+        "Имя", max_length=150, blank=False, null=False, help_text="Обязательное поле"
     )
     middle_name = models.CharField("Отчество", max_length=150, blank=True)
     avatar = models.ImageField(
@@ -20,14 +19,12 @@ class User(AbstractUser):
     )
     is_email_verified = models.BooleanField("Email подтвержден", default=False)
     phone_number = models.CharField(
-        "Номер телефона", max_length=18, unique=True,
-        help_text="Обязательное поле"
+        "Номер телефона", max_length=18, unique=True, help_text="Обязательное поле"
     )
     phone_number_change_date = models.DateTimeField(
         "Последняя дата изменения номера телефона", auto_now_add=True
     )
-    is_phone_verified = models.BooleanField("Телефон подтвержден",
-                                            default=False)
+    is_phone_verified = models.BooleanField("Телефон подтвержден", default=False)
     city = models.ForeignKey(
         "locations.City",
         on_delete=models.SET_NULL,
@@ -35,25 +32,23 @@ class User(AbstractUser):
         blank=True,
         verbose_name="Город проживания",
     )
-    address = models.ForeignKey(
-        "locations.Address",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        verbose_name="Адрес проживания",
-    )
+    # address = models.ForeignKey(
+    #     "locations.Address",
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    #     blank=True,
+    #     verbose_name="Адрес проживания",
+    # )
+    address = models.CharField("Адрес", max_length=150,  blank=True, null=True)
     is_notify = models.BooleanField(
         "Уведомлять о новых заказах", default=False,
-        help_text="Отметьте, если пользователь должен получать уведомления "
-                  "о новых заказах"
+        help_text="Отметьте, если пользователь должен получать уведомления о новых заказах"
     )
     tg_id = models.CharField(
-        "Telegram", max_length=50,
-        blank=True, help_text="Укажите Telegram ID в формате 123456789"
+        "Telegram", max_length=50, blank=True, help_text="Укажите Telegram ID в формате 123456789"
     )
 
-    date_joined = models.DateTimeField("Дата создания аккаунта",
-                                       auto_now_add=True)
+    date_joined = models.DateTimeField("Дата создания аккаунта", auto_now_add=True)
     last_login = models.DateTimeField("Последний вход", auto_now=True)
 
     USERNAME_FIELD = "email"
