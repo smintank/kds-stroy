@@ -10,9 +10,8 @@ function setCookie(name, value, days, path, domain, secure) {
     }
 
   document.cookie = name + "=" + (value || "") + expires +
-      (path ? "; path=" + path : "") +
-      (domain ? "; domain=" + domain : "") +
-      (secure ? "; secure" : "");
+      (path ? "; path=" + path : '; path=/') +
+      (domain ? "; domain=" + domain : "") + "; secure";
 }
 
 function getCookie(name) {
