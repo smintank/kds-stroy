@@ -27,12 +27,18 @@ class ContextMixin:
             order_form = OrderCreationForm()
             context["login_form"] = AuthenticationForm()
         else:
+            city = self.request.user.city
+            if not city:
+                city_id = None
+            else:
+                city_id = city.id
+
             order_form = OrderCreationForm(initial={
                 'first_name': self.request.user.first_name,
                 'phone_number': format_phone_number(self.request.user.phone_number),
                 'address': self.request.user.address,
-                'city': self.request.user.city.__str__(),
-                'city_id': self.request.user.city.id,
+                'city': city.__str__(),
+                'city_id': city_id,
             })
         context["order_form"] = order_form
 
