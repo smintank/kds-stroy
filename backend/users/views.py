@@ -1,9 +1,11 @@
 import logging
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Prefetch
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.http import urlsafe_base64_decode
 from django.views import View
@@ -212,8 +214,11 @@ class ProfileView(ContextMixin, FormView):
         return render(request, self.template_name, {"form": form})
 
 
-class DeleteProfileView(ContextMixin, DeleteView):
+class DeleteProfileView(ContextMixin, LoginRequiredMixin, DeleteView):
+    model = User
     template_name = "account/delete_account.html"
-    success_url = 'home'
+    success_url = reverse_lazy('home')
 
+    def get_object(self, *args, **kwargs):
+        return get_object_or_404(self.model, id=self.request.user.id)
 

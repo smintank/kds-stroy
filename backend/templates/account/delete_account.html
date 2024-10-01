@@ -9,12 +9,17 @@
 <main>
   <section>
     <div class="container">
-      <h1 class="title">Подтверждение удаления аккаунта!</h1>
-      <p>
-        Внимание! Вы собираетесь удалить аккаунт.
-      </p>
-      <br>
-        <button>Удалить</button>
+      <h1 class="title">Внимание! Вы собираетесь удалить свой аккаунт.</h1>
+      <div class="simple_block">
+        <p>
+          Вы уверены, что хотите безвозвратно удалить свой аккаунт?
+        </p>
+        <form method="post">
+          {% csrf_token %}
+          <button class="confirm_button simple_button" type="submit">Да, удалить</button>
+          <a class="refuse_button simple_button" href="{% url 'users:profile' %}">Нет, назад</a>
+        </form>
+      </div>
       <div><p><a href="{% url 'home' %}">На главную</a></p></div>
     </div>
   </section>

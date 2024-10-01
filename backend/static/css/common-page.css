@@ -37,3 +37,31 @@ section {
     letter-spacing: -0.03em;
     margin-bottom: 20px;
 }
+
+.confirm_button {
+    background-color: #c82027;
+    color: white;
+    text-decoration: none;
+}
+
+.confirm_button:hover {
+    background-color: white;
+    color: black;
+}
+
+.refuse_button {
+    background-color: gray;
+    color: white;
+    text-decoration: none;
+    border-color: gray;
+}
+.refuse_button:hover {
+    background-color: white;
+    color: black;
+}
+
+.simple_block {
+    position: relative;
+    align-content: center;
+    margin-top: 60px;
+}
