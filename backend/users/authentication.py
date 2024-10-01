@@ -2,6 +2,7 @@ import re
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
+from django.core.exceptions import ValidationError
 
 User = get_user_model()
 
@@ -25,6 +26,8 @@ class EmailPhoneUsernameBackend(ModelBackend):
                 user = self._get_user_by_field("phone_number", phone_number)
             case _ if re.search(r"\S+@[\w.-]+\.\w+", username):
                 user = self._get_user_by_field("email", username.lower())
+                if user and not user.is_email_verified:
+                    return None
             case _:
                 return
 
