@@ -47,7 +47,7 @@ class RegistrationView(ContextMixin, FormView):
 class ChangePhoneNumberView(ContextMixin, FormView):
     model = User
     form_class = ChangePhoneNumberForm
-    template_name = "pages/change_phone_number.html"
+    template_name = "account/change_phone_number.html"
 
     def get_queryset(self):
         return self.model.objects.get(pk=self.request.user.pk)
@@ -56,14 +56,14 @@ class ChangePhoneNumberView(ContextMixin, FormView):
         if is_phone_change_limit(request.user.phone_number_change_date):
             return render(
                 request,
-                "registration/phone_verification_limit.html",
-                {"limit": "time_limit"},
+                "account/phone_verification_limit.html",
+                {"limit": "time_limit", **self.get_context_data(**kwargs)},
             )
         if is_numbers_amount_limit(request.user):
             return render(
                 request,
-                "registration/phone_verification_limit.html",
-                {"limit": "number_limit"},
+                "account/phone_verification_limit.html",
+                {"limit": "number_limit", **self.get_context_data(**kwargs)},
             )
         return super().get(request, *args, **kwargs)
 
