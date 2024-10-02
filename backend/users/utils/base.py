@@ -111,7 +111,7 @@ def is_phone_change_limit(number_change_date) -> bool:
     return number_change_date > start_date
 
 
-def is_numbers_amount_limit(request) -> bool:
+def is_numbers_amount_limit(user) -> bool:
     """
     Check if the limit for the number of verification attempts has been reached
     """
@@ -120,10 +120,9 @@ def is_numbers_amount_limit(request) -> bool:
     start_date = timezone.now() - timezone.timedelta(days=frequency_limit)
 
     last_month_unique_numbers = (
-        PhoneVerification.objects.filter(user=request.user,
-                                         created_at__gte=start_date)
-        .values_list("phone_number", flat=True)
-        .distinct()
+        PhoneVerification.objects.filter(user=user, created_at__gte=start_date)
+                                 .values_list("phone_number", flat=True)
+                                 .distinct()
     )
 
     return len(last_month_unique_numbers) > attempts_limit
