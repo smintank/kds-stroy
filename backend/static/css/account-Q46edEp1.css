@@ -109,6 +109,15 @@
   flex-direction: column;
   row-gap: 10px;
 }
+.changed-field {
+  width: 100%;
+}
+.changed-field__link {
+  position: absolute;
+  transform: translate(-90px, 20px);
+  font-size: 15px;
+  color: #8a8b8b;
+}
 @media (max-width: 1023px) {
   .account {
     padding: 120px 0;

@@ -115,7 +115,6 @@ class UserForm(forms.ModelForm):
         )
         widgets = {
             "city": forms.TextInput(),
-            "address": forms.TextInput(),
         }
 
     def __init__(self, *args, **kwargs):

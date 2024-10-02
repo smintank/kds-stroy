@@ -24,8 +24,14 @@
                     </div>
                     {% render_field form.last_name class="account__form-input" autocomplete="family-name" %}
                     <div class="account__row account__row--contacts">
-                      {% render_field form.phone_number class="account__form-input" autocomplete="tel" type="tel" data-tel-input="" required="" %}
-                      {% render_field form.email class="account__form-input" autocomplete="email" type="email" required="" %}
+                      <div class="changed-field">
+                        {% render_field form.phone_number class="account__form-input" autocomplete="tel" type="tel" data-tel-input="" required="" readonly="readonly" %}
+                        <a class="changed-field__link" href="{% url 'users:change_phone_number' %}">Изменить</a>
+                      </div>
+                      <div class="changed-field">
+                        {% render_field form.email class="account__form-input" autocomplete="email" type="email" required="" readonly="readonly" %}
+                        <a class="changed-field__link" href="#">Изменить</a>
+                      </div>
                     </div>
                     <div class="account__row account__row--location">
                       {% render_field form.city class="account__form-input account__form-input--wide city-input" autocomplete="address-level"  autocomplete-url="/locations/autocomplete/" id="accountCity" %}
