@@ -67,10 +67,9 @@ const useCitySuggestions = () => {
   document.querySelectorAll(".city-input").forEach(input => {
     const dropdown = new DropdownMenu(input);
     input.form.addEventListener('submit', function(event) {
-      if (dropdown.chosenId === null) {
+      if (dropdown.chosenId === null || input.value === '') {
         input.value = '';
       } else {
-        console.log(dropdown.chosenId);
         input.value = dropdown.chosenId;
       }
     });
