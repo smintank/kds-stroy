@@ -22,31 +22,28 @@ logger = logging.getLogger(__name__)
 class ContextMixin:
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
+        user = self.request.user
 
-        if not self.request.user.is_authenticated:
+        if not user.is_authenticated:
             order_form = OrderCreationForm()
             context["login_form"] = AuthenticationForm()
         else:
-            city = self.request.user.city
-            if not city:
-                city_id = None
-            else:
-                city_id = city.id
-
+            city = user.city
             order_form = OrderCreationForm(initial={
-                'first_name': self.request.user.first_name,
-                'phone_number': format_phone_number(self.request.user.phone_number),
-                'address': self.request.user.address,
-                'city': city.__str__(),
-                'city_id': city_id,
+                'first_name': user.first_name,
+                'phone_number': format_phone_number(user.phone_number),
+                'address': user.address,
+                'city': str(city) if city else '',
+                'city_id': city.id if city else ''
             })
         context["order_form"] = order_form
 
         order_id = self.request.session.get("order_id")
-        order = Order.objects.filter(order_id=order_id).first()
-        if order and order.status in [Order.Status.COMPLETED, Order.Status.CANCELED]:
-            self.request.session["order_id"] = None
-            self.request.session["order_created"] = None
+        if order_id:
+            order = Order.objects.filter(order_id=order_id).first()
+            if order and order.status in [Order.Status.COMPLETED, Order.Status.CANCELED]:
+                self.request.session.pop("order_id", None)
+                self.request.session.pop("order_created", None)
         return context
 
     def render_to_response(self, context, **response_kwargs):
