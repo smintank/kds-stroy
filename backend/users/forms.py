@@ -4,6 +4,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 
 from users.models import PhoneVerification
+from users.utils.phone_number import clean_phone_number
 
 User = get_user_model()
 
@@ -119,10 +120,19 @@ class UserForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Add label text to placeholder in all fields
         for field_name, field in self.fields.items():
             field.widget.attrs.update({'placeholder': field.label})
+
+        # If city credential was filled then we add city-id attribute to city field for profile form.
         if self.instance and self.instance.city_id:
             self.fields['city'].widget.attrs.update({'city-id': self.instance.city_id})
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get("phone_number")
+        if phone_number:
+            return clean_phone_number(phone_number)
+        return phone_number
 
 
 class ChangeEmailForm(forms.ModelForm):
