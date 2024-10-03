@@ -186,6 +186,7 @@ class EmailVerificationSuccessView(ContextMixin, TemplateView):
 class ProfileView(ContextMixin, FormView):
     model = User
     template_name = "account/account.html"
+    success_url = reverse_lazy("users:profile")
     form_class = UserForm
 
     def get_context_data(self, **kwargs):
@@ -210,8 +211,9 @@ class ProfileView(ContextMixin, FormView):
         form = self.form_class(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect("users:profile")
-        return render(request, self.template_name, {"form": form})
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 class DeleteProfileView(ContextMixin, LoginRequiredMixin, DeleteView):
