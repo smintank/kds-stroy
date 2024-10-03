@@ -25,9 +25,7 @@
               </div>
               {% for field in form %}
                 {{ field }}
-                {% if field.errors %}
-                  <p>{{ field.errors }}</p>
-                {% endif %}
+                {% if field.errors %}<p>{{ field.errors }}</p>{% endif %}
               {% endfor %}
               <div class="countdown_area">
                 {% if not is_attempt_limit %}

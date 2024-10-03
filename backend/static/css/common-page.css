@@ -65,3 +65,13 @@ section {
     align-content: center;
     margin-top: 60px;
 }
+.simple_form-input {
+    width: 100%;
+    background-color: #fff;
+    border: none;
+    outline: none;
+    padding: 19px 17px 15px 17px;
+    border-radius: 5px;
+    color: #333333;
+    margin-top: 10px;
+}
