@@ -20,6 +20,48 @@ const useAccountItem = () => {
   });
 };
 
+const useButtonDisable = () => {
+  const form = document.getElementById('accountForm');
+  const submitButton = document.getElementById('profileFormSaveButton');
+  const initialFormState = new FormData(form);
+
+  function isFormChanged() {
+    const currentFormState = new FormData(form);
+    for (let [key, value] of initialFormState.entries()) {
+      if (currentFormState.get(key) !== value) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function toggleButtonState(isChanged) {
+    const baseClass = 'account__form-button-save';
+    const disabledClass = `${baseClass}--disabled`;
+
+    if (isChanged) {
+      submitButton.disabled = false;
+      submitButton.classList.remove(disabledClass);
+      submitButton.classList.add(baseClass);
+
+    } else {
+      submitButton.disabled = true;
+      submitButton.classList.remove(baseClass);
+      submitButton.classList.add(disabledClass);
+    }
+  }
+
+    // Listen for changes in the form
+  form.addEventListener('input', function () {
+      toggleButtonState(isFormChanged());
+  });
+
+  // Listen for select field changes (if any)
+  form.addEventListener('change', function () {
+      toggleButtonState(isFormChanged());
+  });
+}
+
 addEventListener("DOMContentLoaded", () => {
   useBurger();
   useHeaderOnScroll();
@@ -29,4 +71,5 @@ addEventListener("DOMContentLoaded", () => {
   useShowcaseModal();
   useAuthPopup();
   useCitySuggestions();
+  useButtonDisable();
 });

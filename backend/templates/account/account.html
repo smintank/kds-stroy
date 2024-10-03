@@ -44,7 +44,7 @@
                     Соглашаюсь получать письма на свой электронный адрес об акциях и новостях компании.
                 </label>
                 <div class="account__form-buttons">
-                    <button class="account__form-button-save account__form-button-save button" type="submit">Сохранить</button>
+                    <button class="account__form-button-save--disabled button" id="profileFormSaveButton" type="submit">Сохранить</button>
                     <a class="account__data-link" href="{% url 'password_change' %}">Изменить пароль</a>
                     <a class="account__form-button-delete" href="{% url "users:delete_profile" %}">Удалить аккаунт</a>
                 </div>
