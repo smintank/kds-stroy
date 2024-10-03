@@ -201,6 +201,42 @@ class PhoneVerificationView(ContextMixin, FormView):
         return super().form_invalid(form)
 
 
+class ChangeEmailView(ContextMixin, FormView):
+    model = User
+    form_class = ChangeEmailForm
+    template_name = "account/change_email.html"
+    success_url = reverse_lazy("users:change_email_done")
+
+    def get_queryset(self):
+        return self.model.objects.get(pk=self.request.user.pk)
+
+    def post(self, request, *args, **kwargs):
+        old_email = request.user.email
+        form = self.form_class(request.POST, request.FILES, instance=request.user)
+
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_email_verified = False
+            user.save()
+
+            send_email_message(
+                "КДС-Строй: Попытка смены Email",
+                f'Из вашего личного кабинета на сайте kdsstroy.ru поступил запрос '
+                f'на изменение email на новый - {user.email}. '
+                f'Если вы не меняли ваш email, то свяжитесь с нашей службой поддержки: support@kdsstroy.ru',
+                old_email
+            )
+            send_verification_email(request, user)
+
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+
+class ChangeEmailDoneView(ContextMixin, TemplateView):
+    template_name = 'account/change_email_done.html'
+
+
 class EmailVerificationView(ContextMixin, View):
     def get(self, request, uidb64, token, *args, **kwargs):
         try:

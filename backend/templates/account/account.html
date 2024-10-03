@@ -30,7 +30,7 @@
                       </div>
                       <div class="changed-field">
                         {% render_field form.email class="account__form-input" autocomplete="email" type="email" required="" readonly="readonly" %}
-                        <a class="changed-field__link" href="#">Изменить</a>
+                        <a class="changed-field__link" href="{% url 'users:change_email' %}">Изменить</a>
                       </div>
                     </div>
                     <div class="account__row account__row--location">
