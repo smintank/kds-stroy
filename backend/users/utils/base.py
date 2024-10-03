@@ -163,9 +163,12 @@ def send_verification_email(request, user):
         'user': user,
         'verification_url': verification_url,
     })
+    send_email_message(subject, message, user.email)
 
+
+def send_email_message(subject, message, email):
     try:
-        send_mail(subject, message, DEFAULT_FROM_EMAIL, [user.email])
+        send_mail(subject, message, DEFAULT_FROM_EMAIL, [email])
         print("Email sent successfully")
     except Exception as e:
         print(f"Error sending email: {e}")
