@@ -132,8 +132,10 @@ class DropdownMenu {
     window.addEventListener('resize', this._updatePosition);
     window.addEventListener('scroll', this._updatePosition);
     window.addEventListener('orientationchange', this._updatePosition);
-    document.addEventListener('click', function(event) {
-      if (this._menu) this._menu.setHidden();
+    document.addEventListener('click', (event) => {
+      if (!this._input.contains(event.target) && (!this._menu || !this._menu.contains(event.target))) {
+        this.setHidden();
+      }
     });
     this._input.addEventListener('input', this.getDropdownMenu)
   }
