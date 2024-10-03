@@ -117,9 +117,11 @@
 }
 .changed-field__link {
   position: absolute;
-  transform: translate(-90px, 20px);
+  transform: translate(-100px, 10px);
   font-size: 15px;
   color: #8a8b8b;
+  background-color: white;
+  padding: 10px;
 }
 @media (max-width: 1023px) {
   .account {

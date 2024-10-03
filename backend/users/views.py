@@ -15,15 +15,48 @@ from kds_stroy.settings import PHONE_VERIFICATION_TIME_LIMIT, PINCODE_INPUT_LIMI
 from orders.models import Order, OrderPhoto
 from orders.views import ContextMixin
 from users.forms import (ChangePhoneNumberForm, PhoneVerificationForm,
-                         UserForm, UserRegistrationForm)
+                         UserForm, UserRegistrationForm, ChangeEmailForm)
 
 from .models import PhoneVerification
-from .utils.base import (call_api_process, get_countdown, is_numbers_amount_limit,
+from .utils.base import (call_api_process, get_countdown, is_numbers_amount_limit, send_email_message,
                          is_phone_change_limit, phone_validation_prepare, send_verification_email, token_generator)
 
 User = get_user_model()
 
 logger = logging.getLogger(__name__)
+
+
+class ProfileView(ContextMixin, FormView):
+    model = User
+    template_name = "account/account.html"
+    success_url = reverse_lazy("users:profile")
+    form_class = UserForm
+
+    def get_context_data(self, **kwargs):
+        user = self.request.user
+
+        context = super().get_context_data(**kwargs)
+        context["profile"] = user
+
+        city = user.city or ""
+        context["form"] = self.form_class(instance=user, initial={
+            "phone_number": user.formatted_phone_number, "city": str(city)
+        })
+
+        context["orders"] = Order.objects.filter(
+            phone_number=user.phone_number
+        ).order_by("-created_at").prefetch_related(
+            Prefetch("orderphoto_set", queryset=OrderPhoto.objects.all(), to_attr="photos")
+        )
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 class RegistrationView(ContextMixin, FormView):
@@ -42,6 +75,15 @@ class RegistrationView(ContextMixin, FormView):
             user=user,
         )
         return redirect("users:phone_verification")
+
+
+class DeleteProfileView(ContextMixin, LoginRequiredMixin, DeleteView):
+    model = User
+    template_name = "account/delete_account.html"
+    success_url = reverse_lazy('home')
+
+    def get_object(self, *args, **kwargs):
+        return get_object_or_404(self.model, id=self.request.user.id)
 
 
 class ChangePhoneNumberView(ContextMixin, FormView):
@@ -181,46 +223,3 @@ class EmailVerificationFailedView(ContextMixin, TemplateView):
 
 class EmailVerificationSuccessView(ContextMixin, TemplateView):
     template_name = 'account/email_verification_success.html'
-
-
-class ProfileView(ContextMixin, FormView):
-    model = User
-    template_name = "account/account.html"
-    success_url = reverse_lazy("users:profile")
-    form_class = UserForm
-
-    def get_context_data(self, **kwargs):
-        user = self.request.user
-
-        context = super().get_context_data(**kwargs)
-        context["profile"] = user
-
-        city = user.city or ""
-        context["form"] = self.form_class(instance=user, initial={
-            "phone_number": user.formatted_phone_number, "city": str(city)
-        })
-
-        context["orders"] = Order.objects.filter(
-            phone_number=user.phone_number
-        ).order_by("-created_at").prefetch_related(
-            Prefetch("orderphoto_set", queryset=OrderPhoto.objects.all(), to_attr="photos")
-        )
-        return context
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
-
-class DeleteProfileView(ContextMixin, LoginRequiredMixin, DeleteView):
-    model = User
-    template_name = "account/delete_account.html"
-    success_url = reverse_lazy('home')
-
-    def get_object(self, *args, **kwargs):
-        return get_object_or_404(self.model, id=self.request.user.id)
-

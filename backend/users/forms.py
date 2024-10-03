@@ -143,7 +143,6 @@ class ChangeEmailForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["email"].label = "Новая электронная почта"
-
         self.fields["email"].widget.attrs.update({"class": "form-control"})
 
 

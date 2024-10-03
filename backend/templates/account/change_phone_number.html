@@ -17,7 +17,8 @@
       <br>
       <form method="post">
         {% csrf_token %}
-        {% render_field form.phone_number type="tel" autocomplete="tel" data-tel-input="" required="" %} 
+        {% render_field form.phone_number type="tel" autocomplete="tel" data-tel-input="" required="" %}
+        {% if form.phone_number.errors %}<p>{{ form.phone_number.errors }}</p>{% endif %}
         <button class="simple_button" type="submit">Подтвердить</button>
       </form>
       <div><p><a href="{% url 'users:profile' %}">Личный кабинет</a></p></div>
