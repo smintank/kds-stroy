@@ -1,12 +1,10 @@
 import logging
 
 from django.conf import settings
-from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse
 from django.views import View
 from django.views.generic import DetailView
 
-from users.utils.phone_number import format_phone_number
 from .forms import OrderCreationForm
 from .messages import ERROR_ORDER_CREATION_MSG as ERROR_MSG
 from .messages import SUCCESS_ORDER_CREATION_MSG as SUCCESS_MSG
@@ -17,44 +15,6 @@ from .utils import get_notified_users, get_order_message
 
 
 logger = logging.getLogger(__name__)
-
-
-class ContextMixin:
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user = self.request.user
-
-        if not user.is_authenticated:
-            order_form = OrderCreationForm()
-            context["login_form"] = AuthenticationForm()
-        else:
-            city = user.city
-            order_form = OrderCreationForm(initial={
-                'first_name': user.first_name,
-                'phone_number': format_phone_number(user.phone_number),
-                'address': user.address,
-                'city': str(city) if city else '',
-                'city_id': city.id if city else ''
-            })
-        context["order_form"] = order_form
-
-        order_id = self.request.session.get("order_id")
-        if order_id:
-            order = Order.objects.filter(order_id=order_id).first()
-            if order and order.status in [Order.Status.COMPLETED, Order.Status.CANCELED]:
-                self.request.session.pop("order_id", None)
-                self.request.session.pop("order_created", None)
-        return context
-
-    def render_to_response(self, context, **response_kwargs):
-        response = super().render_to_response(context, **response_kwargs)
-
-        order_id = self.request.session.get("order_id")
-        order_created = 1 if self.request.session.get("order_created") else 0
-
-        response.set_cookie('order_id', order_id, max_age=360000)
-        response.set_cookie('order_created', order_created, max_age=360000)
-        return response
 
 
 class OrderCreateView(View):

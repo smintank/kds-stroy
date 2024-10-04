@@ -9,11 +9,10 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.http import urlsafe_base64_decode
 from django.views import View
-from django.views.generic import FormView, TemplateView, DeleteView
+from django.views.generic import FormView, DeleteView
 
 from kds_stroy.settings import PHONE_VERIFICATION_TIME_LIMIT, PINCODE_INPUT_LIMIT
 from orders.models import Order, OrderPhoto
-from orders.views import ContextMixin
 from users.forms import (ChangePhoneNumberForm, PhoneVerificationForm,
                          UserForm, UserRegistrationForm, ChangeEmailForm)
 
@@ -26,7 +25,7 @@ User = get_user_model()
 logger = logging.getLogger(__name__)
 
 
-class ProfileView(ContextMixin, FormView):
+class ProfileView(FormView):
     model = User
     template_name = "account/account.html"
     success_url = reverse_lazy("users:profile")
@@ -59,7 +58,7 @@ class ProfileView(ContextMixin, FormView):
             return self.form_invalid(form)
 
 
-class RegistrationView(ContextMixin, FormView):
+class RegistrationView(FormView):
     template_name = "account/register.html"
     form_class = UserRegistrationForm
     success_url = "/registration_done/"
@@ -77,7 +76,7 @@ class RegistrationView(ContextMixin, FormView):
         return redirect("users:phone_verification")
 
 
-class DeleteProfileView(ContextMixin, LoginRequiredMixin, DeleteView):
+class DeleteProfileView(LoginRequiredMixin, DeleteView):
     model = User
     template_name = "account/delete_account.html"
     success_url = reverse_lazy('home')
@@ -86,7 +85,7 @@ class DeleteProfileView(ContextMixin, LoginRequiredMixin, DeleteView):
         return get_object_or_404(self.model, id=self.request.user.id)
 
 
-class ChangePhoneNumberView(ContextMixin, FormView):
+class ChangePhoneNumberView(FormView):
     model = User
     form_class = ChangePhoneNumberForm
     template_name = "account/change_phone_number.html"
@@ -120,7 +119,7 @@ class ChangePhoneNumberView(ContextMixin, FormView):
         return redirect("users:phone_verification")
 
 
-class PhoneVerificationView(ContextMixin, FormView):
+class PhoneVerificationView(FormView):
     model = PhoneVerification
     template_name = "account/phone_verification_form.html"
     form_class = PhoneVerificationForm
@@ -201,7 +200,7 @@ class PhoneVerificationView(ContextMixin, FormView):
         return super().form_invalid(form)
 
 
-class ChangeEmailView(ContextMixin, FormView):
+class ChangeEmailView(FormView):
     model = User
     form_class = ChangeEmailForm
     template_name = "account/change_email.html"
@@ -233,11 +232,7 @@ class ChangeEmailView(ContextMixin, FormView):
             return self.form_invalid(form)
 
 
-class ChangeEmailDoneView(ContextMixin, TemplateView):
-    template_name = 'account/change_email_done.html'
-
-
-class EmailVerificationView(ContextMixin, View):
+class EmailVerificationView(View):
     def get(self, request, uidb64, token, *args, **kwargs):
         try:
             uid = urlsafe_base64_decode(uidb64).decode()
@@ -251,11 +246,3 @@ class EmailVerificationView(ContextMixin, View):
             return redirect('users:email_verification_success')
         else:
             return redirect('users:email_verification_failed')
-
-
-class EmailVerificationFailedView(ContextMixin, TemplateView):
-    template_name = 'account/email_verification_failed.html'
-
-
-class EmailVerificationSuccessView(ContextMixin, TemplateView):
-    template_name = 'account/email_verification_success.html'
