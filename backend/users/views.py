@@ -19,6 +19,7 @@ from users.forms import (ChangePhoneNumberForm, PhoneVerificationForm,
 from .models import PhoneVerification
 from .utils.base import (call_api_process, get_countdown, is_numbers_amount_limit, send_email_message,
                          is_phone_change_limit, phone_validation_prepare, send_verification_email, token_generator)
+from .utils.phone_number import clean_phone_number
 
 User = get_user_model()
 
@@ -167,7 +168,7 @@ class PhoneVerificationView(FormView):
             user.phone_number = new_phone_number
             user.phone_number_change_date = timezone.now()
             Order.objects.filter(phone_number=old_phone_number).update(
-                phone_number=new_phone_number
+                phone_number=clean_phone_number(new_phone_number)
             )
             del self.request.session["old_phone_number"]
         else:
