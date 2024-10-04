@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
@@ -8,9 +9,28 @@ from orders.models import Order
 from .models import User
 
 
-class OrderAdmin(admin.TabularInline):
+class OrderInlineForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = '__all__'
+        widgets = {
+            'comment': forms.Textarea(attrs={'rows': 3, 'cols': 40}),
+            'address': forms.Textarea(attrs={'rows': 1, 'cols': 40}),
+        }
+
+
+class OrderAdmin(admin.StackedInline):
     model = Order
+    form = OrderInlineForm
     extra = 0
+    readonly_fields = ("created_at",)
+    fields = ("status",
+              "comment",
+              "city",
+              "address",
+              "created_at",)
+    ordering = ["-created_at"]
+    autocomplete_fields = ['city']
 
 
 class MyUserAdmin(UserAdmin):
@@ -30,9 +50,9 @@ class MyUserAdmin(UserAdmin):
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         ("Персональная информация",
-         {"fields": ("first_name", "last_name", "phone_number")}),
-        ("Права доступа", {"fields": (
-            "is_active", "is_staff", "is_superuser", "user_permissions",)}),
+         {"fields": ("first_name", "middle_name", "last_name", "phone_number")}),
+        ("Права доступа", {"fields": ("is_active", "is_staff", "is_superuser", "user_permissions"),
+                           "classes": ("collapse",)}),
         ("Уведомления", {"fields": ("is_notify", "tg_id")}),
         ("Важные даты", {"fields": ("last_login", "date_joined")}),
     )
