@@ -11,8 +11,8 @@
         <div class="hero__top">
             <div class="container hero__container">
                 <div class="hero__top-wrapper">
-                    <p class="hero__address">Краснодарский край</p>
-                    <p class="hero__worktime">Ежедневно: 9-22:00</p>
+                    <p class="hero__address">{{ config.WORKING_REGION }}</p>
+                    <p class="hero__worktime">{{ config.WORKING_TIME }}</p>
                 </div>
                 <div class="hero__title-wrapper">
                     <h1 class="hero__title">Мастер на&nbsp;все случаи жизни</h1>
@@ -1070,20 +1070,20 @@
                     <h4 class="contacts__information-title">КДС-Строй</h4>
                     <div class="contacts__information-contacts">
                         <div class="contacts__information-contacts-column">
-                            <a class="contacts__information-link" href="tel:+79883872676">+7 (988) 387 26 76</a>
-                            <a class="contacts__information-link" href="mailto:support@kdsstroy.ru">support@kdsstroy.ru</a>
+                            <a class="contacts__information-link" href="tel:{{ config.PHONE_NUMBER_CONTACT|cut:" " }}">{{ config.PHONE_NUMBER_CONTACT }}</a>
+                            <a class="contacts__information-link" href="mailto:{{ config.SUPPORT_EMAIL }}">{{ config.SUPPORT_EMAIL }}</a>
                         </div>
                         <div class="contacts__information-contacts-column contacts__information-contacts-column--icons">
-                            <a class="contacts__information-icon" href="https://wa.me/+79883872676">
+                            <a class="contacts__information-icon" href="https://wa.me/{{ config.WHATSAPP_CONTACT }}">
                                 <img src="{% static 'img/whatsapp-contacts-B3avWGYz.svg' %}" alt="whatsapp-icon">
                             </a>
-                            <a class="contacts__information-icon" href="https://t.me/kdsstroy" target="_blank">
+                            <a class="contacts__information-icon" href="https://t.me/{{ config.TELEGRAM_CONTACT }}" target="_blank">
                                 <img src="{% static 'img/telegram-contacts-DrSurIma.svg' %}" alt="telegram-icon">
                             </a>
                         </div>
                     </div>
                     <p class="contacts__information-time">
-                        График работы: 9-22:00, ежедневно<br>Краснодарский край
+                        {{ config.WORKING_TIME }}<br>{{ config.WORKING_REGION }}
                     </p>
                     <button class="contacts_callback button" id="orderPopup" type="button">Оставить заявку</button>
                 </div>

@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "sass_processor",
     "django_ckeditor_5",
     'widget_tweaks',
+    'constance',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +67,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "orders.context_processor.global_context",
+                'constance.context_processors.config',
             ],
         },
     },
@@ -175,9 +177,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
-LOGIN_URL = "home"
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
@@ -256,4 +256,26 @@ CKEDITOR_5_CONFIGS = {
                     'bulletedList', 'numberedList', 'todoList', '|',
                     'link', 'subscript', 'superscript'],
     },
+}
+
+CONSTANCE_CONFIG = {
+    "PHONE_NUMBER_CONTACT": ("+7 988 387 26 76", 'Номер телефона в шапке страницы'),
+    "WHATSAPP_CONTACT": ("+79883872676", 'Номер Whatsapp в шапке страницы'),
+    "TELEGRAM_CONTACT": ("kdsstroy", 'Telegram ID для связи'),
+    "SUPPORT_EMAIL": ("support@kdsstroy.ru", "Email службы поддержки сайта"),
+    "WORKING_TIME": ("Ежедневно: 9-22:00", "График работы"),
+    "WORKING_REGION": ("Краснодарский край", "Регион работы"),
+    "BUSINESS_NAME": ("ИП Квардаков Дмитрий Сергеевич", "Юридическое имя организации"),
+    "BUSINESS_ID": ("235303970851", "ИНН организации"),
+    "BUSINESS_REG_NUM": ("321237500431870", "ОГРНИП организации"),
+    "SHOW_SALE_BANNER": (False, "Показывать ли баннер со скидкой"),
+    "SALE_BANNER_AMOUNT": ("", "Размер скидки на баннере"),
+    "SALE_BANNER_TEXT": ("", "Условия акции на баннере"),
+}
+
+CONSTANCE_CONFIG_FIELDSETS = {
+    'Контактные данные': ('PHONE_NUMBER_CONTACT', 'WHATSAPP_CONTACT', "TELEGRAM_CONTACT", "SUPPORT_EMAIL",
+                          "WORKING_TIME", "WORKING_REGION"),
+    "Юридические данные": ("BUSINESS_NAME", "BUSINESS_ID", "BUSINESS_REG_NUM"),
+    'Скидочный баннер': ('SHOW_SALE_BANNER', "SALE_BANNER_AMOUNT", "SALE_BANNER_TEXT"),
 }

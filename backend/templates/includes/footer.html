@@ -5,14 +5,11 @@
         <div class="footer__wrapper">
             <div class="footer__top">
                 <div class="footer__work-data">
-                    <p>Краснодарский край</p>
-                    <p>Ежедневно: 9-22:00</p>
+                    <p>{{ config.WORKING_REGION }}</p>
+                    <p>{{ config.WORKING_TIME }}</p>
                 </div>
                 <nav class="footer__nav">
                     <ul class="footer__nav-list">
-                        <li class="footer__nav-list-item">
-                            <a href="{% if view_name != 'MainView' %}{% url 'home' %}{% endif %}#works-section">Услуги</a>
-                        </li>
                         <li class="footer__nav-list-item">
                             <a href="{% if view_name != 'MainView' %}{% url 'home' %}{% endif %}#steps-section">Порядок работы</a>
                         </li>
@@ -22,18 +19,18 @@
                         <li class="footer__nav-list-item">
                             <a href="{% if view_name != 'MainView' %}{% url 'home' %}{% endif %}#contacts-section">Контакты</a>
                         </li>
-{#                        <li class="footer__nav-list-item">#}
-{#                            <a href="{% url 'news:list' %}">Новости</a>#}
-{#                        </li>#}
+                        <li class="footer__nav-list-item">
+                            <a href="{% url 'news:list' %}">Новости</a>
+                        </li>
                     </ul>
                 </nav>
                 <div class="footer__contacts">
-                    <a class="footer__contacts-tel" href="tel:+79883872676">+7 988 387 26 76</a>
+                    <a class="footer__contacts-tel" href="tel:{{ config.PHONE_NUMBER_CONTACT|cut:" " }}">{{ config.PHONE_NUMBER_CONTACT }}</a>
                     <div class="footer__icons">
-                        <a class="footer__contacts-whatsapp" href="whatsapp://send?phone=+79883872676">
+                        <a class="footer__contacts-whatsapp" href="whatsapp://send?phone={{ config.WHATSAPP_CONTACT }}">
                             <img src="data:image/svg+xml,%3csvg%20width='34'%20height='34'%20viewBox='0%200%2034%2034'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M16.9953%201C8.28347%201.00271%201.00494%208.29063%201.00498%2016.9953C1.00499%2020.1335%201.93901%2023.2336%203.6823%2025.8543L1%2032.9907L9.98198%2031.3664C12.1761%2032.4387%2014.5854%2032.9761%2016.9953%2032.9776C25.7147%2032.9837%2033%2025.7054%2033%2016.9953C33%208.2952%2025.7121%200.994857%2016.9953%201Z'%20stroke='%23F1F1F1'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M17.8755%2024.0384C20.0394%2025.4276%2022.2955%2024.4158%2023.8666%2023.244C24.9519%2022.4345%2024.9159%2020.8733%2023.9889%2019.8865L22.1611%2017.9407C21.4678%2018.634%2020.1167%2018.9772%2019.1779%2018.6915C17.1601%2018.0773%2016.3132%2017.0259%2015.6269%2015.9568C14.8386%2014.7289%2015.7288%2012.895%2016.4221%2012.2017L14.3848%2010.3417C13.5259%209.55761%2012.2213%209.4253%2011.4719%2010.3146C9.9891%2012.0742%209.06695%2014.7456%2010.1591%2016.4466C12.1196%2019.5001%2014.8218%2022.0782%2017.8755%2024.0384Z'%20stroke='%23F1F1F1'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e" alt="whatsapp-icon">
                         </a>
-                        <a class="footer__contacts-telegram" href="https://t.me/kdsstroy" target="_blank">
+                        <a class="footer__contacts-telegram" href="https://t.me/{{ config.TELEGRAM_CONTACT }}" target="_blank">
                             <img src="data:image/svg+xml,%3csvg%20width='34'%20height='34'%20viewBox='0%200%2034%2034'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M1%2017C1%2019.1012%201.41385%2021.1817%202.21793%2023.1229C3.022%2025.0641%204.20055%2026.828%205.68629%2028.3137C7.17203%2029.7994%208.93586%2030.978%2010.8771%2031.7821C12.8183%2032.5862%2014.8989%2033%2017%2033C19.1012%2033%2021.1817%2032.5862%2023.1229%2031.7821C25.0641%2030.978%2026.828%2029.7994%2028.3137%2028.3137C29.7994%2026.828%2030.978%2025.0641%2031.7821%2023.1229C32.5862%2021.1817%2033%2019.1012%2033%2017C33%2014.8989%2032.5862%2012.8183%2031.7821%2010.8771C30.978%208.93586%2029.7994%207.17203%2028.3137%205.68629C26.828%204.20055%2025.0641%203.022%2023.1229%202.21793C21.1817%201.41385%2019.1012%201%2017%201C14.8989%201%2012.8183%201.41385%2010.8771%202.21793C8.93586%203.022%207.17203%204.20055%205.68629%205.68629C4.20055%207.17203%203.022%208.93586%202.21793%2010.8771C1.41385%2012.8183%201%2014.8989%201%2017Z'%20stroke='%23F1F1F1'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M24.02%208.83789L22.6767%2026.3007L15.2971%2018.7279L6.55713%2016.8977L24.02%208.83789Z'%20stroke='%23F1F1F1'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M12.04%2018.0391L13.3533%2025.6211L18.16%2021.6391'%20stroke='%23F1F1F1'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M15.29%2018.6892L18.09%2016.4492'%20stroke='%23F1F1F1'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e" alt="telegram-icon">
                         </a>
                     </div>
@@ -42,11 +39,11 @@
             <div class="footer__bottom">
                 <div class="footer__company-data">
                     <p class="footer__company-data-title"><a href="{% url 'personal_info_terms' %}">Политика в&nbsp;отношении обработки персональных данных</a></p>
-                    <p class="footer__company-data-text">ИП Квардаков Дмитрий Сергеевич</p>
-                    <p class="footer__company-data-text">ИНН 235303970851</p>
-                    <p class="footer__company-data-text">ОГРНИП 321237500431870</p>
+                    <p class="footer__company-data-text">{{ config.BUSINESS_NAME }}</p>
+                    <p class="footer__company-data-text">ИНН {{ config.BUSINESS_ID }}</p>
+                    <p class="footer__company-data-text">ОГРНИП {{ config.BUSINESS_REG_NUM }}</p>
                 </div>
-                <p class="footer__sign">Разработка сайта: <a href="mailto: denis.smagin.1988@gmail.com">Smintank Studio</a></p>
+                <p class="footer__sign">Разработка сайта: <a href="mailto:denis.smagin.py@gmail.com">Smintank Studio</a></p>
             </div>
             <div class="footer__logo">
                 <img src="{% static 'img/logo-footer-BxX3sJJT.svg' %}" alt="логотип">
