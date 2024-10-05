@@ -158,7 +158,7 @@ def send_verification_email(request, user):
         reverse('users:email_verification', kwargs={'uidb64': uid, 'token': token})
     )
 
-    subject = 'Верификация Email'
+    subject = 'Верификация электронной почты'
     message = render_to_string('account/email_verification.html', {
         'user': user,
         'verification_url': verification_url,

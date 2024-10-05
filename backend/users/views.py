@@ -220,10 +220,11 @@ class ChangeEmailView(FormView):
             user.save()
 
             send_email_message(
-                "КДС-Строй: Попытка смены Email",
+                "КДС-Строй: Попытка смены адреса электронной почты",
                 f'Из вашего личного кабинета на сайте kdsstroy.ru поступил запрос '
-                f'на изменение email на новый - {user.email}. '
-                f'Если вы не меняли ваш email, то свяжитесь с нашей службой поддержки: support@kdsstroy.ru',
+                f'на изменение адреса электронной почты на новый - {user.email}. '
+                f'Если вы не меняли ваш адреса электронной почты, '
+                f'то свяжитесь с нашей службой поддержки: support@kdsstroy.ru',
                 old_email
             )
             send_verification_email(request, user)

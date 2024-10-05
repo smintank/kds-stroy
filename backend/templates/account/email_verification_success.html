@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}КДС-Строй: Подтверждение Email{% endblock %}
+{% block title %}КДС-Строй: Подтверждение адреса электронной почты{% endblock %}
 {% block plug_js_css %}
     <script type="module" crossorigin src="{% static 'js/pages/common-page.js' %}"></script>
     <link rel="stylesheet" crossorigin href="{% static 'css/common-page.css' %}">
@@ -9,9 +9,9 @@
 <main>
   <section>
     <div class="container">
-      <h1 class="title">Подтверждение Email</h1>
+      <h1 class="title">Подтверждение адреса электронной почты</h1>
       <p>
-        Ваш email успешно подтвержден!
+        Ваша электронная почта успешно подтверждена!
       </p>
       <br>
       <div><p><a href="{% url 'home' %}">На главную</a></p></div>
