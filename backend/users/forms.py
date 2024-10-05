@@ -15,10 +15,9 @@ class UserRegistrationForm(forms.ModelForm):
         label="Пароль",
         widget=forms.PasswordInput(
             attrs={
-                "class": "register__form-input",
                 "type": "password",
                 "autocomplete": "new-password",
-                "placeholder": "Пароль*",
+                "id": "id_registration_password"
             }
         ),
     )
@@ -26,60 +25,29 @@ class UserRegistrationForm(forms.ModelForm):
         label="Повторите пароль",
         widget=forms.PasswordInput(
             attrs={
-                "class": "register__form-input",
                 "type": "password",
                 "autocomplete": "new-password",
-                "placeholder": "Подтвердите пароль*",
+                "id": "id_registration_password_2"
             }
         ),
     )
 
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "middle_name", "email",
-                  "phone_number")
+        fields = ("first_name", "middle_name", "last_name", "email", "phone_number",
+                  # "city", "address"
+                  )
         widgets = {
-            "phone_number": forms.TextInput(
-                attrs={
-                    "class": "register__form-input",
-                    "type": "tel",
-                    "autocomplete": "tel",
-                    "placeholder": "Телефон*",
-                }
-            ),
-            "email": forms.TextInput(
-                attrs={
-                    "class": "register__form-input",
-                    "type": "email",
-                    "autocomplete": "email",
-                    "placeholder": "E-mail*",
-                }
-            ),
-            "last_name": forms.TextInput(
-                attrs={
-                    "class": "register__form-input",
-                    "autocomplete": "family-name",
-                    "placeholder": "Фамилия",
-                }
-            ),
-            "first_name": forms.TextInput(
-                attrs={
-                    "class": "register__form-input",
-                    "autocomplete": "given-name",
-                    "placeholder": "Имя*",
-                }
-            ),
-            "middle_name": forms.TextInput(
-                attrs={
-                    "class": "register__form-input",
-                    "autocomplete": "additional-name",
-                    "placeholder": "Отчество",
-                }
-            ),
+            # "city": forms.TextInput(),
+            # "address": forms.TextInput(attrs={"id": "id_register_address"}),
+            "phone_number": forms.TextInput(attrs={"type": "tel", "autocomplete": "tel"}),
+            "email": forms.TextInput(attrs={"type": "email", "autocomplete": "email"}),
+            "last_name": forms.TextInput(attrs={"autocomplete": "family-name"}),
+            "first_name": forms.TextInput(attrs={"autocomplete": "given-name"}),
+            "middle_name": forms.TextInput(attrs={"autocomplete": "additional-name"})
         }
 
     def save(self, commit=True):
-        """Сохраняет нового пользователя."""
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password"])
         if commit:
@@ -104,6 +72,13 @@ class UserRegistrationForm(forms.ModelForm):
                 "Номера Республики Казахстан (+77) - не поддерживаются"
             )
         return cleared_phone_number
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({
+                'placeholder': field.label + "*" if field.required else field.label
+            })
 
 
 class UserForm(forms.ModelForm):

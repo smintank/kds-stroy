@@ -32,7 +32,7 @@ const useAuthPopup = () => {
                         correspondingInput.insertAdjacentHTML('afterend', error.outerHTML);
                     });
                 } else {
-                    window.location.reload();
+                    window.location.href = "/";
                 }
             } catch (err) {
             } finally {
