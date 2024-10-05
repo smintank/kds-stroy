@@ -1,7 +1,7 @@
-<div class="stock-popup stock-popup--active" id="popup-promotion">
+<div class="stock-popup" id="popup-promotion">
     <button class="stock-popup__close" type="button" aria-label="Закрыть попап">&times;</button>
     <h3 class="stock-popup__title">Акция</h3>
-    <p class="stock-popup__accent">Скидка <span>10%</span></p>
-    <p class="stock-popup__text">на первый заказ до 1.06.2024г.</p>
+    <p class="stock-popup__accent">Скидка <span>{{ config.SALE_BANNER_AMOUNT }}</span></p>
+    <p class="stock-popup__text">{{ config.SALE_BANNER_TEXT }}</p>
 {#    <a class="stock-popup__button button" href="#">Получить скидку</a>#}
 </div>

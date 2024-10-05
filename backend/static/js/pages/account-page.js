@@ -4,6 +4,7 @@ import { u as useShowcaseModal } from "../utils/showcase-modal.js";
 import { u as useInputPhoneMask } from "../utils/input-phone-mask.js";
 import { uOP as useOrderPopup} from "../utils/orders.js";
 import { Au as useAuthPopup } from "../utils/auth.js";
+import { uPP as usePromotionPopup } from "../utils/popups.js";
 
 const useAccountItem = () => {
   const accountItems = document.querySelectorAll(".applications__list-item");
@@ -72,4 +73,5 @@ addEventListener("DOMContentLoaded", () => {
   useAuthPopup();
   useCitySuggestions();
   useButtonDisable();
+  usePromotionPopup();
 });
