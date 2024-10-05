@@ -10,7 +10,6 @@ User = get_user_model()
 
 
 class UserRegistrationForm(forms.ModelForm):
-    """Форма для создания нового пользователя."""
 
     password = forms.CharField(
         label="Пароль",
@@ -154,9 +153,7 @@ class ChangePhoneNumberForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["phone_number"].label = "Новый номер телефона"
-        self.fields["phone_number"].widget.attrs.update(
-            {"class": "form-control"}
-        )
+        self.fields["phone_number"].widget.attrs.update({"class": "form-control"})
 
 
 class PhoneVerificationForm(forms.ModelForm):
