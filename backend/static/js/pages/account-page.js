@@ -25,15 +25,21 @@ const useButtonDisable = () => {
   const form = document.getElementById('accountForm');
   const submitButton = document.getElementById('profileFormSaveButton');
   const initialFormState = new FormData(form);
+  const isNotifyCheckbox = document.getElementById('id_is_notify');
+  const initialNotifyState = isNotifyCheckbox.checked;
 
   function isFormChanged() {
     const currentFormState = new FormData(form);
+    const currentNotifyState = isNotifyCheckbox.checked;
+
     for (let [key, value] of initialFormState.entries()) {
       if (currentFormState.get(key) !== value) {
         return true;
       }
     }
-    return false;
+    return initialNotifyState !== currentNotifyState;
+
+
   }
 
   function toggleButtonState(isChanged) {
@@ -54,12 +60,16 @@ const useButtonDisable = () => {
 
     // Listen for changes in the form
   form.addEventListener('input', function () {
-      toggleButtonState(isFormChanged());
+    toggleButtonState(isFormChanged());
   });
 
   // Listen for select field changes (if any)
   form.addEventListener('change', function () {
-      toggleButtonState(isFormChanged());
+    toggleButtonState(isFormChanged());
+  });
+
+  isNotifyCheckbox.addEventListener('change', function () {
+    toggleButtonState(isFormChanged());
   });
 }
 
