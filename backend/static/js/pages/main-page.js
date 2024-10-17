@@ -23,7 +23,10 @@ const useEmailSubscription = () => {
     const stocksFormContainer = document.querySelector("#stocksFormContainer");
     fetch("/subs/subscribe/", {
       method: 'POST',
-      body: new FormData(e.target)
+      body: new FormData(e.target),
+      headers: {
+        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+      }
     }).then(function(response) {
       if (response.ok) {
         stocksFormContainer.innerHTML = '' +

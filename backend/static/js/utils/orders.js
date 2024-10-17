@@ -84,7 +84,10 @@ const useOrderFormWithImages = () => {
     this.reset();
     fetch("/orders/create/", {
       method: "POST",
-      body: originFormData
+      body: originFormData,
+      headers: {
+        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+      }
     }).then(function(response) {
       if (response.ok) {
         return response.json();
