@@ -4,7 +4,7 @@
 {% block title %}КДС-Строй: Личный кабинет{% endblock %}
 {% block plug_js_css %}
     <script type="module" crossorigin src="{% static 'js/pages/account-page.js' %}"></script>
-    <link rel="stylesheet" crossorigin href="{% static 'css/account-Q46edEp1.css' %}">
+    <link rel="stylesheet" crossorigin href="{% static 'css/account.css' %}">
 {% endblock %}
 {% block content %}
 <main>
@@ -74,7 +74,7 @@
                         <div class="applications__list-item-date">{{ order.created_at|date:"d.m.Y" }}</div>
                         <div class="applications__list-item-description">{{ order.comment|default:"Нет комментария" }}</div>
                         <div class="applications__list-item-photos">
-                        <ul class="applications__list-item-photos-list">
+                          <ul class="applications__list-item-photos-list">
                             {% for photo in order.photos %}
                                 <li class="applications__list-item-photo">
                                     <a href="{{ photo.photo.url }}" data-fancybox="application-{{ forloop.parentloop.counter }}">
@@ -87,8 +87,8 @@
                             {% else %}
                                 <span class="applications__list-item-photos-count">{{ order.photos|length }}</span>
                             {% endif %}
-                        </ul>
-                    </div>
+                          </ul>
+                        </div>
                         <div class="applications__list-item-price">
                             {% if order.final_cost != 0 %}
                                 {{ order.cost|floatformat}} &#8381;
