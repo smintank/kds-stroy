@@ -31,6 +31,7 @@ const useAuthPopup = () => {
                         const correspondingInput = formAuth.querySelectorAll(".popup__form-input")[errors.length];
                         correspondingInput.insertAdjacentHTML('afterend', error.outerHTML);
                     });
+                    document.getElementById("id_password").value = '';
                 } else {
                     window.location.href = "/";
                 }
