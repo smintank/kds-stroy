@@ -88,7 +88,7 @@ LOGGING = {
             "class": "logging.StreamHandler",
         },
         "file": {
-            "level": "ERROR",
+            "level": "DEBUG",
             "class": "logging.FileHandler",
             "filename": "error.log",
         },
