@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load static %}
+{% block title %}КДС-Строй: Изменение номера телефона{% endblock %}
+{% block plug_js_css %}
+    <script type="module" crossorigin src="{% static 'js/pages/common-page.js' %}"></script>
+    <link rel="stylesheet" crossorigin href="{% static 'css/common-page.css' %}">
+{% endblock %}
+{% block content %}
+<main>
+  <section>
+    <div class="container">
+      <h1 class="title">Изменение номера телефона</h1>
+      <p>
+         Введите новый номер телефона. 
+      </p>
+      <br>
+      <form method="post">
+        {% csrf_token %}
+        {% render_field form.phone_number type="tel" placeholder=form.phone_number.label class='simple_form-input'  autocomplete="tel" data-tel-input="" required="" %}
+        {% if form.phone_number.errors %}<p>{{ form.phone_number.errors }}</p>{% endif %}
+        <button class="simple_button" type="submit">Подтвердить</button>
+      </form>
+      <div><p><a href="{% url 'users:profile' %}">Личный кабинет</a></p></div>
+      <div><p><a href="{% url 'home' %}">На главную</a></p></div>
+    </div>
+  </section>
+</main>
+{% endblock %}

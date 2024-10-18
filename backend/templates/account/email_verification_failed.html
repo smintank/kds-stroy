@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}КДС-Строй: Подтверждение адреса электронной почты{% endblock %}
+{% block plug_js_css %}
+    <script type="module" crossorigin src="{% static 'js/pages/common-page.js' %}"></script>
+    <link rel="stylesheet" crossorigin href="{% static 'css/common-page.css' %}">
+{% endblock %}
+{% block content %}
+<main>
+  <section>
+    <div class="container">
+      <h1 class="title">Подтверждение адреса электронной почты</h1>
+      <p>
+        Что-то пошло не так, к сожалению нам не удалось подтвердить ваш адрес электронной почты, либо эта ссылка была использована повторно!
+      </p>
+      <br>
+      <p>
+        Попробуйте запросить письмо для подтверждения ещё раз или обратитесь в нашу службу поддержки: <a href="mailto:support@kdsstroy.ru">support@kdsstroy.ru</a>
+      </p>
+      <div><p><a href="{% url 'home' %}">На главную</a></p></div>
+    </div>
+  </section>
+</main>
+{% endblock %}

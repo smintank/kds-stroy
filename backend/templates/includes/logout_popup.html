@@ -1,13 +1,14 @@
 {% load static %}
-  <div id="logoutPopup" class="logout_popup">
-    <div class="popup_content">
-      <h3>Вы уверены, что хотите выйти?</h3>
-      <div class="logout_buttons">
-        <form method="post" action="{% url 'logout' %}" class="logoutForm">
-          {% csrf_token %}
-          <button id="confirmLogout" class="logout_button" type="submit">Да</button>
+<div class="popup" id="popup-logout">
+    <div class="container popup__container">
+        <button class="popup__close" type="button" aria-label="Закрыть попап">&times;</button>
+        <h2 class="popup__title">Вы уверены, что хотите выйти?</h2>
+        <form class="popup__form" action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <div class="popup__form-buttons logout_buttons">
+                <button class="confirm_logout button" id="logoutButton" type="submit" autofocus>Да</button>
+                <button class="cancel_logout button" id="logoutCancelButton" type="button">Нет</button>
+            </div>
         </form>
-        <button id="cancelLogout" class="logout_button">Нет</button>
-      </div>
     </div>
-  </div>
+</div>

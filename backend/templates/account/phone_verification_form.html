@@ -3,79 +3,47 @@
 {% block content %}
 {% block title %}КДС-Строй: Подтверждение телефонного номера{% endblock %}
 {% block plug_js_css %}
-  <link rel="stylesheet" href="{% static 'css/news-Iqa5z6dR.css' %}">
-  <script src="{% static 'js/pages/phone_verification-page.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'css/phone_verification.css' %}">
+  <script type="module" src="{% static 'js/pages/phone_verification-page.js' %}"></script>
 {% endblock %}
-<main class="news-main">
-    <section class="news">
-        <div class="container news__container">
-            <h1 class="news__title">Подтверждение телефонного номера</h1>
-            <p class="not-found__description">
-                Для завершения вам нужно подтвердить ваш номер телефона.
-                Сейчас на указанный вами номер поступит звонок.
-                Введите последние 4 цифры входящего номера.
-            </p>
-            <p class="not-found__description">
-                Если вы не получили звонок, вы можете запросить повторный звонок {% if countdown != 0 %}через:{% endif %}
-            </p>
-            <div class="countdown_area">
-              {% if not is_attempt_limit %}
-                <span id="countdown" data-countdown-duration="{{ countdown }}"></span>
-                <div id="linkContainer" style="display: none;">
-                  <button id="repeatCallButton">Повторный звонок</button>
-                </div>
-              {% else %}
-                <p>Вы исчерпали количество попыток для подтверждения номера. Попробуйте позже.</p>
-              {% endif %}
-            </div>
-            <form method="post" action="{% url 'users:phone_verification' %}">
-              {% csrf_token %}
+<main>
+    <section class="phone_verification">
+      <div class="container">
+        <h1 class="pv_title">Подтверждение&nbsp;телефонного номера</h1>
+        <p class="description">
+            Для завершения вам нужно подтвердить ваш номер телефона.<br>
+            Введите последние 4 цифры номера из входящего звонка.<br>
+        </p>
+        <form method="post" action="{% url 'users:phone_verification' %}" id="verifyForm">
+          {% csrf_token %}
+            <div class="pincode_area">
+              <div class="inputs">
+                <input type="text" name="n1" maxLength="1" autocomplete="off" autofocus {% if pincode_limit %}disabled{% endif %}>
+                <input type="text" name="n2" maxLength="1" autocomplete="off" {% if pincode_limit %}disabled{% endif %}>
+                <input type="text" name="n3" maxLength="1" autocomplete="off" {% if pincode_limit %}disabled{% endif %}>
+                <input type="text" name="n4" maxLength="1" autocomplete="off" {% if pincode_limit %}disabled{% endif %}>
+              </div>
               {% for field in form %}
                 {{ field }}
-                {% if field.errors %}
-                  <p>{{ field.errors }}</p>
-                {% endif %}
+                {% if field.errors %}<p>{{ field.errors }}</p>{% endif %}
               {% endfor %}
-              <button type="submit">Подтвердить</button>
-            </form>
-        </div>
+              <div class="countdown_area">
+                {% if not is_attempt_limit %}
+                  <div id="countdownBlock">
+                    <p id="countdownDescription" class="repeat_request">Запросить повторный звонок через:</p>
+                    <span id="countdown" class="countdown" data-countdown-duration="{{ countdown }}"></span>
+                  </div>
+                  <button id="repeatCallButton" class="repeat_request_button button">Запросить повторно</button>
+                {% else %}
+                  <p>Вы исчерпали все попыток подтверждения номера. 
+                      <br>Попробуйте позже или напишите в нашу поддержку 
+                      <a href="mailto:support@kdsstroy.ru">support@kdsstroy.ru</a>.
+                  </p>
+                {% endif %}
+              </div>
+            </div>
+        </form>
+      </div>
     </section>
 </main>
 {% endblock %}
-
-{#  <div class="container">#}
-{#    <h4>Подтверждение телефонного номера</h4>#}
-{#    <p>#}
-{#      Для завершения вам нужно подтвердить ваш номер телефона.<br><br>#}
-{#      Сейчас на указанный вами номер поступит звонок.#}
-{#      Введите последние 4 цифры входящего номера.#}
-{#    </p>#}
-{#    <br>#}
-{#    <p>#}
-{#      Если вы не получили звонок, вы можете запросить повторный звонок {% if countdown != 0 %}через:{% endif %}#}
-{#    </p>#}
-{#    <div class="countdown_area">#}
-{#        {% if not is_attempt_limit %}#}
-{#        <span id="countdown" data-countdown-duration="{{ countdown }}"></span>#}
-{#      <div id="linkContainer" style="display: none;">#}
-{#        <button id="repeatCallButton">Повторный звонок</button>#}
-{#      </div>#}
-{#        {% else %}#}
-{#            <p>Вы исчерпали количество попыток для подтверждения номера. Попробуйте позже.</p>#}
-{#        {% endif %}#}
-{#    </div>#}
-{##}
-{#    <div>#}
-{#      <form method="post" action="{% url 'users:phone_verification' %}">#}
-{#        {% csrf_token %}#}
-{#        {% for field in form %}#}
-{#          {{ field }}#}
-{#          {% if field.errors %}#}
-{#              <p>{{ field.errors }}</p>#}
-{#          {% endif %}#}
-{#        {% endfor %}#}
-{#        <button type="submit">Подтвердить</button>#}
-{#      </form>#}
-{#    </div>#}
-{#  </div>#}
-{#{% endblock %}#}

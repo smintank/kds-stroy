@@ -13,7 +13,12 @@
     <link rel="mask-icon" href="{% static 'img/favicon/safari-pinned-tab.svg' %}" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#00a300">
     <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" crossorigin href="{% static 'css/base.css' %}">
     {% block plug_js_css %}{% endblock %}
+    <link rel="stylesheet" crossorigin href="{% static 'css/promo_popup.css' %}">
+    <link rel="stylesheet" crossorigin href="{% static 'css/popups.css' %}">
+    <link rel="modulepreload" crossorigin href="{% static 'js/utils/auth.js' %}">
+    <link rel="modulepreload" crossorigin href="{% static 'js/utils/dropdown-menu.js' %}">
     <link rel="modulepreload" crossorigin href="{% static 'js/utils/modulepreload-polyfill.js' %}">
     <link rel="modulepreload" crossorigin href="{% static 'js/utils/orders.js' %}">
     <link rel="modulepreload" crossorigin href="{% static 'js/utils/base.js' %}">
@@ -21,6 +26,7 @@
     <link rel="modulepreload" crossorigin href="{% static 'js/utils/showcase-modal.js' %}">
     <link rel="modulepreload" crossorigin href="{% static 'js/utils/sliders.js' %}">
     <link rel="modulepreload" crossorigin href="{% static 'js/utils/input-phone-mask.js' %}">
+    <link rel="modulepreload" crossorigin href="{% static 'js/utils/smscode_input.js' %}">
     <link rel="stylesheet" crossorigin href="{% static 'css/showcaseModal-DZwIPjuC.css' %}">
     <link rel="stylesheet" crossorigin href="{% static 'css/sliders-4DNxUV-Y.css' %}">
   </head>
@@ -31,14 +37,16 @@
     {% include "includes/order_popup.html" with form=order_form %}
     {% include "includes/status_message_popup.html" %}
     {% include "includes/cookie_banner.html" %}
-    {% include "includes/promotion_banner.html" %}
+    {% if config.SHOW_SALE_BANNER %}
+        {% include "includes/promotion_banner.html" %}
+    {% endif %}
     {% if request.resolver_match.view_name == 'home' %}
         {% include "includes/news_subscribe_popup.html" %}
     {% endif %}
-{#    {% if not user.is_authenticated %}#}
-{#      {% include "includes/login_popup.html" with form=login_form %}#}
-{#    {% else %}#}
-{#      {% include "includes/logout_popup.html" %}#}
-{#    {% endif %}#}
+    {% if not user.is_authenticated %}
+      {% include "includes/login_popup.html" with form=login_form %}
+    {% else %}
+      {% include "includes/logout_popup.html" %}
+    {% endif %}
   </body>
 </html>

@@ -1,0 +1,21 @@
+p {
+    margin-top: 16px;
+}
+
+.registration_done {
+    padding-top: 110px;
+}
+
+.title {
+    font-weight: 500;
+    font-size: 35px;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    font-weight: 300;
+    font-size: 22px;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+}
