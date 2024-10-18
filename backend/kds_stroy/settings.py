@@ -279,3 +279,5 @@ CONSTANCE_CONFIG_FIELDSETS = {
     "Юридические данные": ("BUSINESS_NAME", "BUSINESS_ID", "BUSINESS_REG_NUM"),
     'Скидочный баннер': ('SHOW_SALE_BANNER', "SALE_BANNER_AMOUNT", "SALE_BANNER_TEXT"),
 }
+
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
