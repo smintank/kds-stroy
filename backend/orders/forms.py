@@ -102,4 +102,3 @@ class OrderCreationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if city_id:
             self.fields['city'].widget.attrs.update({'city-id': city_id})
-

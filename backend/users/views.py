@@ -198,7 +198,6 @@ class PhoneVerificationView(FormView):
         last_call_obj.attempts_amount += 1
         last_call_obj.save()
         self.kwargs["countdown"] = get_countdown(last_call_obj, self.kwargs)
-        # form.cleaned_data["pincode"] = ""
         return super().form_invalid(form)
 
 

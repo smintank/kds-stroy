@@ -32,14 +32,7 @@ class User(AbstractUser):
         blank=True,
         verbose_name="Город проживания",
     )
-    # address = models.ForeignKey(
-    #     "locations.Address",
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    #     blank=True,
-    #     verbose_name="Адрес проживания",
-    # )
-    address = models.CharField("Адрес", max_length=150,  blank=True, null=True)
+    address = models.CharField("Адрес", max_length=150, blank=True, null=True)
     is_notify = models.BooleanField(
         "Уведомлять о новых заказах", default=False,
         help_text="Отметьте, если пользователь должен получать уведомления о новых заказах"

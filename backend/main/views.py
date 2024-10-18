@@ -15,4 +15,3 @@ class MainView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["subscribe_form"] = SubscribeForm()
         return context
-
