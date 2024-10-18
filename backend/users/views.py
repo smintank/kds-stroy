@@ -12,7 +12,7 @@ from django.views import View
 from django.views.generic import FormView, DeleteView
 
 from kds_stroy.settings import PHONE_VERIFICATION_TIME_LIMIT, PINCODE_INPUT_LIMIT
-from users.messages import OLD_MAIL_CHANGING_TEXT, OLD_MAIL_CHANGING_SUBJECT
+from users.messages import OLD_MAIL_CHANGING_TEXT, OLD_MAIL_CHANGING_SUBJECT, ATTEMPT_LIMIT_MSG, WRONG_CODE_MSG
 from orders.models import Order, OrderPhoto
 from users.forms import (ChangePhoneNumberForm, PhoneVerificationForm,
                          UserForm, UserRegistrationForm, ChangeEmailForm)
@@ -138,7 +138,9 @@ class PhoneVerificationView(FormView):
         is_repeat = request.GET.get("repeat_call") == "true"
 
         if is_repeat or not last_call_obj.pincode:
+            logger.debug('Pincode request started...')
             call_api_process(last_call_obj, last_call_obj.pincode or None)
+            logger.debug('Pincode request ended')
             countdown = int(PHONE_VERIFICATION_TIME_LIMIT)
             if is_repeat:
                 last_call_obj.attempts_amount = 0
@@ -154,7 +156,7 @@ class PhoneVerificationView(FormView):
     def form_valid(self, form):
         last_call_obj = get_object_or_404(self.model, id=self.request.session.get("request_id"))
         if last_call_obj.attempts_amount + 1 >= int(PINCODE_INPUT_LIMIT):
-            form.add_error("pincode", "Вы исчерпали все попытки ввода пин-кода!")
+            form.add_error("pincode", ATTEMPT_LIMIT_MSG)
             return self.form_invalid(form)
 
         new_phone_number = self.request.session.get("phone_number")
@@ -164,7 +166,7 @@ class PhoneVerificationView(FormView):
         if old_phone_number:
             user = get_object_or_404(User, phone_number=old_phone_number)
             if not self.model.verify_code(user, new_phone_number, pincode):
-                form.add_error("pincode", "Неверный код. Попробуйте ещё раз!")
+                form.add_error("pincode", WRONG_CODE_MSG)
                 return self.form_invalid(form)
             user.phone_number = new_phone_number
             user.phone_number_change_date = timezone.now()
@@ -175,7 +177,7 @@ class PhoneVerificationView(FormView):
         else:
             user = get_object_or_404(User, phone_number=new_phone_number)
             if not self.model.verify_code(user, new_phone_number, pincode):
-                form.add_error("pincode", "Неверный код. Попробуйте ещё раз!")
+                form.add_error("pincode", WRONG_CODE_MSG)
                 return self.form_invalid(form)
         user.is_active = True
         user.is_phone_verified = True
@@ -186,9 +188,9 @@ class PhoneVerificationView(FormView):
             send_verification_email(self.request, user)
             return render(self.request, "account/registration_done.html",
                           {"new_user": user, **self.get_context_data(**self.kwargs)})
-
-        return render(self.request, "account/change_phone_number_done.html",
-                      {**self.get_context_data(**self.kwargs)})
+        else:
+            return render(self.request, "account/change_phone_number_done.html",
+                          {**self.get_context_data(**self.kwargs)})
 
     def form_invalid(self, form):
         last_call_obj = get_object_or_404(self.model, id=self.request.session.get("request_id"))

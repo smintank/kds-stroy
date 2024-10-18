@@ -14,6 +14,7 @@ from kds_stroy.settings import (PHONE_CHANGE_FREQUENCY_LIMIT, PHONE_VERIFICATION
                                 PHONE_VERIFICATION_TIME_LIMIT, ZVONOK_API_KEY, ZVONOK_CAMPAIGN_ID,
                                 ZVONOK_ENDPOINT, DEFAULT_FROM_EMAIL)
 from users.models import PhoneVerification
+from users.utils.phone_number import clean_phone_number
 
 logger = logging.getLogger(__name__)
 
@@ -69,16 +70,19 @@ def call_api_request(phone_number: str, pincode: str = None) -> str:
     payload = {
         "public_key": ZVONOK_API_KEY,
         "campaign_id": ZVONOK_CAMPAIGN_ID,
-        "phone": f"+{phone_number}",
+        "phone": f"+{clean_phone_number(phone_number)}",
         "phone_suffix": pincode,
     }
     response = None
+    logger.debug("Payload is ready")
     try:
         response = requests.post(ZVONOK_ENDPOINT, data=payload)
+        logger.debug("Request has been sent")
         response.raise_for_status()
+        logger.debug("Response was received")
         json_response = response.json()
-        print(json_response)
         data = json_response.get("data")
+        logger.debug("Response data: " + data)
         pincode = data.get("pincode")
     except requests.exceptions.HTTPError as e:
         if response.status_code == 400:
