@@ -1,0 +1,99 @@
+.phone_verification {
+    padding-top: 110px;
+}
+
+.pv_title {
+    font-weight: 500;
+    font-size: 35px;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.description {
+    text-align: center;
+    line-height: 1.5rem;
+}
+
+.pincode_area {
+    border: 1px solid #b6b6b6;
+    border-radius: 5px;
+    width: max-content;
+    max-width: 600px;
+    padding: 70px 70px 40px 70px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+}
+
+.inputs {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.inputs input {
+    font-size: 2rem;
+    height: 3.5rem;
+    text-align: center;
+    width: 3rem;
+    border: 1px solid #555454;
+    border-radius: 3px;
+}
+
+.repeat_request {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.ds_input {
+    height: 60px;
+    width: 200px;
+    margin: 30px;
+    text-align: center;
+    font-size: 26px;
+    letter-spacing: 20px;
+}
+
+.errorlist {
+    text-align: center;
+    color: #c82027;
+}
+
+.countdown {
+    font-size: 1.3rem;
+}
+
+.repeat_request_button {
+    padding: 8px;
+    font-size: 1rem;
+}
+
+.countdown_area {
+    text-align: center;
+    margin-top: 20px;
+}
+
+@media (max-width: 1023px) {
+    .pv_title {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 639px) {
+    .pv_title {
+        font-size: 25px;
+    }
+    .pincode_area {
+        width: min-content;
+        padding: 30px;
+    }
+    .description {
+        text-align: left;
+    }
+}

@@ -1,3 +1,5 @@
+import {dM as DropdownMenu} from "./dropdown-menu.js";
+
 function setCookie(name, value, days, path, domain, secure) {
     let expires = "";
 
@@ -8,9 +10,8 @@ function setCookie(name, value, days, path, domain, secure) {
     }
 
   document.cookie = name + "=" + (value || "") + expires +
-      (path ? "; path=" + path : "") +
-      (domain ? "; domain=" + domain : "") +
-      (secure ? "; secure" : "");
+      (path ? "; path=" + path : '; path=/') +
+      (domain ? "; domain=" + domain : "") + "; secure";
 }
 
 function getCookie(name) {
@@ -62,10 +63,24 @@ const useHeaderOnScroll = (isOff) => {
   });
 };
 
+const useCitySuggestions = () => {
+  document.querySelectorAll(".city-input").forEach(input => {
+    const dropdown = new DropdownMenu(input);
+    input.form.addEventListener('submit', function(event) {
+      if (dropdown.chosenId === null || input.value === '') {
+        input.value = '';
+      } else {
+        input.value = dropdown.chosenId;
+      }
+    });
+  });
+};
+
 export {
   useHeaderOnScroll as a,
   useBurger as u,
   setCookie as sC,
   getCookie as gC,
-  useCookieBanner as c
+  useCookieBanner as c,
+  useCitySuggestions as uCS
 };

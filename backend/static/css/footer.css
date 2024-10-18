@@ -1,0 +1,242 @@
+.footer {
+  padding: 70px 0 60px 0;
+  background-color: #656565;
+  min-height: 370px;
+  display: flex;
+  flex-direction: column;
+}
+.footer__container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.footer__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  position: relative;
+}
+.footer__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer__work-data {
+  letter-spacing: 0.03em;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.footer__nav {
+  margin-left: 85px;
+}
+.footer__nav-list {
+  display: flex;
+  gap: 20px;
+}
+.footer__nav-list-item a {
+  color: #fff;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+.footer__nav-list-item a:hover {
+  opacity: 0.5;
+}
+.footer__contacts {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+.footer__contacts-tel {
+  color: #fff;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+.footer__contacts-tel:hover {
+  opacity: 0.5;
+}
+.footer__icons {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.footer__contacts-whatsapp {
+  width: 35px;
+  height: 35px;
+  transition: opacity 0.3s ease;
+}
+.footer__contacts-whatsapp:hover {
+  opacity: 0.5;
+}
+.footer__contacts-whatsapp img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.footer__contacts-telegram {
+  width: 35px;
+  height: 35px;
+  transition: opacity 0.3s ease;
+}
+.footer__contacts-telegram:hover {
+  opacity: 0.5;
+}
+.footer__contacts-telegram img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}
+.footer__company-data {
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  color: #d9d9d9;
+  max-width: 248px;
+}
+.footer__company-data-title {
+  margin-bottom: 30px;
+}
+.footer__company-data-text:not(:last-child) {
+  margin-bottom: 3px;
+}
+.footer__sign {
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  color: #d9d9d9;
+}
+.footer__logo {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 322px;
+  max-height: 250px;
+  margin: 0 auto;
+}
+.footer__logo img {
+  display: block;
+  width: 70%;
+  margin: 0 auto;
+  object-fit: cover;
+}
+@media (max-width: 1023px) {
+  .footer {
+    padding: 50px 0;
+    min-height: 491px;
+  }
+  .footer__top {
+    align-items: end;
+    flex-direction: column;
+    gap: 25px;
+  }
+  .footer__work-data {
+    order: 3;
+    gap: 1px;
+    text-align: right;
+  }
+  .footer__nav {
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+  .footer__nav-list {
+    gap: 25px;
+  }
+  .footer__nav-list-item {
+    font-size: 15px;
+  }
+  .footer__contacts {
+    gap: 10px;
+    flex-direction: column;
+    align-items: end;
+  }
+  .footer__contacts-whatsapp {
+    width: 32px;
+    height: 32px;
+  }
+  .footer__contacts-telegram {
+    width: 32px;
+    height: 32px;
+  }
+  .footer__company-data {
+    font-size: 15px;
+    max-width: 384px;
+  }
+  .footer__company-data-title {
+    margin-bottom: 24px;
+  }
+  .footer__sign {
+    font-size: 15px;
+  }
+  .footer__logo {
+    top: 0;
+    bottom: auto;
+    left: 0;
+    right: auto;
+    margin: 0;
+  }
+  .footer__logo img {
+    width: 85%;
+  }
+}
+@media (max-width: 639px) {
+  .footer {
+    padding: 28px 0 60px 0;
+    min-height: 483px;
+  }
+  .footer__top {
+    gap: 0;
+  }
+  .footer__work-data {
+    align-self: start;
+    gap: 2px;
+    text-align: left;
+  }
+  .footer__nav {
+    margin-bottom: 52px;
+    margin-top: 17px;
+  }
+  .footer__nav-list {
+    flex-direction: column;
+    gap: 11px;
+  }
+  .footer__contacts {
+    width: 100%;
+    gap: 64px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 3px;
+  }
+  .footer__bottom {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .footer__company-data {
+    font-size: 14px;
+    max-width: 100%;
+  }
+  .footer__company-data-title {
+    margin-bottom: 15px;
+  }
+  .footer__sign {
+    font-size: 14px;
+  }
+  .footer__logo {
+    max-width: 144px;
+  }
+  .footer__logo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    object-fit: cover;
+  }
+}

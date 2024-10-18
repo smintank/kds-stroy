@@ -1,13 +1,14 @@
 .stock-popup {
   position: fixed;
-  transform: translate(95%, 0);
+  transform: translate(94%, 0);
   transition: transform 0.2s 0.2s;
   right: 0;
   bottom: 35%;
   width: 100%;
   max-width: 440px;
-  background-color: #fff;
+  background-color: #ffffffe0;
   border: #ddd 1px solid;
+  border-radius: 20px 0 0 20px;
   padding: 40px 50px 50px 28px;
   z-index: 500;
 }
@@ -18,7 +19,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: 0;
+  left: 5px;
   width: 40px;
   height: 40px;
   font-size: 36px;
@@ -26,6 +27,7 @@
 }
 .stock-popup--active {
   transform: translate(0, 0);
+  border-radius: 0;
 }
 .stock-popup--active::after {
   display: none;
@@ -63,7 +65,7 @@
 .stock-popup__text {
   font-size: 22px;
   letter-spacing: 0.03em;
-  margin-bottom: 40px;
+  margin-top: 20px;
 }
 .stock-popup__button {
   display: block;

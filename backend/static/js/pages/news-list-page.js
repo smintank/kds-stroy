@@ -4,6 +4,7 @@ import { uOP as useOrderPopup } from "../utils/orders.js";
 import {
   u as useBurger, a as useHeaderOnScroll, c as useCookieBanner
 } from "../utils/base.js";
+import { Au as useAuthPopup } from "../utils/auth.js";
 
 
 
@@ -122,4 +123,5 @@ addEventListener("DOMContentLoaded", () => {
   useOrderPopup();
   useNewsFilter();
   useNewsSorting();
+  useAuthPopup();
 });

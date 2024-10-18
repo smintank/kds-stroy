@@ -62,41 +62,36 @@ class MessagePopup extends Popup {
 class PromotionPopup {
   constructor(popupSelector) {
     this._popup = document.querySelector(popupSelector);
+    if (!getCookie("promo_popup_hide")) {
+      this.open()
+    }
   }
   open() {
     this._popup.classList.add("stock-popup--active");
+    setCookie("promo_popup_hide", false, 1);
   }
   close() {
     this._popup.classList.remove("stock-popup--active");
+    setCookie("promo_popup_hide", true, 1);
   }
   setEventListeners() {
     this._popup.addEventListener("mousedown", (e) => {
       if (e.target.classList.contains("stock-popup__close")) {
         this.close();
-        setCookie("promo_popup_hide", true, 1);
       } else if (e.target.classList.contains("stock-popup")) {
         this.open();
-        setCookie("promo_popup_hide", false, 1);
       }
     });
   }
 }
 
 const popupMessage = new MessagePopup("#popup-message");
+if (document.querySelector("#popup-message")) popupMessage.setEventListeners();
+
 const promotionPopup = new PromotionPopup("#popup-promotion");
-
-promotionPopup.setEventListeners();
-popupMessage.setEventListeners();
-
 const usePromotionPopup = () => {
-    if (getCookie("promo_popup_hide") === 'true') {
-    promotionPopup.close();
-  } else {
-    promotionPopup.open();
-  }
+  if (document.querySelector("#popup-promotion")) promotionPopup.setEventListeners();
 };
-
-
 
 export {
   usePromotionPopup as uPP,

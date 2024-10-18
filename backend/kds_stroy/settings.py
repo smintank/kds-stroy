@@ -25,11 +25,14 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "news.apps.NewsConfig",
     "orders.apps.OrdersConfig",
+    "locations.apps.LocationsConfig",
     "main.apps.MainConfig",
     "ads_mailing.apps.AdsMailingConfig",
     "verify_email.apps.VerifyEmailConfig",
     "sass_processor",
     "django_ckeditor_5",
+    'widget_tweaks',
+    'constance',
 ]
 
 MIDDLEWARE = [
@@ -40,6 +43,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'orders.middleware.OrderMiddleware',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -62,6 +66,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "orders.context_processor.global_context",
+                'constance.context_processors.config',
             ],
         },
     },
@@ -171,9 +177,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
-LOGIN_URL = "login"
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
@@ -200,9 +204,10 @@ ZVONOK_API_KEY = os.getenv("ZVONOK_API_KEY")
 ZVONOK_ENDPOINT = os.getenv("ZVONOK_ENDPOINT")
 ZVONOK_CAMPAIGN_ID = os.getenv("ZVONOK_CAMPAIGN_ID")
 
-PHONE_VERIFICATION_TIME_LIMIT = 300  # in seconds
-PHONE_VERIFICATION_ATTEMPTS_LIMIT = 3  # with one phone number
-PHONE_CHANGE_FREQUENCY_LIMIT = 30  # in days
+PHONE_VERIFICATION_TIME_LIMIT = 300  # seconds between current and next call requests
+PHONE_VERIFICATION_ATTEMPTS_LIMIT = 3  # call requests with one phone number
+PHONE_CHANGE_FREQUENCY_LIMIT = 30  # days between two attempts of phone number changing
+PINCODE_INPUT_LIMIT = 5  # trys to input pincode for every call request
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
@@ -251,4 +256,26 @@ CKEDITOR_5_CONFIGS = {
                     'bulletedList', 'numberedList', 'todoList', '|',
                     'link', 'subscript', 'superscript'],
     },
+}
+
+CONSTANCE_CONFIG = {
+    "PHONE_NUMBER_CONTACT": ("+7 988 387 26 76", 'Номер телефона в шапке страницы'),
+    "WHATSAPP_CONTACT": ("+79883872676", 'Номер Whatsapp в шапке страницы'),
+    "TELEGRAM_CONTACT": ("kdsstroy", 'Telegram ID для связи'),
+    "SUPPORT_EMAIL": ("support@kdsstroy.ru", "Email службы поддержки сайта"),
+    "WORKING_TIME": ("Ежедневно: 9-22:00", "График работы"),
+    "WORKING_REGION": ("Краснодарский край", "Регион работы"),
+    "BUSINESS_NAME": ("ИП Квардаков Дмитрий Сергеевич", "Юридическое имя организации"),
+    "BUSINESS_ID": ("235303970851", "ИНН организации"),
+    "BUSINESS_REG_NUM": ("321237500431870", "ОГРНИП организации"),
+    "SHOW_SALE_BANNER": (False, "Показывать ли баннер со скидкой"),
+    "SALE_BANNER_AMOUNT": ("", "Размер скидки на баннере"),
+    "SALE_BANNER_TEXT": ("", "Условия акции на баннере"),
+}
+
+CONSTANCE_CONFIG_FIELDSETS = {
+    'Контактные данные': ('PHONE_NUMBER_CONTACT', 'WHATSAPP_CONTACT', "TELEGRAM_CONTACT", "SUPPORT_EMAIL",
+                          "WORKING_TIME", "WORKING_REGION"),
+    "Юридические данные": ("BUSINESS_NAME", "BUSINESS_ID", "BUSINESS_REG_NUM"),
+    'Скидочный баннер': ('SHOW_SALE_BANNER', "SALE_BANNER_AMOUNT", "SALE_BANNER_TEXT"),
 }

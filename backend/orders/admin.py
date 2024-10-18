@@ -1,11 +1,10 @@
-from django import forms
 from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
-from .models import Order, OrderPhoto, City
-from .utils import format_comment, format_datetime, format_phone_number
-from .forms import OrderCreationForm
+from .models import Order, OrderPhoto
+from .utils import format_comment, format_datetime
+from users.utils.phone_number import format_phone_number
 
 
 class OrderPhotoInline(admin.TabularInline):
@@ -19,13 +18,6 @@ class OrderPhotoInline(admin.TabularInline):
                      f'<img src="{obj.photo.url}" width="200">' \
                      '</a>'
         return mark_safe(html_block)
-
-
-class OrderForm(OrderCreationForm):
-    class Meta:
-        widgets = {
-            'city': forms.Select(attrs={'class': 'my-autocomplete'}),
-        }
 
 
 class OrderAdmin(admin.ModelAdmin):
@@ -65,8 +57,7 @@ class OrderAdmin(admin.ModelAdmin):
         phone_number = obj.phone_number
         if phone_number:
             formatted_number = format_phone_number(phone_number)
-            link = format_html('<a href="tel:{}">{}</a>', phone_number,
-                               formatted_number)
+            link = format_html('<a href="tel:{}">{}</a>', phone_number, formatted_number)
             return link
         return "-"
 
@@ -97,9 +88,4 @@ class OrderAdmin(admin.ModelAdmin):
     formatted_created_at.short_description = 'Создан'
 
 
-class CityAdmin(admin.ModelAdmin):
-    search_fields = ['name']
-
-
 admin.site.register(Order, OrderAdmin)
-admin.site.register(City, CityAdmin)

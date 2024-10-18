@@ -1,45 +1,52 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 {% load static %}
 {% block title %}КДС-Строй: Личный кабинет{% endblock %}
 {% block plug_js_css %}
     <script type="module" crossorigin src="{% static 'js/pages/account-page.js' %}"></script>
-    <link rel="stylesheet" crossorigin href="{% static 'css/account-Q46edEp1.css' %}">
+    <link rel="stylesheet" crossorigin href="{% static 'css/account.css' %}">
 {% endblock %}
 {% block content %}
 <main>
     <section class="account">
         <div class="container account__container">
             <h2 class="account__title">Личный кабинет</h2>
-            <form class="account__form" id="formAccount">
+            <form method="post" action="{% url 'users:profile' %}" class="account__form" id="accountForm" enctype="multipart/form-data">
                 <div class="account__data">
-                    <p class="account__data-text account__data-text--date">Дата регистрации {{ user.created_at }}</p>
-                    <p class="account__data-text">Login: {{ user.user_id }}</p>
-                    <a class="account__data-link" href="{% url 'password_change' %}">Изменить пароль</a>
+                    <p class="account__data-text">Логин: {{ profile }}</p>
+                    <p class="account__data-text account__data-text--date">Дата регистрации: {{ profile.date_joined|date:"d.m.Y H:i" }}</p>
                 </div>
                 <div class="account__form-container">
-                    <input class="account__form-input" type="text" name="name" placeholder="Имя*" required>
+                    {% csrf_token %}
                     <div class="account__row account__row--name">
-                        <input class="account__form-input" type="text" name="surname" placeholder="Фамилия">
-                        <input class="account__form-input" type="text" name="second-surname" placeholder="Отчество">
+                      {% render_field form.first_name class="account__form-input" autocomplete="given-name" required="" %}
+                      {% render_field form.middle_name class="account__form-input" autocomplete="additional-name" %}
                     </div>
+                    {% render_field form.last_name class="account__form-input" autocomplete="family-name" %}
                     <div class="account__row account__row--contacts">
-                        <input class="account__form-input" type="tel" name="tel" placeholder="Телефон*" required>
-                        <input class="account__form-input" type="email" name="email" placeholder="E-mail*" required>
+                      <div class="changed-field">
+                        {% render_field form.phone_number class="account__form-input" autocomplete="tel" type="tel" data-tel-input="" required="" readonly="readonly" %}
+                        <a class="changed-field__link" href="{% url 'users:change_phone_number' %}">Изменить</a>
+                      </div>
+                      <div class="changed-field">
+                        {% render_field form.email class="account__form-input" autocomplete="email" type="email" required="" readonly="readonly" %}
+                        <a class="changed-field__link" href="{% url 'users:change_email' %}">Изменить</a>
+                      </div>
                     </div>
                     <div class="account__row account__row--location">
-                        <input class="account__form-input" type="text" name="region" placeholder="Регион">
-                        <input class="account__form-input" type="text" name="city" placeholder="Город">
+                      {% render_field form.city class="account__form-input account__form-input--wide city-input" autocomplete="address-level"  autocomplete-url="/locations/autocomplete/" id="accountCity" %}
                     </div>
-                    <input class="account__form-input account__form-input--wide" type="text" name="address" placeholder="Адрес">
+                    {% render_field form.address class="account__form-input account__form-input--wide" autocomplete="street-address" %}
                 </div>
                 <label class="account__form-agreement checkbox">
-                    <input type="checkbox" name="account-checkbox">
-                    <span class="checkmark"></span> Соглашаюсь получать письма на свой электронный адрес об акциях и новостях компании.
+                    {{ form.is_notify }}
+                    <span class="checkmark"></span>
+                    Соглашаюсь получать письма на свой электронный адрес об акциях и новостях компании.
                 </label>
                 <div class="account__form-buttons">
-                    <button class="account__form-button-delete" type="button">Удалить аккаунт</button>
-                    <button class="account__form-button-edit button" type="button">Редактировать</button>
-                    <button disabled class="account__form-button-save account__form-button-save--disabled button" type="submit">Сохранить</button>
+                    <button class="account__form-button-save--disabled button" id="profileFormSaveButton" type="submit">Сохранить</button>
+                    <a class="account__data-link" href="{% url 'password_change' %}">Изменить пароль</a>
+                    <a class="account__form-button-delete" href="{% url "users:delete_profile" %}">Удалить аккаунт</a>
                 </div>
             </form>
         </div>
@@ -60,112 +67,48 @@
             </div>
         </div>
         <ul class="applications__list">
-            <li class="applications__list-item applications__list-item--open">
-                <div class="applications__list-item-container container">
-                    <div class="applications__list-item-id">1550</div>
-                    <div class="applications__list-item-date">01.01.2024</div>
-                    <div class="applications__list-item-description">
-                        Первые две строчки - порядка 50 символов, как здесь...
-                        Первые две строчки - порядка 50 символов, как здесь...
-                        Первые две строчки - порядка 50 символов, как здесь...
-                        Первые две строчки - порядка 50 символов, как здесь...
+            {% for order in orders %}
+                <li class="applications__list-item">
+                    <div class="applications__list-item-container container">
+                        <div class="applications__list-item-id">{{ order.order_id }}</div>
+                        <div class="applications__list-item-date">{{ order.created_at|date:"d.m.Y" }}</div>
+                        <div class="applications__list-item-description">{{ order.comment|default:"Нет комментария" }}</div>
+                        <div class="applications__list-item-photos">
+                          <ul class="applications__list-item-photos-list">
+                            {% for photo in order.photos %}
+                                <li class="applications__list-item-photo">
+                                    <a href="{{ photo.photo.url }}" data-fancybox="application-{{ forloop.parentloop.counter }}">
+                                        <img src="{{ photo.photo.url }}" alt="изображение слайда">
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            {% if order.photos|length == 0 %}
+                                <span class="applications__list-item-photos-empty">Нет фото</span>
+                            {% else %}
+                                <span class="applications__list-item-photos-count">{{ order.photos|length }}</span>
+                            {% endif %}
+                          </ul>
+                        </div>
+                        <div class="applications__list-item-price">
+                            {% if order.final_cost != 0 %}
+                                {{ order.cost|floatformat}} &#8381;
+                                {% if order.discount != 0 %}
+                                    <br>- {{ order.discount }}% скидка
+                                    <br>Итог: {{ order.final_cost|floatformat }} &#8381;
+                                {% endif %}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </div>
+                        <div class="applications__list-item-status">{{ order.status }}</div>
                     </div>
-                    <div class="applications__list-item-photos">
-                        <ul class="applications__list-item-photos-list">
-                            <li class="applications__list-item-photo">
-                                <a href="{% static 'img/slider-repairs_1-CtSvx8MV.jpg' %}" data-fancybox="application-1">
-                                    <span class="applications__list-item-photos-count">5</span>
-                                    <img src="{% static 'img/slider-repairs_1-CtSvx8MV.jpg' %}" alt="изображение слайда">
-                                </a>
-                            </li>
-                            <li class="applications__list-item-photo">
-                                <a href="{% static 'img/slider-repairs_1-CtSvx8MV.jpg' %}" data-fancybox="application-1">
-                                    <img src="{% static 'img/slider-repairs_1-CtSvx8MV.jpg' %}" alt="изображение слайда">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="applications__list-item-price">-</div>
-                    <div class="applications__list-item-status">
-                        Зарегистрирован
-                        <a class="applications__list-item-status-link" href="#">Оставить отзыв</a>
-                    </div>
+                </li>
+            {% empty %}
+                <div class="container">
+                    <div class="applications__empty-list">Нет заказов</div>
                 </div>
-            </li>
-            <li class="applications__list-item">
-                <div class="applications__list-item-container container">
-                    <div class="applications__list-item-id">1551</div>
-                    <div class="applications__list-item-date">01.01.2024</div>
-                    <div class="applications__list-item-description">
-                        Первые две строчки - порядка 50 символов, как здесь...
-                        Первые две строчки - порядка 50 символов
-                    </div>
-                    <div class="applications__list-item-photos">
-                        <ul class="applications__list-item-photos-list">
-                            <li class="applications__list-item-photo">
-                                <a href="{% static 'img/slider-repairs_2-CmJH2yaQ.jpg' %}" data-fancybox="application-2">
-                                    <span class="applications__list-item-photos-count">5</span>
-                                    <img src="{% static 'img/slider-repairs_2-CmJH2yaQ.jpg' %}" alt="изображение слайда">
-                                </a>
-                            </li>
-                            <li class="applications__list-item-photo">
-                                <a href="{% static 'img/slider-repairs_2-CmJH2yaQ.jpg' %}" data-fancybox="application-2">
-                                    <img src="{% static 'img/slider-repairs_2-CmJH2yaQ.jpg' %}" alt="изображение слайда">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="applications__list-item-price">-</div>
-                    <div class="applications__list-item-status">
-                        Ожидание мастера
-                        <a class="applications__list-item-status-link" href="#">Оставить отзыв</a>
-                    </div>
-                </div>
-            </li>
-            <li class="applications__list-item applications__list-item--completed">
-                <div class="applications__list-item-container container">
-                    <div class="applications__list-item-id">1552</div>
-                    <div class="applications__list-item-date">01.01.2024</div>
-                    <div class="applications__list-item-description">
-                        Первые две строчки - порядка 50 символов,
-                    </div>
-                    <div class="applications__list-item-photos">
-                        <ul class="applications__list-item-photos-list">
-                            <li class="applications__list-item-photo">
-                                <a href=".{% static 'img/slider-repairs_3-qdjkkuhA.jpg' %}" data-fancybox="application-3">
-                                    <span class="applications__list-item-photos-count">5</span>
-                                    <img src="{% static 'img/slider-repairs_3-qdjkkuhA.jpg' %}" alt="изображение слайда">
-                                </a>
-                            </li>
-                            <li class="applications__list-item-photo">
-                                <a href="{% static 'img/slider-repairs_3-qdjkkuhA.jpg' %}" data-fancybox="application-3">
-                                    <img src="{% static 'img/slider-repairs_3-qdjkkuhA.jpg' %}" alt="изображение слайда">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="applications__list-item-price">15 000,00 руб.</div>
-                    <div class="applications__list-item-status applications__list-item-status--completed">
-                        Выполнена
-                        <a class="applications__list-item-status-link" href="#">Оставить отзыв</a>
-                    </div>
-                </div>
-            </li>
+            {% endfor %}
         </ul>
-        <div class="applications__bottom">
-            <div class="applications__bottom-container container">
-                <div class="applications__pagination">
-                    <a class="applications__pagination__item" href="#">&laquo;</a>
-                    <a class="applications__pagination__item applications__pagination__item--active" href="#">1 </a>
-                    <a class="applications__pagination__item" href="#">2</a>
-                    <a class="applications__pagination__item" href="#">3</a>
-                    <span class="applications__pagination__item">...</span>
-                    <a class="applications__pagination__item" href="#">6</a>
-                    <a class="applications__pagination__item" href="#">&raquo;</a>
-                </div>
-                <button class="applications__button button">Все заявки</button>
-            </div>
-        </div>
     </section>
 </main>
 {% endblock %}

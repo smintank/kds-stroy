@@ -1,10 +1,9 @@
 from django.views.generic import ListView, DetailView
 
 from news.models import News, Category
-from orders.views import OrderContextMixin
 
 
-class NewsListView(OrderContextMixin, ListView):
+class NewsListView(ListView):
     model = News
     template_name = "pages/news_list.html"
     paginate_by = 10
@@ -30,6 +29,6 @@ class NewsListView(OrderContextMixin, ListView):
         return context
 
 
-class NewsDetailView(OrderContextMixin, DetailView):
+class NewsDetailView(DetailView):
     model = News
     template_name = "pages/news_detail.html"

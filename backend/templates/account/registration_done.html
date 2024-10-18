@@ -1,17 +1,28 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}КДС-Строй: Регистрация{% endblock %}
+{% block plug_js_css %}
+    <script type="module" crossorigin src="{% static 'js/pages/common-page.js' %}"></script>
+    <link rel="stylesheet" crossorigin href="{% static 'css/register_done.css' %}">
+{% endblock %}
 {% block content %}
-  <div class="container">
-      <h4>{{ new_user.first_name }}, ваш аккаунт успешно зарегистрирован</h4>
+<main>
+  <section class="registration_done">
+    <div class="container">
+      <h1 class="title">Поздравляем, {{ new_user.first_name }}!</h1>
+      <h4 class="subtitle">Ваш аккаунт успешно зарегистрирован.</h4>
       <p>
           Теперь вы можете авторизоваться.
-          <br>
+      </p>
+      <p>
           Также вам на почту отправлено письмо с подтверждением вашего электронного адреса.
-          <br>
+      </p>
+      <p>
           Это нужно, что бы вы смогли восстановить доступ к своему аккаунту в случае если вы потеряли доступ к телефонному номеру или забыли пароль.
       </p>
       <br>
-      <div><p><a href="{% url 'login' %}">Войти</a></p></div>
       <div><p><a href="{% url 'home' %}">На главную</a></p></div>
-  </div>
+    </div>
+  </section>
+</main>
 {% endblock %}

@@ -1,21 +1,23 @@
 import re
 
 from django import forms
+from django.contrib.auth import get_user_model
 
-from users.models import PhoneVerification, User
+from users.models import PhoneVerification
+from users.utils.phone_number import clean_phone_number
+
+User = get_user_model()
 
 
 class UserRegistrationForm(forms.ModelForm):
-    """Форма для создания нового пользователя."""
 
     password = forms.CharField(
         label="Пароль",
         widget=forms.PasswordInput(
             attrs={
-                "class": "register__form-input",
                 "type": "password",
                 "autocomplete": "new-password",
-                "placeholder": "Пароль*",
+                "id": "id_registration_password"
             }
         ),
     )
@@ -23,63 +25,29 @@ class UserRegistrationForm(forms.ModelForm):
         label="Повторите пароль",
         widget=forms.PasswordInput(
             attrs={
-                "class": "register__form-input",
                 "type": "password",
                 "autocomplete": "new-password",
-                "placeholder": "Подтвердите пароль*",
+                "id": "id_registration_password_2"
             }
         ),
     )
 
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "middle_name", "email",
-                  "phone_number")
+        fields = ("first_name", "middle_name", "last_name", "email", "phone_number",
+                  # "city", "address"
+                  )
         widgets = {
-            "phone_number": forms.TextInput(
-                attrs={
-                    "class": "register__form-input",
-                    "type": "tel",
-                    "autocomplete": "tel",
-                    "placeholder": "Телефон*",
-                }
-            ),
-            "email": forms.TextInput(
-                attrs={
-                    "class": "register__form-input",
-                    "type": "email",
-                    "autocomplete": "email",
-                    "placeholder": "E-mail*",
-                }
-            ),
-            "last_name": forms.TextInput(
-                attrs={
-                    "class": "register__form-input",
-                    "text-name-input": "true",
-                    "autocomplete": "family-name",
-                    "placeholder": "Фамилия",
-                }
-            ),
-            "first_name": forms.TextInput(
-                attrs={
-                    "class": "register__form-input",
-                    "text-name-input": "true",
-                    "autocomplete": "given-name",
-                    "placeholder": "Имя*",
-                }
-            ),
-            "middle_name": forms.TextInput(
-                attrs={
-                    "class": "register__form-input",
-                    "text-name-input": "true",
-                    "autocomplete": "additional-name",
-                    "placeholder": "Отчество",
-                }
-            ),
+            # "city": forms.TextInput(),
+            # "address": forms.TextInput(attrs={"id": "id_register_address"}),
+            "phone_number": forms.TextInput(attrs={"type": "tel", "autocomplete": "tel"}),
+            "email": forms.TextInput(attrs={"type": "email", "autocomplete": "email"}),
+            "last_name": forms.TextInput(attrs={"autocomplete": "family-name"}),
+            "first_name": forms.TextInput(attrs={"autocomplete": "given-name"}),
+            "middle_name": forms.TextInput(attrs={"autocomplete": "additional-name"})
         }
 
     def save(self, commit=True):
-        """Сохраняет нового пользователя."""
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password"])
         if commit:
@@ -99,61 +67,46 @@ class UserRegistrationForm(forms.ModelForm):
             raise forms.ValidationError(
                 "Номер телефона должен содержать не меньше 11 цифр"
             )
+        if cleared_phone_number[:2] == "77":
+            raise forms.ValidationError(
+                "Номера Республики Казахстан (+77) - не поддерживаются"
+            )
         return cleared_phone_number
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({
+                'placeholder': field.label + "*" if field.required else field.label
+            })
 
 
 class UserForm(forms.ModelForm):
+
     class Meta:
         model = User
         fields = (
-            "first_name",
-            "last_name",
-            "middle_name",
-            "email",
-            "phone_number",
+            "first_name", "last_name", "middle_name", "email", "phone_number", "city", "address", "is_notify",
         )
         widgets = {
-            "phone_number": forms.TextInput(
-                attrs={
-                    "type": "tel",
-                    "autocomplete": "tel",
-                    "placeholder": "Номер телефона*",
-                    "data-tel-input": "",
-                }
-            ),
-            "email": forms.TextInput(
-                attrs={
-                    "placeholder": "Электронная почта*",
-                    "type": "email",
-                    "autocomplete": "email",
-                }
-            ),
-            "first_name": forms.TextInput(
-                attrs={
-                    "placeholder": "Имя*",
-                    "autocomplete": "given-name",
-                    "text-name-input": "",
-                }
-            ),
-            "last_name": forms.TextInput(
-                attrs={
-                    "placeholder": "Фамилия",
-                    "autocomplete": "family-name",
-                    "text-name-input": "",
-                }
-            ),
-            "middle_name": forms.TextInput(
-                attrs={
-                    "placeholder": "Отчество",
-                    "text-name-input": "",
-                    "autocomplete": "additional-name",
-                }
-            ),
-            "address": forms.TextInput(
-                attrs={"placeholder": "Адрес",
-                       "autocomplete": "street-address"}
-            ),
+            "city": forms.TextInput(),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Add label text to placeholder in all fields
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({'placeholder': field.label})
+
+        # If city credential was filled then we add city-id attribute to city field for profile form.
+        if self.instance and self.instance.city_id:
+            self.fields['city'].widget.attrs.update({'city-id': self.instance.city_id})
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get("phone_number")
+        if phone_number:
+            return clean_phone_number(phone_number)
+        return phone_number
 
 
 class ChangeEmailForm(forms.ModelForm):
@@ -164,7 +117,6 @@ class ChangeEmailForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["email"].label = "Новая электронная почта"
-
         self.fields["email"].widget.attrs.update({"class": "form-control"})
 
 
@@ -176,9 +128,7 @@ class ChangePhoneNumberForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["phone_number"].label = "Новый номер телефона"
-        self.fields["phone_number"].widget.attrs.update(
-            {"class": "form-control"}
-        )
+        self.fields["phone_number"].widget.attrs.update({"class": "form-control"})
 
 
 class PhoneVerificationForm(forms.ModelForm):
@@ -186,7 +136,7 @@ class PhoneVerificationForm(forms.ModelForm):
     class Meta:
         model = PhoneVerification
         fields = ("pincode",)
-        widgets = {"pincode": forms.TextInput(attrs={"class": "ds_input"})}
+        widgets = {"pincode": forms.TextInput(attrs={"class": "ds_input", "hidden": ""})}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -195,6 +145,8 @@ class PhoneVerificationForm(forms.ModelForm):
 
     def clean_pincode(self):
         pincode = self.cleaned_data.get("pincode")
+        if not pincode:
+            raise forms.ValidationError("Пин-код не может быть пустым")
         if not re.match(r"^\d{4}$", pincode) or not pincode.isnumeric():
             raise forms.ValidationError("Пин-код должен состоять из 4-x цифр")
         return pincode

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}КДС-Строй: Удаление аккаунта{% endblock %}
+{% block plug_js_css %}
+    <script type="module" crossorigin src="{% static 'js/pages/common-page.js' %}"></script>
+    <link rel="stylesheet" crossorigin href="{% static 'css/common-page.css' %}">
+{% endblock %}
+{% block content %}
+<main>
+  <section>
+    <div class="container">
+      <h1 class="title">Внимание! Вы собираетесь удалить свой аккаунт.</h1>
+      <div class="simple_block">
+        <p>
+          Вы уверены, что хотите безвозвратно удалить свой аккаунт?
+        </p>
+        <form method="post">
+          {% csrf_token %}
+          <button class="confirm_button simple_button" type="submit">Да, удалить</button>
+          <a class="refuse_button simple_button" href="{% url 'users:profile' %}">Нет, назад</a>
+        </form>
+      </div>
+      <div><p><a href="{% url 'users:profile' %}">Личный кабинет</a></p></div>
+      <div><p><a href="{% url 'home' %}">На главную</a></p></div>
+    </div>
+  </section>
+</main>
+{% endblock %}

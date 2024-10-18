@@ -1,8 +1,9 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
 {% load static %}
 {% block title %}КДС-Строй: Регистрация{% endblock %}
 {% block plug_js_css %}
-    <script type="module" crossorigin src="{% static 'js/pages/register-page.js' %}"></script>
+    <script type="module" crossorigin src="{% static 'js/pages/common-page.js' %}"></script>
     <link rel="stylesheet" crossorigin href="{% static 'css/register-BKHnbJhD.css' %}">
 {% endblock %}
 {% block content %}
@@ -13,37 +14,37 @@
             <form method="post" action="{% url 'registration' %}" enctype="multipart/form-data" class="register__form">
                 <div class="register__form-container">
                     {% csrf_token %}
+{#                    <div class="register__row register__row--name">#}
+{#                      {% render_field form.first_name class="register__form-input" autocomplete="given-name" required="" %}#}
+{#                      {% render_field form.middle_name class="register__form-input" autocomplete="additional-name" %}#}
+{#                    </div>#}
+{#                    {% render_field form.last_name class="register__form-input" autocomplete="family-name" %}#}
+{#                    <div class="register__row register__row--contacts">#}
+{#                      {% render_field form.phone_number class="register__form-input" autocomplete="tel" type="tel" data-tel-input="" required="" %}#}
+{#                      {% render_field form.email class="register__form-input" autocomplete="email" type="email" required="" %}#}
+{#                    </div>#}
+{#                    <div class="register__row register__row--location">#}
+{#                      {% render_field form.city class="register__form-input register__form-input--wide city-input" autocomplete="address-level"  autocomplete-url="/locations/autocomplete/" id="accountCity" %}#}
+{#                    </div>#}
+{#                    {% render_field form.address class="register__form-input register__form-input--wide" autocomplete="street-address" %}#}
+{#                    {% render_field form.password class="register__form-input register__form-input--wide" autocomplete="password" required="" %}#}
+{#                    {% render_field form.password2 class="register__form-input register__form-input--wide" autocomplete="password" required="" %}#}
                     {% for field in form %}
-                        {{ field }}
+                        {% render_field field class='register__form-input' %} 
                         {% if field.errors %}<p>{{ field.errors }}</p>{% endif %}
                     {% endfor %}
                         {% if error %}<p>{{ error }}</p>{% endif %}
-
-{#                    <input class="register__form-input" name="name">#}
-{#                    <div class="register__row register__row--name">#}
-{#                        <input  name="surname">#}
-{#                        <input  name="second-surname">#}
-{#                    </div>#}
-{#                    <div class="register__row register__row--contacts">#}
-{#                        <input  name="tel">#}
-{#                        <input  name="email">#}
-{#                    </div>#}
-{#                    <div class="register__row register__row--location">#}
-{#                        <input class="register__form-input" type="text" name="region" placeholder="Регион">#}
-{#                        <input class="register__form-input" type="text" name="city" placeholder="Город">#}
-{#                    </div>#}
-{#                    <input class="register__form-input register__form-input--wide" type="text" name="address" placeholder="Адрес">#}
-{#                    <input  name="password">#}
-{#                    <input  name="repeat-password">#}
                 </div>
                 <div class="register__checkboxes">
                     <label class="register__form-agreement checkbox">
                         <input type="checkbox" name="register-checkbox">
-                        <span class="checkmark"></span> Соглашаюсь на обработку персональных данных в соответствии с политикой конфиденциальности.
+                        <span class="checkmark"></span> 
+                        Соглашаюсь на обработку персональных данных в соответствии с политикой конфиденциальности.</p>
                     </label>
                     <label class="register__form-agreement checkbox">
                         <input type="checkbox" name="register-checkbox">
-                        <span class="checkmark"></span> Соглашаюсь получать письма на свой электронный адрес об акциях и новостях компании.
+                        <span class="checkmark"></span> 
+                        Соглашаюсь получать письма на свой электронный адрес об акциях и новостях компании.
                     </label>
                 </div>
                 <button class="register__form__submit button" type="submit">Зарегистрироваться</button>
