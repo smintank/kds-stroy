@@ -63,9 +63,9 @@ def get_countdown_value(timestamp) -> int:
     return max(last_seconds, 0)
 
 
-def call_api_request(phone_number: str, pincode: str = None) -> str:
+def call_api_request(phone_number: str, pincode: str = None, timeout: int = 10) -> str:
     """
-    Request a call to the phone number with Zvonok API service.
+    Request a call to the phone number with the Zvonok API service.
     """
     payload = {
         "public_key": ZVONOK_API_KEY,
@@ -73,36 +73,54 @@ def call_api_request(phone_number: str, pincode: str = None) -> str:
         "phone": f"+{clean_phone_number(phone_number)}",
         "phone_suffix": pincode,
     }
+
     response = None
-    logger.debug("Payload is ready")
+    logger.debug(f"Payload prepared: {payload}")
+
     try:
-        response = requests.post(ZVONOK_ENDPOINT, data=payload, verify=False)
-        logger.debug("Request has been sent")
+        logger.debug("Sending request to Zvonok API...")
+        response = requests.post(ZVONOK_ENDPOINT, data=payload, timeout=timeout, verify=False)
         response.raise_for_status()
-        logger.debug("Response was received")
+
+        logger.debug("Received response from Zvonok API")
         json_response = response.json()
+        logger.debug(f"Response JSON: {json_response}")
+
         data = json_response.get("data")
-        logger.debug("Response data: " + data)
         pincode = data.get("pincode")
+        logger.debug(f"Pincode received: {pincode}")
+
+    except requests.exceptions.Timeout as e:
+        logger.error(f"Request to Zvonok API timed out: {str(e)}", exc_info=e)
+        raise ValidationError("Request to Zvonok API timed out")
+
     except requests.exceptions.HTTPError as e:
+        logger.error(f"HTTP Error: {response.status_code} - {response.text}", exc_info=e)
         if response.status_code == 400:
-            json = response.json()
-            logger.exception("Zvonok API HTTP Error: " + json.get('data'), exc_info=e)
-        if response.status_code == 429:
-            json = response.json()
-            logger.exception("Limit exceeded to Zvonok API: " + json.get('data'), exc_info=e)
-        else:
-            logger.exception("HTTP Error: ", exc_info=e)
+            json_data = response.json()
+            logger.error(f"Bad request error from Zvonok API: {json_data.get('data')}", exc_info=e)
+        elif response.status_code == 429:
+            json_data = response.json()
+            logger.error(f"Rate limit exceeded for Zvonok API: {json_data.get('data')}", exc_info=e)
+        raise ValidationError("HTTP error occurred while contacting Zvonok API")
+
     except requests.RequestException as e:
-        logger.exception("Zvonok API request error: ", exc_info=e)
+        logger.error(f"Error during API request to Zvonok: {str(e)}", exc_info=e)
         raise ValidationError("Error sending request to Zvonok API")
+
     except (requests.JSONDecodeError, KeyError) as e:
-        logger.exception("Zvonok API response error: ", exc_info=e)
-        raise ValidationError("Error parsing response from Zvonok API")
+        logger.error(f"Error parsing response from Zvonok API: {str(e)}", exc_info=e)
+        raise ValidationError("Invalid response format from Zvonok API")
+
     except Exception as e:
-        logger.exception("Zvonok API error: ", exc_info=e)
-        raise ValidationError("Unknown error from Zvonok API")
-    logger.info(pincode)
+        logger.error(f"Unexpected error in Zvonok API: {str(e)}", exc_info=e)
+        raise ValidationError("An unknown error occurred with Zvonok API")
+
+    if pincode:
+        logger.info(f"Pincode successfully retrieved: {pincode}")
+    else:
+        logger.warning("Pincode not retrieved from Zvonok API")
+
     return pincode
 
 

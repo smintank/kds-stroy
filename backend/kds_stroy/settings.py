@@ -88,7 +88,7 @@ LOGGING = {
             "class": "logging.StreamHandler",
         },
         "file": {
-            "level": "ERROR",
+            "level": "DEBUG",
             "class": "logging.FileHandler",
             "filename": "error.log",
         },
@@ -96,7 +96,7 @@ LOGGING = {
     "loggers": {
         "django": {
             "handlers": ["console", "file"],
-            "level": "INFO",
+            "level": "DEBUG",
             "propagate": True,
         },
     },
