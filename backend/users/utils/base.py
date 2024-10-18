@@ -76,7 +76,7 @@ def call_api_request(phone_number: str, pincode: str = None) -> str:
     response = None
     logger.debug("Payload is ready")
     try:
-        response = requests.post(ZVONOK_ENDPOINT, data=payload)
+        response = requests.post(ZVONOK_ENDPOINT, data=payload, verify=False)
         logger.debug("Request has been sent")
         response.raise_for_status()
         logger.debug("Response was received")
