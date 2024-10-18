@@ -263,7 +263,7 @@
   }
   .header__signin {
     position: absolute;
-    top: 95px;
+    top: 100px;
     right: 38px;
   }
   .header__signin::after {
@@ -271,7 +271,7 @@
   }
   .header__account {
     position: absolute;
-    top: 95px;
+    top: 98px;
     right: 38px;
   }
   .header__account::after {
