@@ -10,8 +10,6 @@ services:
       - pg_data:/var/lib/postgresql/data/
     env_file: .env
     restart: always
-    networks:
-      - internal
 
   celery:
     image: smintank/kdsstroy_backend
@@ -24,17 +22,12 @@ services:
       - backend
       - redis
     restart: always
-    networks:
-      - external
-      - internal
 
   redis:
     image: redis:latest
     env_file: .env
     container_name: ${REDIS_HOST}
     restart: always
-    networks:
-      - internal
 
   backend:
     image: smintank/kdsstroy_backend
@@ -46,9 +39,6 @@ services:
       - db
       - redis
     restart: always
-    networks:
-      - external
-      - internal
 
   nginx:
     image: smintank/kdsstroy_gateway
@@ -61,11 +51,3 @@ services:
     depends_on:
       - backend
     restart: always
-    networks:
-      - internal
-
-networks:
-  internal:
-    driver: bridge
-  external:
-    driver: bridge
