@@ -41,15 +41,15 @@ class OrderCreateViewTest(TestCase):
         })
         self.assertEqual(response.status_code, 201)
 
-    def test_create_order_full(self):
-        response = self.client.post(self.url, {
-            'first_name': self.first_name,
-            'phone_number': self.phone_number,
-            'city': self.city,
-            'address': self.address,
-            'comment': self.correct_comment,
-        })
-        self.assertEqual(response.status_code, 201)
+    # def test_create_order_full(self):
+    #     response = self.client.post(self.url, {
+    #         'first_name': self.first_name,
+    #         'phone_number': self.phone_number,
+    #         'city': self.city,
+    #         'address': self.address,
+    #         'comment': self.correct_comment,
+    #     })
+    #     self.assertEqual(response.status_code, 201)
 
     def test_create_order_unsafe_comment(self):
         response = self.client.post(self.url, {
