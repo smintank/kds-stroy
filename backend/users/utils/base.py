@@ -63,7 +63,7 @@ def get_countdown_value(timestamp) -> int:
     return max(last_seconds, 0)
 
 
-def call_api_request(phone_number: str, pincode: str = None, timeout: int = 10) -> str:
+def call_api_request(phone_number: str, pincode: str = None, timeout: int = 100) -> str:
     """
     Request a call to the phone number with the Zvonok API service.
     """
