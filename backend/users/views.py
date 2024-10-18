@@ -12,6 +12,7 @@ from django.views import View
 from django.views.generic import FormView, DeleteView
 
 from kds_stroy.settings import PHONE_VERIFICATION_TIME_LIMIT, PINCODE_INPUT_LIMIT
+from users.messages import OLD_MAIL_CHANGING_TEXT, OLD_MAIL_CHANGING_SUBJECT
 from orders.models import Order, OrderPhoto
 from users.forms import (ChangePhoneNumberForm, PhoneVerificationForm,
                          UserForm, UserRegistrationForm, ChangeEmailForm)
@@ -219,14 +220,9 @@ class ChangeEmailView(LoginRequiredMixin, FormView):
             user.is_email_verified = False
             user.save()
 
-            send_email_message(
-                "КДС-Строй: Попытка смены адреса электронной почты",
-                f'Из вашего личного кабинета на сайте kdsstroy.ru поступил запрос '
-                f'на изменение адреса электронной почты на новый - {user.email}. '
-                f'Если вы не меняли ваш адреса электронной почты, '
-                f'то свяжитесь с нашей службой поддержки: support@kdsstroy.ru',
-                old_email
-            )
+            send_email_message(OLD_MAIL_CHANGING_SUBJECT,
+                               OLD_MAIL_CHANGING_TEXT.format(email=user.email),
+                               old_email)
             send_verification_email(request, user)
 
             return self.form_valid(form)
