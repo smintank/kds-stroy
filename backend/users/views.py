@@ -26,7 +26,7 @@ User = get_user_model()
 logger = logging.getLogger(__name__)
 
 
-class ProfileView(FormView):
+class ProfileView(LoginRequiredMixin, FormView):
     model = User
     template_name = "account/account.html"
     success_url = reverse_lazy("users:profile")
@@ -86,7 +86,7 @@ class DeleteProfileView(LoginRequiredMixin, DeleteView):
         return get_object_or_404(self.model, id=self.request.user.id)
 
 
-class ChangePhoneNumberView(FormView):
+class ChangePhoneNumberView(LoginRequiredMixin, FormView):
     model = User
     form_class = ChangePhoneNumberForm
     template_name = "account/change_phone_number.html"
@@ -201,7 +201,7 @@ class PhoneVerificationView(FormView):
         return super().form_invalid(form)
 
 
-class ChangeEmailView(FormView):
+class ChangeEmailView(LoginRequiredMixin, FormView):
     model = User
     form_class = ChangeEmailForm
     template_name = "account/change_email.html"
