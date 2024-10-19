@@ -10,6 +10,7 @@
                 </div>
                 <nav class="footer__nav">
                     <ul class="footer__nav-list">
+                    {% with request.resolver_match.url_name as view_name %}
                         <li class="footer__nav-list-item">
                             <a href="{% if view_name != 'MainView' %}{% url 'home' %}{% endif %}#steps-section">Порядок работы</a>
                         </li>
@@ -22,6 +23,7 @@
                         <li class="footer__nav-list-item">
                             <a href="{% url 'news:list' %}">Новости</a>
                         </li>
+                    {% endwith %}
                     </ul>
                 </nav>
                 <div class="footer__contacts">
