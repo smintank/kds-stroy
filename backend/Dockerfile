@@ -7,7 +7,7 @@ RUN apt-get install -y iputils-ping
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt --no-cache-dir
-RUN apt-get install -y net-tools
+RUN apt-get install -y net-tools && apt-get install -y telnet
 
 COPY . .
 
