@@ -184,7 +184,7 @@ class PhoneVerificationView(FormView):
         user.save()
         del self.request.session["phone_number"]
 
-        if not user.is_authenticated:
+        if not self.request.user.is_authenticated:
             send_verification_email(self.request, user)
             return render(self.request, "account/registration_done.html",
                           {"new_user": user, **self.get_context_data(**self.kwargs)})
