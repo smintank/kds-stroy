@@ -88,9 +88,10 @@ class PromotionPopup {
 const popupMessage = new MessagePopup("#popup-message");
 if (document.querySelector("#popup-message")) popupMessage.setEventListeners();
 
-const promotionPopup = new PromotionPopup("#popup-promotion");
 const usePromotionPopup = () => {
-  if (document.querySelector("#popup-promotion")) promotionPopup.setEventListeners();
+  if (document.querySelector("#popup-promotion")) {
+    new PromotionPopup("#popup-promotion").setEventListeners();
+  }
 };
 
 export {
