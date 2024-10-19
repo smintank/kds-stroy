@@ -38,7 +38,7 @@
             <button class="header__burger burger" aria-label="Burger menu"><span class="burger__line"></span></button>
         </div>
         {% if user.is_authenticated %}
-          <div class="header__account {% if view_name == 'users:profile' %}header_underline{% endif %}">
+          <div class="header__account {% if request.resolver_match.url_name == 'users:profile' %}header_underline{% endif %}">
               <a href="{% url 'users:profile' %}">{{ user.first_name|truncatechars:12 }}</a>
               <img id="show_logout_popup" class="exit_img" alt="Exit" src="{% static 'img/logout.png' %}">
           </div>
