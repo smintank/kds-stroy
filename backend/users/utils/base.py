@@ -79,7 +79,7 @@ def call_api_request(phone_number: str, pincode: str = None, timeout: int = 100)
 
     try:
         logger.debug("Sending request to Zvonok API...")
-        response = requests.post(ZVONOK_ENDPOINT, data=payload, timeout=timeout, verify=False)
+        response = requests.post(ZVONOK_ENDPOINT, data=payload, timeout=timeout)
         response.raise_for_status()
 
         logger.debug("Received response from Zvonok API")
