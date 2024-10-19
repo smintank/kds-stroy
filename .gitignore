@@ -181,3 +181,4 @@ cython_debug/
 ../docker-compose-local.yml
 
 /frontend
+!/nginx.conf.bak
