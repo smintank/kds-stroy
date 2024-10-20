@@ -8,7 +8,7 @@ RUN apt-get install -y iputils-ping
 COPY requirements.txt .
 RUN pip install -r requirements.txt --no-cache-dir
 RUN apt-get install -y net-tools && apt-get install -y telnet
-RUN apt-get install traceroute && apt-get install dnsutils
+RUN apt-get install -y traceroute && apt-get install -y dnsutils
 
 COPY . .
 
