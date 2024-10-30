@@ -3,6 +3,8 @@ import re
 from django import forms
 from django.contrib.auth import get_user_model
 
+from users.messages import (PHONE_NUMBER_NOT_FROM_RUSSIA_ERR_MSG, PHONE_NUMBER_TOO_SHORT_ERR_MSG,
+                            PASSWORDS_DO_NOT_MATCH_ERR_MSG, PINCODE_4_DIGITS_REQUIRE_ERR_MSG, PINCODE_EMPTY_ERR_MSG)
 from users.models import PhoneVerification
 from users.utils.phone_number import clean_phone_number
 
@@ -57,20 +59,16 @@ class UserRegistrationForm(forms.ModelForm):
     def clean_password2(self):
         cd = self.cleaned_data
         if cd["password"] != cd["password2"]:
-            raise forms.ValidationError("Пароли не совпадают")
+            raise forms.ValidationError(PASSWORDS_DO_NOT_MATCH_ERR_MSG)
         return cd["password2"]
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data["phone_number"]
         cleared_phone_number = re.sub(r"\D", "", phone_number)
         if len(cleared_phone_number) < 11:
-            raise forms.ValidationError(
-                "Номер телефона должен содержать не меньше 11 цифр"
-            )
-        if cleared_phone_number[:2] == "77":
-            raise forms.ValidationError(
-                "Номера Республики Казахстан (+77) - не поддерживаются"
-            )
+            raise forms.ValidationError(PHONE_NUMBER_TOO_SHORT_ERR_MSG)
+        if cleared_phone_number[:2] != "79":
+            raise forms.ValidationError(PHONE_NUMBER_NOT_FROM_RUSSIA_ERR_MSG)
         return cleared_phone_number
 
     def __init__(self, *args, **kwargs):
@@ -146,7 +144,7 @@ class PhoneVerificationForm(forms.ModelForm):
     def clean_pincode(self):
         pincode = self.cleaned_data.get("pincode")
         if not pincode:
-            raise forms.ValidationError("Пин-код не может быть пустым")
+            raise forms.ValidationError(PINCODE_EMPTY_ERR_MSG)
         if not re.match(r"^\d{4}$", pincode) or not pincode.isnumeric():
-            raise forms.ValidationError("Пин-код должен состоять из 4-x цифр")
+            raise forms.ValidationError(PINCODE_4_DIGITS_REQUIRE_ERR_MSG)
         return pincode

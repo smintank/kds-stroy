@@ -138,9 +138,7 @@ class PhoneVerificationView(FormView):
         is_repeat = request.GET.get("repeat_call") == "true"
 
         if is_repeat or not last_call_obj.pincode:
-            logger.debug('Pincode request started...')
             call_api_process(last_call_obj, last_call_obj.pincode or None)
-            logger.debug('Pincode request ended')
             countdown = int(PHONE_VERIFICATION_TIME_LIMIT)
             if is_repeat:
                 last_call_obj.attempts_amount = 0

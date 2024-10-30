@@ -75,20 +75,14 @@ def call_api_request(phone_number: str, pincode: str = None, timeout: int = 100)
     }
 
     response = None
-    logger.debug(f"Payload prepared: {payload}")
-
     try:
-        logger.debug("Sending request to Zvonok API...")
         response = requests.post(ZVONOK_ENDPOINT, data=payload, timeout=timeout)
         response.raise_for_status()
-
-        logger.debug("Received response from Zvonok API")
         json_response = response.json()
         logger.debug(f"Response JSON: {json_response}")
 
         data = json_response.get("data")
         pincode = data.get("pincode")
-        logger.debug(f"Pincode received: {pincode}")
 
     except requests.exceptions.Timeout as e:
         logger.error(f"Request to Zvonok API timed out: {str(e)}", exc_info=e)

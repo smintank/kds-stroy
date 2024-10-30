@@ -6,3 +6,11 @@ OLD_MAIL_CHANGING_TEXT = 'Из вашего личного кабинета на
 
 ATTEMPT_LIMIT_MSG = "Вы исчерпали все попытки ввода пин-кода!"
 WRONG_CODE_MSG = "Неверный код. Попробуйте ещё раз!"
+
+PHONE_NUMBER_NOT_FROM_RUSSIA_ERR_MSG = "Поддерживаются только номера мобильных операторов Российской Федерации (+79)"
+PHONE_NUMBER_TOO_SHORT_ERR_MSG = "Номер телефона должен содержать не меньше 11 цифр"
+
+PASSWORDS_DO_NOT_MATCH_ERR_MSG = "Пароли не совпадают"
+
+PINCODE_EMPTY_ERR_MSG = "Пин-код не может быть пустым"
+PINCODE_4_DIGITS_REQUIRE_ERR_MSG = "Пин-код должен состоять из 4-x цифр"
