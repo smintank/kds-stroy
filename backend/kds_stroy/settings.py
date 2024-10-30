@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "django_ckeditor_5",
     'widget_tweaks',
     'constance',
+    'webp_converter',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +69,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "orders.context_processor.global_context",
                 'constance.context_processors.config',
+                'webp_converter.context_processors.webp_support',
             ],
         },
     },

@@ -1,4 +1,5 @@
 {% load static %}
+{% load webp_converter %}
 <header class="header">
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
     <div class="container header__container">
@@ -40,7 +41,7 @@
         {% if user.is_authenticated %}
           <div class="header__account {% if request.resolver_match.url_name == 'users:profile' %}header_underline{% endif %}">
               <a href="{% url 'users:profile' %}">{{ user.first_name|truncatechars:12 }}</a>
-              <img id="show_logout_popup" class="exit_img" alt="Exit" src="{% static 'img/logout.png' %}">
+              <img id="show_logout_popup" class="exit_img" alt="Exit" src="{% static_webp 'img/logout.png' %}">
           </div>
         {% else %}
           <button class="header__signin" id="signIn">Войти ></button>
