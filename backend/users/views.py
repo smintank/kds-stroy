@@ -18,8 +18,9 @@ from users.forms import (ChangePhoneNumberForm, PhoneVerificationForm,
                          UserForm, UserRegistrationForm, ChangeEmailForm)
 
 from .models import PhoneVerification
-from .utils.base import (call_api_process, get_countdown, is_numbers_amount_limit, send_email_message,
-                         is_phone_change_limit, phone_validation_prepare, send_verification_email, token_generator)
+from .tasks import send_verification_email, send_email_message
+from .utils.base import (call_api_process, get_countdown, is_numbers_amount_limit,
+                         is_phone_change_limit, phone_validation_prepare, token_generator)
 from .utils.phone_number import clean_phone_number
 
 User = get_user_model()
@@ -183,7 +184,7 @@ class PhoneVerificationView(FormView):
         del self.request.session["phone_number"]
 
         if not self.request.user.is_authenticated:
-            send_verification_email(self.request, user)
+            send_verification_email.delay(self.request, user)
             return render(self.request, "account/registration_done.html",
                           {"new_user": user, **self.get_context_data(**self.kwargs)})
         else:
@@ -219,10 +220,10 @@ class ChangeEmailView(LoginRequiredMixin, FormView):
             user.is_email_verified = False
             user.save()
 
-            send_email_message(OLD_MAIL_CHANGING_SUBJECT,
-                               OLD_MAIL_CHANGING_TEXT.format(email=user.email),
-                               old_email)
-            send_verification_email(request, user)
+            send_email_message.delay(OLD_MAIL_CHANGING_SUBJECT,
+                                     OLD_MAIL_CHANGING_TEXT.format(email=user.email),
+                                     old_email)
+            send_verification_email.delay(request, user)
 
             return self.form_valid(form)
         else:

@@ -4,15 +4,10 @@ import requests
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.contrib.auth.tokens import default_token_generator
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from django.urls import reverse
 
 from kds_stroy.settings import (PHONE_CHANGE_FREQUENCY_LIMIT, PHONE_VERIFICATION_ATTEMPTS_LIMIT,
                                 PHONE_VERIFICATION_TIME_LIMIT, ZVONOK_API_KEY, ZVONOK_CAMPAIGN_ID,
-                                ZVONOK_ENDPOINT, DEFAULT_FROM_EMAIL)
+                                ZVONOK_ENDPOINT)
 from users.models import PhoneVerification
 from users.utils.phone_number import clean_phone_number
 
@@ -46,7 +41,7 @@ def call_api_process(last_request, pincode=None):
     """
     Process API call to verify phone number.
     """
-    pincode = call_api_request(last_request.phone_number, pincode)
+    pincode = get_pin_from_zvonok_api(last_request.phone_number, pincode)
     last_request.pincode = pincode
     last_request.last_call = timezone.now()
     last_request.save()
@@ -63,7 +58,7 @@ def get_countdown_value(timestamp) -> int:
     return max(last_seconds, 0)
 
 
-def call_api_request(phone_number: str, pincode: str = None, timeout: int = 100) -> str:
+def get_pin_from_zvonok_api(phone_number: str, pincode: str = None, timeout: int = 100) -> str:
     """
     Request a call to the phone number with the Zvonok API service.
     """
@@ -164,27 +159,3 @@ def is_time_limit(timestamp) -> bool:
     limit_seconds = PHONE_VERIFICATION_TIME_LIMIT or 360
     passed_seconds = int((timezone.now() - timestamp).total_seconds())
     return passed_seconds <= limit_seconds
-
-
-def send_verification_email(request, user):
-    token = token_generator.make_token(user)
-    uid = urlsafe_base64_encode(force_bytes(user.pk))
-
-    verification_url = request.build_absolute_uri(
-        reverse('users:email_verification', kwargs={'uidb64': uid, 'token': token})
-    )
-
-    subject = 'Верификация электронной почты'
-    message = render_to_string('account/email_verification.html', {
-        'user': user,
-        'verification_url': verification_url,
-    })
-    send_email_message(subject, message, user.email)
-
-
-def send_email_message(subject, message, email):
-    try:
-        send_mail(subject, message, DEFAULT_FROM_EMAIL, [email])
-        logger.info(f"Email to {email} with subject {subject} sent successfully")
-    except Exception as e:
-        logger.error(f"Error sending email to {email}: {e}")
