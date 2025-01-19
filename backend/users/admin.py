@@ -38,14 +38,14 @@ class OrderAdmin(admin.StackedInline):
 class MyUserAdmin(UserAdmin):
     list_display = (
         "email",
-        "phone_number",
+        "formatted_phone_number",
         "first_name",
         "last_name",
         "is_staff",
         "is_active",
     )
     list_filter = ("is_superuser", "is_active")
-    list_display_links = ("email", "phone_number")
+    list_display_links = ("email", "formatted_phone_number")
     readonly_fields = ("last_login", "date_joined", "email")
     ordering = ["id"]
     inlines = [OrderAdmin]
