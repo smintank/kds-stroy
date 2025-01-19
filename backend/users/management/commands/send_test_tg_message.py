@@ -1,8 +1,7 @@
 import requests
-from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
 
-from kds_stroy.settings import DEFAULT_FROM_EMAIL, TG_BOT_TOKEN
+from kds_stroy.settings import TG_BOT_TOKEN
 
 
 # python manage.py send_test_tg_message 22334455
