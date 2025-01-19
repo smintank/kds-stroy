@@ -2,11 +2,13 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
+from django.utils.html import format_html
 from verify_email.admin import LinkCounter
 
 from orders.models import Order
 
 from .models import User
+from .utils.phone_number import format_phone_number
 
 
 class OrderInlineForm(forms.ModelForm):
@@ -63,8 +65,18 @@ class MyUserAdmin(UserAdmin):
             form.base_fields["is_notify"].disabled = True
         return form
 
+    def formatted_phone_number(self, obj):
+        phone_number = obj.phone_number
+        if phone_number:
+            formatted_number = format_phone_number(phone_number)
+            link = format_html('<a href="tel:{}">{}</a>', phone_number, formatted_number)
+            return link
+        return "-"
+
     def has_add_permission(self, request):
         return False
+
+    formatted_phone_number.short_description = 'Телефонный номер'
 
 
 admin.site.register(User, MyUserAdmin)
