@@ -185,6 +185,6 @@ def send_verification_email(request, user):
 def send_email_message(subject, message, email):
     try:
         send_mail(subject, message, DEFAULT_FROM_EMAIL, [email])
-        print("Email sent successfully")
+        logger.info(f"Email to {email} with subject {subject} sent successfully")
     except Exception as e:
-        print(f"Error sending email: {e}")
+        logger.error(f"Error sending email to {email}: {e}")
