@@ -12,15 +12,15 @@ from django.views import View
 from django.views.generic import FormView, DeleteView
 
 from kds_stroy.settings import PHONE_VERIFICATION_TIME_LIMIT, PINCODE_INPUT_LIMIT
-from users.messages import OLD_MAIL_CHANGING_TEXT, OLD_MAIL_CHANGING_SUBJECT, ATTEMPT_LIMIT_MSG, WRONG_CODE_MSG
+from users.messages import ATTEMPT_LIMIT_MSG, WRONG_CODE_MSG
 from orders.models import Order, OrderPhoto
 from users.forms import (ChangePhoneNumberForm, PhoneVerificationForm,
                          UserForm, UserRegistrationForm, ChangeEmailForm)
 
 from .models import PhoneVerification
-from .tasks import send_verification_email, send_email_message
 from .utils.base import (call_api_process, get_countdown, is_numbers_amount_limit,
                          is_phone_change_limit, phone_validation_prepare, token_generator)
+from .utils.email import send_verification_email, send_change_email
 from .utils.phone_number import clean_phone_number
 
 User = get_user_model()
@@ -185,7 +185,7 @@ class PhoneVerificationView(FormView):
 
         if not self.request.user.is_authenticated:
             try:
-                send_verification_email.delay(self.request, user)
+                send_verification_email(self.request, user)
             except Exception as e:
                 logger.exception(f"Failed to send verification email: {e}")
             return render(self.request, "account/registration_done.html",
@@ -222,13 +222,7 @@ class ChangeEmailView(LoginRequiredMixin, FormView):
             user = form.save(commit=False)
             user.is_email_verified = False
             user.save()
-            try:
-                send_email_message.delay(OLD_MAIL_CHANGING_SUBJECT,
-                                         OLD_MAIL_CHANGING_TEXT.format(email=user.email),
-                                         old_email)
-                send_verification_email.delay(request, user)
-            except Exception as e:
-                logger.exception(f"Failed to send email: {e}")
+            send_change_email(self.request, user, old_email)
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
