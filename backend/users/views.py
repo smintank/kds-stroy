@@ -184,7 +184,10 @@ class PhoneVerificationView(FormView):
         del self.request.session["phone_number"]
 
         if not self.request.user.is_authenticated:
-            send_verification_email.delay(self.request, user)
+            try:
+                send_verification_email.delay(self.request, user)
+            except Exception as e:
+                logger.exception(f"Failed to send verification email: {e}")
             return render(self.request, "account/registration_done.html",
                           {"new_user": user, **self.get_context_data(**self.kwargs)})
         else:
@@ -219,12 +222,13 @@ class ChangeEmailView(LoginRequiredMixin, FormView):
             user = form.save(commit=False)
             user.is_email_verified = False
             user.save()
-
-            send_email_message.delay(OLD_MAIL_CHANGING_SUBJECT,
-                                     OLD_MAIL_CHANGING_TEXT.format(email=user.email),
-                                     old_email)
-            send_verification_email.delay(request, user)
-
+            try:
+                send_email_message.delay(OLD_MAIL_CHANGING_SUBJECT,
+                                         OLD_MAIL_CHANGING_TEXT.format(email=user.email),
+                                         old_email)
+                send_verification_email.delay(request, user)
+            except Exception as e:
+                logger.exception(f"Failed to send email: {e}")
             return self.form_valid(form)
         else:
             return self.form_invalid(form)

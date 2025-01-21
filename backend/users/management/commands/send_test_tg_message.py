@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 from kds_stroy.settings import TG_BOT_TOKEN
 
 
-# python manage.py send_test_tg_message 22334455
+# python manage.py send_test_tg_message --to 22334455
 
 class Command(BaseCommand):
     help = 'Отправить тестовое сообщение'

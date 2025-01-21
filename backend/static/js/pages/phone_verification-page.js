@@ -37,7 +37,7 @@ const useSMSVerificationTimer = () => {
   }
 
   document.getElementById("repeatCallButton").addEventListener("click", function () {
-    fetch("/profile/phone_verification/?repeat_call=true")
+    fetch("/profile/phone-verification/?repeat_call=true")
       .then(response => response.json())
       .then(data => {
         countdownDuration = data.countdown;

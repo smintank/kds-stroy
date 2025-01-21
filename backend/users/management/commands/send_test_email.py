@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 from kds_stroy.settings import DEFAULT_FROM_EMAIL
 
 
-# python manage.py send_test_email name@domain.com
+# python manage.py send_test_email --to name@domain.com
 
 class Command(BaseCommand):
     help = 'Отправить тестовое письмо'
